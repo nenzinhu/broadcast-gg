@@ -1,7 +1,9 @@
 export type Game = {
   id: string;
+  slug: string;
   title: string;
   genre: string;
+  kicker: string;
   price: number;
   originalPrice: number;
   historicalLow: number;
@@ -21,8 +23,10 @@ export type Signal = {
 export const games: Game[] = [
   {
     id: "cyberpunk",
+    slug: "cyberpunk-2077",
     title: "Cyberpunk 2077",
     genre: "RPG · MUNDO ABERTO",
+    kicker: "A CIDADE QUE NUNCA DORME.",
     price: 79.96,
     originalPrice: 199.9,
     historicalLow: 79.96,
@@ -34,8 +38,10 @@ export const games: Game[] = [
   },
   {
     id: "elden-ring",
+    slug: "elden-ring",
     title: "Elden Ring",
     genre: "SOULSLIKE · AVENTURA",
+    kicker: "MORRA. APRENDA. EXPLORE DE NOVO.",
     price: 149.94,
     originalPrice: 249.9,
     historicalLow: 124.95,
@@ -47,8 +53,10 @@ export const games: Game[] = [
   },
   {
     id: "hades",
+    slug: "hades-ii",
     title: "Hades II",
     genre: "ROGUELIKE · AÇÃO",
+    kicker: "SÓ MAIS UMA TENTATIVA.",
     price: 73.99,
     originalPrice: 109.99,
     historicalLow: 73.99,
@@ -60,8 +68,10 @@ export const games: Game[] = [
   },
   {
     id: "hollow-knight",
+    slug: "hollow-knight",
     title: "Hollow Knight",
     genre: "METROIDVANIA · INDIE",
+    kicker: "PEQUENO ESTÚDIO. UNIVERSO GIGANTE.",
     price: 23.49,
     originalPrice: 46.99,
     historicalLow: 23.49,
@@ -73,8 +83,10 @@ export const games: Game[] = [
   },
   {
     id: "starfield",
+    slug: "starfield",
     title: "Starfield",
     genre: "RPG · EXPLORAÇÃO",
+    kicker: "MENOS PRESSA. MAIS HORIZONTE.",
     price: 209.94,
     originalPrice: 349.9,
     historicalLow: 139.96,

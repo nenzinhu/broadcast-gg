@@ -1,32 +1,46 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, SlidersHorizontal } from "lucide-react";
-import { games, signals, type Signal } from "@/lib/catalog";
+import { ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
+import { signals, type Signal } from "@/lib/catalog";
+import { filterSignals, gameOfSignal } from "@/lib/catalog-query";
 import { SectionHeading } from "./section-heading";
 import { TrackButton } from "./track-button";
+
 const filters = [
   { value: "all", label: "Todos os sinais" },
   { value: "price", label: "Preço" },
   { value: "update", label: "Updates" },
   { value: "trend", label: "Tendências" },
 ] as const;
-export function LiveSignals() {
+
+export function LiveSignals({ withSearch = false }: { withSearch?: boolean }) {
   const [filter, setFilter] = useState<"all" | Signal["type"]>("all");
-  const visible = signals.filter(
-    (signal) => filter === "all" || signal.type === filter,
-  );
+  const [query, setQuery] = useState("");
+  const visible = filterSignals(signals, { type: filter, query });
+  const filtered = filter !== "all" || query.trim() !== "";
   return (
     <section className="section" id="signals">
-      <SectionHeading
-        number="01"
-        eyebrow="FIQUE UM PASSO À FRENTE"
-        title="O jogo muda. A gente sinaliza."
-      >
-        <span className="live-label">
-          <span className="status-dot" /> LIVE SIGNALS
-        </span>
-      </SectionHeading>
+      {withSearch ? (
+        <h2 className="sr-only">Feed completo de sinais</h2>
+      ) : (
+        <SectionHeading
+          number="01"
+          eyebrow="FIQUE UM PASSO À FRENTE"
+          title="O jogo muda. A gente sinaliza."
+        >
+          <div className="heading-aside">
+            <span className="live-label">
+              <span className="status-dot" /> LIVE SIGNALS
+            </span>
+            <Link className="text-link" href="/signals">
+              Ver todos os sinais{" "}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </Link>
+          </div>
+        </SectionHeading>
+      )}
       <div className="signals-toolbar">
         <div className="filter-group" aria-label="Filtrar sinais">
           {filters.map((item) => (
@@ -40,13 +54,29 @@ export function LiveSignals() {
             </button>
           ))}
         </div>
-        <span className="toolbar-note">
-          <SlidersHorizontal size={13} aria-hidden="true" /> SÓ O QUE IMPORTA
-        </span>
+        <div className="toolbar-right">
+          {withSearch ? (
+            <label className="search-field">
+              <Search size={14} aria-hidden="true" />
+              <span className="sr-only">Buscar sinal por jogo</span>
+              <input
+                type="search"
+                value={query}
+                placeholder="Buscar por jogo"
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </label>
+          ) : (
+            <span className="toolbar-note">
+              <SlidersHorizontal size={13} aria-hidden="true" /> SÓ O QUE
+              IMPORTA
+            </span>
+          )}
+        </div>
       </div>
       <div className="signal-grid" aria-live="polite" data-reveal>
         {visible.map((signal) => {
-          const game = games.find((g) => g.id === signal.gameId)!;
+          const game = gameOfSignal(signal)!;
           return (
             <article key={signal.id} className="signal-card interactive-card">
               <div className="signal-art">
@@ -69,17 +99,30 @@ export function LiveSignals() {
                 </div>
                 <h3>{signal.title}</h3>
                 <p>{signal.description}</p>
-                <a href={signal.type === "price" ? "#deals" : "#discover"}>
-                  Explorar {signal.type === "price" ? "preços" : "jogos"}
+                <Link
+                  href={
+                    signal.type === "price"
+                      ? "/deals"
+                      : `/games/${game.slug}`
+                  }
+                >
+                  {signal.type === "price"
+                    ? "Explorar preços"
+                    : `Conhecer ${game.title}`}
                   <ArrowUpRight size={17} aria-hidden="true" />
-                </a>
+                </Link>
               </div>
             </article>
           );
         })}
         {visible.length === 0 && (
           <p className="empty-state">
-            Nenhum sinal nesta categoria. Explore os outros filtros.
+            {filtered
+              ? "Nenhum sinal corresponde a este filtro. Ajuste a busca ou explore os outros tipos."
+              : "Nenhum sinal nesta categoria. Explore os outros filtros."}{" "}
+            <Link className="text-link" href="/deals">
+              Ver o catálogo de jogos <ArrowUpRight size={14} aria-hidden="true" />
+            </Link>
           </p>
         )}
       </div>

@@ -1,6 +1,8 @@
+import Link from "next/link";
 import Image from "next/image";
 import { discount, formatPrice, type Game } from "@/lib/catalog";
 import { TrackButton } from "./track-button";
+
 export function GameCard({ game }: { game: Game }) {
   return (
     <article className="deal-card interactive-card" data-reveal>
@@ -16,7 +18,9 @@ export function GameCard({ game }: { game: Game }) {
       </div>
       <div className="deal-content">
         <span className="eyebrow">{game.genre}</span>
-        <h3>{game.title}</h3>
+        <h3>
+          <Link href={`/games/${game.slug}`}>{game.title}</Link>
+        </h3>
         <div className="price-line">
           <div>
             <del>{formatPrice(game.originalPrice)}</del>

@@ -10,36 +10,49 @@ export function MotionScope({ children }: { children: ReactNode }) {
     () => {
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from("[data-hero-line]", {
-          y: 35,
-          opacity: 0,
-          duration: 0.85,
-          stagger: 0.12,
-          ease: "power3.out",
-        });
-        gsap.to(".radar-sweep", {
-          rotation: 360,
-          duration: 16,
-          repeat: -1,
-          ease: "none",
-          transformOrigin: "50% 50%",
-        });
-        gsap.to(".scanner", {
-          top: "85%",
-          duration: 5,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          opacity: 0.3,
-        });
-        gsap.to(".radar-blip", {
-          opacity: 0.35,
-          duration: 1.8,
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.5,
-          ease: "sine.inOut",
-        });
+        const scope = root.current ?? undefined;
+        // Hero-only effects: subpages do not render these elements.
+        const heroLines = gsap.utils.toArray<HTMLElement>(
+          "[data-hero-line]",
+          scope,
+        );
+        if (heroLines.length)
+          gsap.from(heroLines, {
+            y: 35,
+            opacity: 0,
+            duration: 0.85,
+            stagger: 0.12,
+            ease: "power3.out",
+          });
+        const sweep = scope?.querySelector(".radar-sweep");
+        if (sweep)
+          gsap.to(sweep, {
+            rotation: 360,
+            duration: 16,
+            repeat: -1,
+            ease: "none",
+            transformOrigin: "50% 50%",
+          });
+        const scanner = scope?.querySelector(".scanner");
+        if (scanner)
+          gsap.to(scanner, {
+            top: "85%",
+            duration: 5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            opacity: 0.3,
+          });
+        const blips = gsap.utils.toArray<HTMLElement>(".radar-blip", scope);
+        if (blips.length)
+          gsap.to(blips, {
+            opacity: 0.35,
+            duration: 1.8,
+            repeat: -1,
+            yoyo: true,
+            stagger: 0.5,
+            ease: "sine.inOut",
+          });
         gsap.utils
           .toArray<HTMLElement>("[data-reveal]", root.current)
           .forEach((element) => {
@@ -59,6 +72,8 @@ export function MotionScope({ children }: { children: ReactNode }) {
           frame = requestAnimationFrame(() => ScrollTrigger.refresh());
         });
         if (root.current) observer.observe(root.current);
+        // Each route mounts its own MotionScope, so triggers created for a
+        // previous route are killed with this context when navigating away.
         return () => {
           observer.disconnect();
           cancelAnimationFrame(frame);

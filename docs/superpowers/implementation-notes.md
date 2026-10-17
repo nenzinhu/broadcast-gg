@@ -26,3 +26,28 @@ Implementação da proposta aprovada, no checkout isolado existente.
 Dados de exemplo, sem preços reais, lojas, APIs, contas ou alertas. Páginas dedicadas permanecem fora desta primeira entrega aprovada.
 
 Lacuna menor registrada pela revisão: o estado vazio dos filtros está implementado, mas o catálogo atual possui sinais em todas as categorias, portanto esse ramo não foi exercitado nos testes de navegador. O estado vazio do radar pessoal foi exercitado.
+
+# BROADCAST.GG — navegação completa e experiência premium
+
+Segunda entrega, conforme `docs/superpowers/specs/2026-10-17-broadcast-premium-design.md`.
+
+## Verificações executadas
+
+- `npm run lint`: aprovado.
+- `npm test`: 32 testes aprovados (decisão, radar-storage e os novos helpers de busca/ordenação/gênero/sinais).
+- `npm run build`: aprovado; `/`, `/signals`, `/deals`, `/discover` e `/radar` pré-renderizadas e cinco páginas `/games/[slug]` em SSG.
+- `npm run test:e2e`: 13 cenários aprovados no Chromium (os 6 da homepage inalterados e 7 novos cobrindo rotas, busca/ordenação, favoritos entre páginas, 404, teclado/mobile e movimento reduzido).
+- `npm run start`: todas as rotas responderam 200; slug desconhecido respondeu 404; sonda com o Host do preview respondeu 200.
+- Capturas desktop (1440 px) e mobile (375 px) de todas as rotas inspecionadas: sem overflow horizontal, sem erros de console nem requisições falhas.
+
+## Decisões desta etapa
+
+- Shell (RadarProvider, header, footer) movido para o layout compartilhado; MotionScope permanece por rota para limpar gatilhos de animação ao navegar.
+- Header virou cliente com estado ativo via `usePathname`; menu mobile com `aria-expanded`/`aria-controls` e foco movido para o primeiro link ao abrir, fechando sozinho na troca de rota.
+- Catálogo ganhou `slug` e `kicker` editorial; helpers puros de busca, ordenação, gênero e sinais em `catalog-query.ts`, com busca sem acentos e espaços colapsados.
+- Estado vazio real exercitado: busca sem correspondência em `/signals` e `/deals` (lacuna registrada na entrega anterior).
+- Neste container sem sudo, o Chromium exigiu bibliotecas de sistema extraídas manualmente para `~/.local/ublibs` (`apt-get download` + `dpkg-deb -x`) com `LD_LIBRARY_PATH` e `FONTCONFIG_FILE` locais; o procedimento está registrado no README.
+
+## Limites
+
+Dados permanecem demonstrativos; sem autenticação, alertas ou backend. A revisão visual usou capturas via Playwright, sem interação humana em navegador real.

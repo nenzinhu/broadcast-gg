@@ -1,16 +1,24 @@
+import Link from "next/link";
 import { AudioLines, ArrowUpRight } from "lucide-react";
+
 export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="footer-top">
-        <a className="brand" href="#inicio">
+        <Link className="brand" href="/">
           <AudioLines aria-hidden="true" />
           <span>
             BROADCAST<span className="lime">.GG</span>
           </span>
-        </a>
+        </Link>
+        <nav className="footer-nav" aria-label="Navegação do rodapé">
+          <Link href="/signals">Signals</Link>
+          <Link href="/deals">Deals</Link>
+          <Link href="/discover">Discover</Link>
+          <Link href="/radar">Meu radar</Link>
+        </nav>
         <p>Menos ruído. Mais jogo.</p>
-        <a href="#inicio">
+        <a href="#top">
           Voltar ao topo <ArrowUpRight size={15} aria-hidden="true" />
         </a>
       </div>

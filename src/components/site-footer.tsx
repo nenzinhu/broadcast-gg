@@ -31,8 +31,8 @@ export function SiteFooter() {
       </div>
       <p className="disclaimer">
         Protótipo demonstrativo. Preços, horários, sinais e recomendações são
-        exemplos, sem atualização em tempo real. Artes conceituais originais;
-        não são imagens oficiais dos jogos.
+        exemplos, sem atualização em tempo real. As artes são promocionais dos
+        respectivos jogos, usadas apenas nesta demonstração.
       </p>
     </footer>
   );

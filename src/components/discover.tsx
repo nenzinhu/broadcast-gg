@@ -30,7 +30,7 @@ export function Discover() {
             <div className="discover-image">
               <Image
                 src={game.image}
-                alt={`Arte conceitual para ${game.title}`}
+                alt={`Arte promocional de ${game.title}`}
                 width={900}
                 height={560}
               />

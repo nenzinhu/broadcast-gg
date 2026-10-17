@@ -47,7 +47,7 @@ export default async function GamePage({ params }: Props) {
         <div className="game-detail-art">
           <Image
             src={game.image}
-            alt={`Arte conceitual para ${game.title}`}
+            alt={`Arte promocional de ${game.title}`}
             width={900}
             height={560}
             priority

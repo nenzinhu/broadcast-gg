@@ -51,3 +51,28 @@ Segunda entrega, conforme `docs/superpowers/specs/2026-10-17-broadcast-premium-d
 ## Limites
 
 Dados permanecem demonstrativos; sem autenticação, alertas ou backend. A revisão visual usou capturas via Playwright, sem interação humana em navegador real.
+
+# BROADCAST.GG — artes reais dos jogos e correções de ambiente
+
+Terceira entrega, a pedido: substituir as artes conceituais por imagens reais dos jogos.
+
+## O que mudou
+
+- Os cinco SVGs conceptuais de `public/art` foram substituídos por arte promocional oficial de cada jogo (1438×810), baixada dos assets públicos da página Steam de cada título para dentro do repositório — sem dependência de rede em runtime. Três arquivos vieram como PNG real e receberam a extensão correta.
+- `catalog.ts` aponta para os novos arquivos; alt texts passaram de "arte conceitual" para "arte promocional"; rodapé e README deixaram de afirmar que as artes não são oficiais.
+- Adicionado `src/app/icon.svg` com a marca (mata o 404 de `/favicon.ico` que aparecia no navegador).
+- Adicionado `next.config.ts` com `allowedDevOrigins` lido de `NEXT_ALLOWED_DEV_ORIGINS` (lista separada por vírgula): sem isso, o Next 16 bloqueia o WebSocket de HMR de qualquer origem que não seja `localhost`, o que quebrava o hot reload no painel de preview. O valor por máquina fica fora do repositório.
+
+## Verificações executadas
+
+- `npm run lint`: aprovado. `npm test`: 32/32. `npm run build`: aprovado.
+- `npm run test:e2e`: 13/13 no build de produção.
+- Dev server reiniciado com `NEXT_ALLOWED_DEV_ORIGINS` incluindo o host do preview: zero erros de console nas rotas `/`, `/deals`, `/games/elden-ring` e `/discover`, zero blocos de HMR no log, `/icon.svg` 200.
+- Todas as `<img>` das rotas carregam com dimensões naturais 1080×608 (otimizador Next `/_next/image` responde 200 para todas, inclusive `w=1920`).
+- Capturas inspecionadas: `/deals` exibe as artes reais nos cards.
+
+## Notas de ambiente (container sem sudo)
+
+- O Chromium do Playwright não sobreviveu ao restore: reinstalado com `npx playwright install chromium`.
+- Faltavam bibliotecas (`libcups`, `libcairo`, `libpango`, `libharfbuzz`, `libavahi`, `libthai`, `libxcb-render`, `libpixman`, `libdatrie`, `libgraphite2`): baixadas com `apt-get download` (lists do apt em `~/.cache/apt`, sem root) e extraídas em `~/.local/ublibs` com `dpkg-deb -x`.
+- O Chromium abortava com `SkFontMgr_FontConfigInterface Not implemented` porque não havia fontes em `/usr/share/fonts`: criado `~/.local/ublibs/fonts-home.conf` apontando para as fontes extraídas e usando `FONTCONFIG_FILE`.

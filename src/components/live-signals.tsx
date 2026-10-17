@@ -82,7 +82,7 @@ export function LiveSignals({ withSearch = false }: { withSearch?: boolean }) {
               <div className="signal-art">
                 <Image
                   src={game.image}
-                  alt={`Arte conceitual para ${game.title}`}
+                  alt={`Arte promocional de ${game.title}`}
                   width={900}
                   height={560}
                 />

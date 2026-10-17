@@ -40,12 +40,12 @@ Em containers sem sudo, se o Chromium acusar bibliotecas de sistema ausentes, ex
 - `src/app`: documento, shell compartilhado, páginas por rota e estilos responsivos.
 - `src/components`: seções, exploração por rota, interações, animações e elementos compartilhados.
 - `src/lib`: catálogo tipado, helpers puros de busca/ordenação/filtros, regras de recomendação e persistência segura.
-- `public/art`: artes vetoriais conceituais originais, sem dependências externas.
+- `public/art`: artes promocionais oficiais dos cinco jogos, baixadas localmente na instalação do catálogo; nenhuma imagem é buscada em tempo de execução.
 - `tests`: regras de domínio, helpers de catálogo e cenários no navegador.
 
 ## Limites desta entrega
 
-Preços, avaliações, horários e sinais são **demonstrativos**; não há integrações com lojas ou atualização em tempo real. As artes não são materiais oficiais dos jogos. BUY/WAIT/SKIP são resultados de regras transparentes sobre dados de exemplo: avaliação abaixo de 70 → SKIP; demais jogos no menor preço histórico do cenário ou abaixo → BUY; demais → WAIT.
+Preços, avaliações, horários e sinais são **demonstrativos**; não há integrações com lojas ou atualização em tempo real. As artes são os materiais promocionais oficiais dos respectivos jogos, usados apenas nesta demonstração; preços e descontos continuam fictícios. BUY/WAIT/SKIP são resultados de regras transparentes sobre dados de exemplo: avaliação abaixo de 70 → SKIP; demais jogos no menor preço histórico do cenário ou abaixo → BUY; demais → WAIT.
 
 Favoritos usam `localStorage` apenas neste navegador e são compartilhados entre rotas; se o armazenamento for bloqueado, continuam funcionando na sessão. Não há autenticação, notificações ou sincronização com servidor.
 

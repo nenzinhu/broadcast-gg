@@ -33,7 +33,7 @@ export const games: Game[] = [
     score: 86,
     description:
       "Night City ainda tem histórias para contar. Um RPG de mundo aberto sobre poder, identidade e o preço de se tornar uma lenda.",
-    image: "/art/cyberpunk.svg",
+    image: "/art/cyberpunk.png",
     color: "#b9aa35",
   },
   {
@@ -48,7 +48,7 @@ export const games: Game[] = [
     score: 96,
     description:
       "Um mundo que recompensa sua curiosidade. Explore as Terras Intermédias, encontre seu caminho e enfrente o desconhecido.",
-    image: "/art/elden-ring.svg",
+    image: "/art/elden-ring.png",
     color: "#6b8159",
   },
   {
@@ -63,7 +63,7 @@ export const games: Game[] = [
     score: 94,
     description:
       "Mais uma noite. Mais uma tentativa. Feitiçaria, deuses e combates precisos em uma jornada pelas profundezas do submundo.",
-    image: "/art/hades.svg",
+    image: "/art/hades.jpg",
     color: "#7476a2",
   },
   {
@@ -78,7 +78,7 @@ export const games: Game[] = [
     score: 90,
     description:
       "Desça a um reino esquecido. Um universo desenhado à mão, cheio de segredos, personagens singulares e desafios memoráveis.",
-    image: "/art/hollow-knight.svg",
+    image: "/art/hollow-knight.png",
     color: "#6798a8",
   },
   {
@@ -93,7 +93,7 @@ export const games: Game[] = [
     score: 69,
     description:
       "Uma viagem entre as estrelas. Neste cenário demonstrativo, a combinação de preço e avaliação recomenda priorizar outros jogos.",
-    image: "/art/starfield.svg",
+    image: "/art/starfield.jpg",
     color: "#8d7966",
   },
 ];

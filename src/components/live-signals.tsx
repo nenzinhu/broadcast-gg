@@ -42,7 +42,7 @@ export function LiveSignals({ withSearch = false }: { withSearch?: boolean }) {
         </SectionHeading>
       )}
       <div className="signals-toolbar">
-        <div className="filter-group" aria-label="Filtrar sinais">
+        <div className="filter-group" role="group" aria-label="Filtrar sinais">
           {filters.map((item) => (
             <button
               key={item.value}

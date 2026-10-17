@@ -123,6 +123,11 @@ test("mobile menu opens with the keyboard and routes without overflow", async ({
   await page.keyboard.press("Enter");
   const firstLink = page.locator("#primary-nav a").first();
   await expect(firstLink).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(toggle).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(firstLink).toBeFocused();
   await page.getByRole("navigation", { name: "Navegação principal" })
     .getByRole("link", { name: "Signals" })
     .click();

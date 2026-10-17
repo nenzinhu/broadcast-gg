@@ -15,6 +15,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
   const navRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   // Close the menu when the route changes (render-time adjustment).
   if (lastPath !== pathname) {
@@ -27,11 +28,18 @@ export function SiteHeader() {
     if (open) navRef.current?.querySelector("a")?.focus();
   }, [open]);
 
+  // Escape closes the mobile menu and returns focus to its toggle.
+  function handleKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    if (!open || event.key !== "Escape") return;
+    setOpen(false);
+    toggleRef.current?.focus();
+  }
+
   const isCurrent = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="site-header">
+    <header className="site-header" onKeyDown={handleKeyDown}>
       <Link className="brand" href="/" aria-label="BROADCAST.GG início">
         <AudioLines aria-hidden="true" />
         <span>
@@ -65,6 +73,7 @@ export function SiteHeader() {
           <ArrowUpRight size={15} aria-hidden="true" />
         </Link>
         <button
+          ref={toggleRef}
           type="button"
           className="nav-toggle"
           aria-expanded={open}

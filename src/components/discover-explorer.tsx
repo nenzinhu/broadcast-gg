@@ -14,7 +14,11 @@ export function DiscoverExplorer() {
   return (
     <div className="explorer">
       <div className="signals-toolbar">
-        <div className="filter-group" aria-label="Filtrar por gênero">
+        <div
+          className="filter-group"
+          role="group"
+          aria-label="Filtrar por gênero"
+        >
           {options.map((option) => (
             <button
               key={option.value}

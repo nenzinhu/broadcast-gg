@@ -49,7 +49,8 @@ export function DealsExplorer() {
         </label>
       </div>
       <p className="result-count" role="status">
-        {String(results.length).padStart(2, "0")} JOGOS ENCONTRADOS ·
+        {String(results.length).padStart(2, "0")}{" "}
+        {results.length === 1 ? "JOGO ENCONTRADO" : "JOGOS ENCONTRADOS"} ·
         DEMONSTRAÇÃO
       </p>
       {results.length ? (

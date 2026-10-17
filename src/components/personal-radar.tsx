@@ -18,7 +18,8 @@ export function PersonalRadar() {
       >
         <div className="heading-aside">
           <span className="radar-count">
-            {String(tracked.length).padStart(2, "0")} JOGOS EM TRACKING
+            {String(tracked.length).padStart(2, "0")}{" "}
+            {tracked.length === 1 ? "JOGO EM TRACKING" : "JOGOS EM TRACKING"}
           </span>
           <Link className="text-link" href="/radar">
             Abrir meu radar <ArrowUpRight size={15} aria-hidden="true" />

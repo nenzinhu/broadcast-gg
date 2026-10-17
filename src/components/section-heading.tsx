@@ -16,7 +16,7 @@ export function SectionHeading({
           <span className="section-number">{number}</span>
           {eyebrow}
         </div>
-        <h2>{title}</h2>
+        <h2 data-3d-text>{title}</h2>
       </div>
       {children}
     </div>

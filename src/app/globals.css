@@ -123,8 +123,9 @@ img {
 }
 .brand-logo {
   display: block;
-  max-height: 72px;
+  max-height: 110px;
   width: auto;
+  filter: drop-shadow(0 0 12px rgba(0,255,154,0.35));
 }
 .site-header nav {
   display: flex;

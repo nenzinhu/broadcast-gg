@@ -2,8 +2,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowUpRight, Menu, ScanLine, X } from "lucide-react";
+import { gsap } from "gsap";
 const links = [
   ["/signals", "Sinais"],
   ["/deals", "Ofertas"],
@@ -17,7 +18,21 @@ export function SiteHeader() {
 function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
   const close = () => setOpen(false);
+
+  useEffect(() => {
+    if (!logoRef.current) return;
+    gsap.to(logoRef.current, {
+      rotation: 6,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.2,
+      ease: "sine.inOut",
+      transformOrigin: "center center",
+    });
+  }, []);
+
   return (
     <header
       id="top"
@@ -36,6 +51,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
         onClick={close}
       >
         <Image
+          ref={logoRef}
           src="/logo.png"
           alt="broadcastganes.com.br"
           className="brand-logo"

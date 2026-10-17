@@ -8,7 +8,7 @@ import { EmptyState } from "./empty-state";
 export const signalFilters = [
   { value: "all", label: "Todos os sinais" },
   { value: "price", label: "Preço" },
-  { value: "update", label: "Updates" },
+  { value: "update", label: "Atualizações" },
   { value: "trend", label: "Tendências" },
 ] as const;
 export function SignalBrowser() {

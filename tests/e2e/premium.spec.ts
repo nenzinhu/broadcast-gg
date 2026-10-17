@@ -66,7 +66,7 @@ test("normal motion survives repeated route and filter changes", async ({
 }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Updates", exact: true }).click();
+  await page.getByRole("button", { name: "Atualizações", exact: true }).click();
   await page.locator("#deals").scrollIntoViewIfNeeded();
   await expect(page.locator("#deals .section-heading")).toHaveCSS(
     "opacity",

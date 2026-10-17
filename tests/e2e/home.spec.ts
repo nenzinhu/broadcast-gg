@@ -9,7 +9,7 @@ test("homepage, filters, decisions, favorites and accessible details", async ({
     "O QUE MUDOU.O QUE IMPORTA.O QUE JOGAR.",
   );
   await expect(page.locator(".signal-card")).toHaveCount(3);
-  await page.getByRole("button", { name: "Updates", exact: true }).click();
+  await page.getByRole("button", { name: "Atualizações", exact: true }).click();
   await expect(page.locator(".signal-card")).toHaveCount(1);
   await expect(page.locator(".signal-type")).toHaveText("UPDATE SIGNAL");
   await page.getByRole("button", { name: "Todos os sinais" }).click();
@@ -116,7 +116,7 @@ test("normal-motion mobile reveals follow filter layout changes", async ({
   await page.setViewportSize({ width: 375, height: 812 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
-  await page.getByRole("button", { name: "Updates", exact: true }).click();
+  await page.getByRole("button", { name: "Atualizações", exact: true }).click();
   await page.locator("#deals").scrollIntoViewIfNeeded();
   await expect(page.locator("#deals .section-heading")).toHaveCSS(
     "opacity",

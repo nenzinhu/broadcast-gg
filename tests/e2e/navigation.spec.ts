@@ -54,7 +54,7 @@ test("mobile keyboard enters menu links immediately after toggle", async ({
   await expect(
     page
       .getByRole("navigation")
-      .getByRole("link", { name: "Signals", exact: true }),
+      .getByRole("link", { name: "Sinais", exact: true }),
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/signals$/);

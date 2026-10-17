@@ -4,9 +4,9 @@ import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { ArrowUpRight, AudioLines, Menu, ScanLine, X } from "lucide-react";
 const links = [
-  ["/signals", "Signals"],
-  ["/deals", "Deals"],
-  ["/discover", "Discover"],
+  ["/signals", "Sinais"],
+  ["/deals", "Ofertas"],
+  ["/discover", "Descobrir"],
   ["/radar", "Radar"],
 ];
 export function SiteHeader() {

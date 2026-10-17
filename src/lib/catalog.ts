@@ -151,8 +151,8 @@ export const games: Game[] = [
     score: 93,
     description:
       "Leon S. Kennedy retorna em uma missão de resgate que se torna um pesadelo de criaturas e cultos sombrios.",
-    image: "/art/re4.svg",
-    heroImage: "/art/re4.svg",
+    image: "/art/re4.jpg",
+    heroImage: "/art/re4.jpg",
     fallbackImage: "/art/re4.svg",
     steamAppId: 1983930,
     youtubeId: "q3H-3__lWqQ",
@@ -227,8 +227,8 @@ export const games: Game[] = [
     score: 90,
     description:
       "May e Cody foram transformados em bonecos. Só trabalhando juntos eles conseguem voltar para casa.",
-    image: "/art/it-takes-two.svg",
-    heroImage: "/art/it-takes-two.svg",
+    image: "/art/it-takes-two.jpg",
+    heroImage: "/art/it-takes-two.jpg",
     fallbackImage: "/art/it-takes-two.svg",
     steamAppId: 1490570,
     youtubeId: "o4yYZ5RtJSE",

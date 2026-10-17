@@ -8,7 +8,7 @@ import "./color-system.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RadarProvider } from "@/components/radar-provider";
-import { RouteMotion } from "@/components/route-motion";
+import { RouteTransition } from "@/components/route-motion";
 export const metadata: Metadata = {
   title: {
     default: "broadcastganes.com.br — Seu próximo jogo começa com um sinal.",
@@ -30,7 +30,7 @@ export default function RootLayout({
             </a>
             <SiteHeader />
             <main id="main">
-              <RouteMotion>{children}</RouteMotion>
+              <RouteTransition>{children}</RouteTransition>
             </main>
             <SiteFooter />
           </div>

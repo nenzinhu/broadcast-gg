@@ -63,9 +63,7 @@ test("gameplay gallery recovers from error and opens an accessible lightbox with
 test("unavailable official artwork has an identified local fallback", async ({
   page,
 }) => {
-  await page.route("https://shared.fastly.steamstatic.com/**", (route) =>
-    route.abort(),
-  );
+  await page.route("**/art/*.{png,jpg}", (route) => route.abort());
   await page.goto("/deals");
   await expect(
     page

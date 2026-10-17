@@ -37,10 +37,8 @@ export const games: Game[] = [
     score: 86,
     description:
       "Night City ainda tem histórias para contar. Um RPG de mundo aberto sobre poder, identidade e o preço de se tornar uma lenda.",
-    image:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg",
-    heroImage:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_hero.jpg",
+    image: "/art/cyberpunk.png",
+    heroImage: "/art/cyberpunk.png",
     fallbackImage: "/art/cyberpunk.svg",
     steamAppId: 1091500,
     youtubeId: "qIcTM8WXFjk",
@@ -58,10 +56,8 @@ export const games: Game[] = [
     score: 96,
     description:
       "Um mundo que recompensa sua curiosidade. Explore as Terras Intermédias, encontre seu caminho e enfrente o desconhecido.",
-    image:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg",
-    heroImage:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_hero.jpg",
+    image: "/art/elden-ring.png",
+    heroImage: "/art/elden-ring.png",
     fallbackImage: "/art/elden-ring.svg",
     steamAppId: 1245620,
     youtubeId: "E3Huy2cdih0",
@@ -79,10 +75,8 @@ export const games: Game[] = [
     score: 94,
     description:
       "Mais uma noite. Mais uma tentativa. Feitiçaria, deuses e combates precisos em uma jornada pelas profundezas do submundo.",
-    image:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/header.jpg",
-    heroImage:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/library_hero.jpg",
+    image: "/art/hades.jpg",
+    heroImage: "/art/hades.jpg",
     fallbackImage: "/art/hades.svg",
     steamAppId: 1145350,
     youtubeId: "l-iHDj3EwdI",
@@ -100,10 +94,8 @@ export const games: Game[] = [
     score: 90,
     description:
       "Desça a um reino esquecido. Um universo desenhado à mão, cheio de segredos, personagens singulares e desafios memoráveis.",
-    image:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
-    heroImage:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_hero.jpg",
+    image: "/art/hollow-knight.png",
+    heroImage: "/art/hollow-knight.png",
     fallbackImage: "/art/hollow-knight.svg",
     steamAppId: 367520,
     youtubeId: "UAO2urG23S4",
@@ -121,10 +113,8 @@ export const games: Game[] = [
     score: 69,
     description:
       "Uma viagem entre as estrelas. Neste cenário demonstrativo, a combinação de preço e avaliação recomenda priorizar outros jogos.",
-    image:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg",
-    heroImage:
-      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/library_hero.jpg",
+    image: "/art/starfield.jpg",
+    heroImage: "/art/starfield.jpg",
     fallbackImage: "/art/starfield.svg",
     steamAppId: 1716740,
     youtubeId: "uMOPoAq5vIA",

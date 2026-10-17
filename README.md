@@ -33,7 +33,7 @@ npm run start
 - `/radar`: favoritos compartilhados entre páginas e persistidos no navegador.
 - `/games/[slug]`: páginas individuais, análise demonstrativa e acompanhamento. Slug desconhecido retorna 404.
 
-Fontes Manrope e Barlow Condensed são servidas localmente. Capas e destaques usam imagens da Steam. Artes vetoriais locais são alternativas identificadas em caso de falha e podem ser reproduzidas com `python scripts/generate-art.py`.
+Fontes Manrope e Barlow Condensed são servidas localmente. Capas e destaques usam imagens oficiais da Steam, armazenadas localmente no repositório. Artes vetoriais locais são alternativas identificadas em caso de falha e podem ser reproduzidas com `python scripts/generate-art.py`.
 
 ## Organização
 
@@ -49,7 +49,7 @@ Preços, avaliações, horários e sinais são **demonstrativos**; não há inte
 
 Favoritos usam `localStorage` apenas neste navegador; se o armazenamento for bloqueado, continuam funcionando na sessão. Não há autenticação, notificações ou sincronização com servidor. A homepage e as páginas dedicadas estão implementadas.
 
-As animações respeitam `prefers-reduced-motion`; diálogos suportam teclado, Escape e retorno de foco. Fontes e artes alternativas são locais. A mídia real depende dos serviços externos descritos abaixo.
+As animações respeitam `prefers-reduced-motion`; diálogos suportam teclado, Escape e retorno de foco. Fontes e artes alternativas são locais. Vídeos e capturas de gameplay dependem dos serviços externos descritos abaixo.
 
 
 ## Mídia real

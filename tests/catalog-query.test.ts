@@ -45,3 +45,13 @@ describe("catalog exploration", () => {
   it("excludes signals with missing games", () =>
     expect(querySignals(signals, [], { query: "", type: "all" })).toEqual([]));
 });
+
+it("preserves genre search and rating sort from the integrated catalog", () => {
+  expect(
+    queryGames(games, { ...base, query: "roguelike" }).map((game) => game.id),
+  ).toEqual(["hades"]);
+  const sorted = queryGames(games, { ...base, sort: "score-desc" });
+  expect(sorted.map((game) => game.score)).toEqual(
+    games.map((game) => game.score).sort((a, b) => b - a),
+  );
+});

@@ -35,6 +35,7 @@ export function CatalogBrowser({ mode }: { mode: "deals" | "discover" }) {
               <option value="featured">Destaques</option>
               <option value="price-asc">Menor preço</option>
               <option value="discount-desc">Maior desconto</option>
+              <option value="score-desc">Melhor avaliação</option>
             </select>
           ) : (
             <select

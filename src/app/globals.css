@@ -2589,6 +2589,123 @@ h1 > span {
     font-size: 57px;
   }
 }
+/* ===== Tabs animadas com GSAP ===== */
+.tabs {
+  position: relative;
+  isolation: isolate;
+}
+.tabs-list {
+  display: flex;
+  position: relative;
+  z-index: 10;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 1px;
+  padding-bottom: 10px;
+}
+.tabs-list::-webkit-scrollbar {
+  display: none;
+}
+.tab {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  padding: 14px 24px;
+  margin-right: 8px;
+  font: 700 12px var(--mono);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.tab:hover {
+  color: var(--text);
+  border-color: #4d6288;
+}
+.tab:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+  color: var(--text);
+}
+.tab.tab-active {
+  color: var(--text);
+  border-bottom-color: var(--lime);
+  background: #172039;
+}
+.tab-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(600px circle at 50% 0%, #a6ff0022, transparent);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  overflow: hidden;
+}
+.tab-active .tab-glow {
+  opacity: 1;
+}
+.tabs-ink {
+  position: absolute;
+  z-index: 1;
+  bottom: -4px;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--lime);
+  box-shadow: 0 0 24px #a6ff0055;
+  pointer-events: none;
+  will-change: transform, width;
+}
+.tabs-panels {
+  position: relative;
+  margin-top: 16px;
+}
+.tab-panel {
+  position: relative;
+  outline: none;
+}
+.tab-panel:focus {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+}
+.tab-content {
+  opacity: 1;
+}
+.tab-game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+.tab-game-wrap {
+  display: contents;
+}
+
+@media (max-width: 1200px) {
+  .tab-game-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+@media (max-width: 900px) {
+  .tab-game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .tab-game-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2602,5 +2719,11 @@ h1 > span {
   .interactive-card:hover,
   .primary:hover {
     transform: none;
+  }
+  .tab {
+    transition: none;
+  }
+  .tab-glow {
+    transition: none;
   }
 }

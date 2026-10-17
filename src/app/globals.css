@@ -2706,6 +2706,98 @@ h1 > span {
   }
 }
 
+/* ===== Arte dos jogos com reveal GSAP ===== */
+.game-art-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #0b120a;
+}
+.game-artwork {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.game-art-wrap .art-fallback-note {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: #0b120acc;
+  color: var(--muted);
+  font: 10px/1.3 var(--mono);
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 4px 6px;
+  border-radius: 3px;
+  border: 1px solid #304323;
+  z-index: 5;
+  backdrop-filter: blur(4px);
+}
+
+/* ===== Deal card dinâmico ===== */
+.deal-card {
+  position: relative;
+  overflow: hidden;
+}
+.deal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at 50% 0%,
+    color-mix(in srgb, var(--game-accent, #87cfff) 12%, transparent),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.deal-card:hover::before {
+  opacity: 1;
+}
+.deal-card:hover {
+  border-color: var(--game-accent, #87cfff);
+  box-shadow: 0 20px 50px
+    color-mix(in srgb, var(--game-accent, #87cfff) 25%, transparent);
+  transform: translateY(-6px);
+}
+.deal-art {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Overlay de vídeo (trailer) ===== */
+.video-trigger {
+  cursor: pointer;
+  z-index: 10;
+}
+.video-trigger [stroke] {
+  transition: stroke 0.3s ease;
+}
+.video-trigger:hover [stroke] {
+  stroke: var(--lime);
+}
+.z-video {
+  z-index: 20;
+}
+.aspect-video {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+}
+.aspect-video > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2725,5 +2817,9 @@ h1 > span {
   }
   .tab-glow {
     transition: none;
+  }
+  .deal-card:hover {
+    transform: none;
+    box-shadow: none;
   }
 }

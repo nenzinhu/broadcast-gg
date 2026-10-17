@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
     .split(",")
     .map((origin) => origin.trim())
     .filter(Boolean),
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.steamstatic.com",
+        pathname: "/steam/apps/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

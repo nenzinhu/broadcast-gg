@@ -127,29 +127,66 @@ img {
   width: auto;
   filter: drop-shadow(0 0 12px rgba(0,255,154,0.35));
 }
+/* ===== Navegação principal: fonte bonita + GSAP ===== */
 .site-header nav {
   display: flex;
   align-items: center;
-  gap: 34px;
+  gap: 0;
   font-size: 14px;
   color: #b7c0ae;
 }
-.site-header nav a {
+.nav-link {
+  display: flex;
+  align-items: center;
   padding: 18px 0;
   position: relative;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #b7c0ae;
+  transition: color 0.3s ease;
+  cursor: pointer;
 }
-.site-header nav a:hover,
-.site-header nav a[aria-current] {
-  color: var(--lime);
+.nav-link-label {
+  position: relative;
+  z-index: 2;
 }
-.site-header nav a[aria-current]:after {
-  content: "";
+.nav-link-underline {
   position: absolute;
   bottom: 6px;
   left: 0;
-  width: 100%;
+  width: 0;
   height: 2px;
   background: var(--lime);
+  border-radius: 1px;
+  box-shadow: 0 0 16px #a6ff0066;
+  pointer-events: none;
+  z-index: 1;
+  transition: width 0.4s ease, transform 0.4s ease;
+}
+.nav-link:hover {
+  color: var(--lime);
+}
+.nav-link:hover .nav-link-underline {
+  width: 100%;
+}
+.nav-link.nav-link-active {
+  color: var(--lime);
+}
+.nav-link.nav-link-active .nav-link-underline {
+  width: 100%;
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* Animação de entrada dos links no mobile */
+.nav-link {
+  opacity: 1;
 }
 .header-actions {
   display: flex;

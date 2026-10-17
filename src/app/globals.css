@@ -131,7 +131,7 @@ img {
 .site-header nav {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 34px;
   font-size: 14px;
   color: #b7c0ae;
 }

@@ -37,3 +37,6 @@ Testes das regras de busca/ordenação e recomendação; testes de navegador par
 
 ## Critério de conclusão
 Todas as rotas e controles acima funcionam; visual revisado em desktop/mobile; testes e build aprovados; commit confirmado no remoto. Não usar “100%” para alegar integrações ou publicação que não foram realizadas.
+
+## Ajuste solicitado pelo usuário durante a implementação
+Dar mais cor e identidade gamer à interface, usar imagens reais de jogos, trailers por links do YouTube e fotos de gameplay. Usar capas oficiais da Steam como mídia principal, com fallback conceitual identificado apenas quando a imagem não carregar. Galeria obtém capturas pela API oficial da Steam; nenhum screenshot é inventado. Trailers incorporados pelo YouTube com carregamento apenas após clique. GSAP amplia microinterações e transições, respeitando movimento reduzido. Manter testes e envio ao GitHub; conectividade externa bloqueada deve ser reportada sem afirmar reprodução ou download não verificados.

@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Link from "next/link";
+import { GameArtwork } from "./game-artwork";
 import { games } from "@/lib/catalog";
 import { SectionHeading } from "./section-heading";
 import { GameDialog } from "./game-dialog";
@@ -10,7 +11,9 @@ export function Discover() {
         eyebrow="FORA DO ÓBVIO. DENTRO DO RADAR."
         title="Seu próximo favorito está aqui."
       >
-        <span className="eyebrow muted">DISCOVER / CURADORIA</span>
+        <Link className="text-link" href="/discover">
+          Explorar a curadoria ↗
+        </Link>
       </SectionHeading>
       <div className="discover-grid">
         {[games[3], games[2]].map((game, index) => (
@@ -20,12 +23,7 @@ export function Discover() {
             data-reveal
           >
             <div className="discover-image">
-              <Image
-                src={game.image}
-                alt={`Arte conceitual para ${game.title}`}
-                width={900}
-                height={560}
-              />
+              <GameArtwork game={game} />
             </div>
             <div className="discover-content">
               <span className="eyebrow lime">
@@ -33,7 +31,9 @@ export function Discover() {
                   ? "PEQUENO ESTÚDIO. UNIVERSO GIGANTE."
                   : "SÓ MAIS UMA TENTATIVA."}
               </span>
-              <h3>{game.title}</h3>
+              <h3>
+                <Link href={`/games/${game.slug}`}>{game.title}</Link>
+              </h3>
               <p>{game.description}</p>
               <GameDialog game={game} />
             </div>

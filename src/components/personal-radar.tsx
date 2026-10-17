@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Crosshair, ArrowUpRight } from "lucide-react";
 import { games, formatPrice } from "@/lib/catalog";
 import { useRadar } from "./radar-provider";
@@ -37,7 +38,9 @@ export function PersonalRadar() {
               <div className="tracked-row" key={game.id}>
                 <Crosshair size={20} aria-hidden="true" />
                 <div>
-                  <h3>{game.title}</h3>
+                  <h3>
+                    <Link href={`/games/${game.slug}`}>{game.title}</Link>
+                  </h3>
                   <span>{game.genre}</span>
                 </div>
                 <strong>{formatPrice(game.price)}</strong>
@@ -57,10 +60,10 @@ export function PersonalRadar() {
                 complicação.
               </p>
             </div>
-            <a className="button ghost" href="#deals">
+            <Link className="button ghost" href="/deals">
               Encontrar meu próximo jogo{" "}
               <ArrowUpRight size={16} aria-hidden="true" />
-            </a>
+            </Link>
           </div>
         )}
       </div>

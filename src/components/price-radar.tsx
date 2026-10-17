@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowDownRight } from "lucide-react";
 import { games } from "@/lib/catalog";
 import { SectionHeading } from "./section-heading";
@@ -10,9 +11,9 @@ export function PriceRadar() {
         eyebrow="PRICE RADAR"
         title="Jogo bom. Preço melhor."
       >
-        <a className="text-link" href="#decision">
-          Comprar agora? <ArrowDownRight size={17} aria-hidden="true" />
-        </a>
+        <Link className="text-link" href="/deals">
+          Explorar preços <ArrowDownRight size={17} aria-hidden="true" />
+        </Link>
       </SectionHeading>
       <div className="deals-grid">
         {games.slice(0, 4).map((game) => (

@@ -1,0 +1,319 @@
+.game-artwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.art-fallback-note {
+  position: absolute;
+  bottom: 7px;
+  right: 7px;
+  z-index: 2;
+  max-width: calc(100% - 14px);
+  padding: 4px 6px;
+  background: #080d18e6;
+  color: #c2cbd9;
+  font: 11px/1.4 var(--mono);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.deal-art .art-fallback-note {
+  bottom: auto;
+  top: 58px;
+  left: 9px;
+  right: 9px;
+  text-align: center;
+}
+.game-cover > .art-fallback-note {
+  top: 12px;
+  bottom: auto;
+}
+.featured-game > .art-fallback-note {
+  top: 12px;
+  bottom: auto;
+}
+.discover-image {
+  position: relative;
+}
+.featured-trailer {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  min-height: 44px;
+  padding: 0 13px;
+  margin-left: 18px;
+  border: 1px solid #c6d2e150;
+  border-radius: 4px;
+  background: #ffffff0a;
+}
+.featured-trailer:hover {
+  background: #ffffff15;
+}
+.game-media-section {
+  padding-top: 75px;
+}
+.trailer-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: 1px solid #425375;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #080d18;
+}
+.trailer-frame > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.trailer-frame:has(.trailer-play):after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #06091315, #080b1360);
+  pointer-events: none;
+}
+.trailer-play {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  border: 0;
+  background: transparent;
+  color: white;
+  font: 600 18px var(--sans);
+  letter-spacing: 2px;
+}
+.play-disc {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 1px solid #ffffffa6;
+  background: #ffffff18;
+  backdrop-filter: blur(12px);
+  transition:
+    background 0.25s,
+    transform 0.25s;
+  box-shadow: 0 0 80px #7d64ff45;
+}
+.play-disc > svg {
+  margin-left: 5px;
+}
+.trailer-play:hover .play-disc {
+  background: #a6ff00;
+  color: #111;
+  transform: scale(1.08);
+}
+.trailer-play small {
+  display: block;
+  margin-top: 12px;
+  font: 11px/1.6 var(--mono);
+  letter-spacing: 1px;
+  color: #dce1f0;
+}
+.trailer-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.trailer-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: 1px solid #ffffff70;
+  border-radius: 50%;
+  background: #0b1120e8;
+  color: white;
+  z-index: 3;
+  min-width: 44px;
+  justify-content: center;
+}
+.media-source {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 16px;
+  font: 11px/1.8 var(--mono);
+  color: #aebbd0;
+}
+.media-source a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #d2bdff;
+  flex-shrink: 0;
+}
+.gameplay-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 42px 0 22px;
+  gap: 20px;
+}
+.gameplay-heading h3 {
+  font-size: 28px;
+  letter-spacing: -1px;
+  margin: 0;
+}
+.gameplay-heading > .eyebrow {
+  color: #82d8ff;
+}
+.gameplay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.gameplay-shot {
+  border: 1px solid #3a4b69;
+  background: #10182a;
+  padding: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  color: #dbe7ff;
+  text-align: left;
+  transition:
+    border-color 0.25s,
+    transform 0.25s;
+}
+.gameplay-shot:hover {
+  border-color: #84cfff;
+  transform: translateY(-4px);
+}
+.gameplay-shot > img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+.gameplay-shot > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  font: 11px var(--mono);
+}
+.gallery-status {
+  border: 1px dashed #405575;
+  background: #111b2c;
+  padding: 28px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #c0cce0;
+  line-height: 1.8;
+}
+.gallery-status > p {
+  margin: 0 0 18px;
+}
+.gallery-status > div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.gallery-status .button {
+  font-size: 13px;
+}
+.screenshot-dialog {
+  width: min(1200px, 95vw);
+  max-width: 95vw;
+  max-height: 90dvh;
+  padding: 48px 12px 12px;
+  background: #0c1320;
+  border: 1px solid #657da5;
+  border-radius: 6px;
+  color: white;
+  overflow: auto;
+}
+.screenshot-dialog::backdrop {
+  background: #030813dc;
+  backdrop-filter: blur(10px);
+}
+.screenshot-dialog > .icon-button {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+}
+.screenshot-dialog > img {
+  max-height: calc(90dvh - 70px);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+@media (max-width: 700px) {
+  .featured-trailer {
+    margin: 12px 0 0;
+    font-size: 13px;
+  }
+  .game-media-section {
+    padding-top: 50px;
+  }
+  .trailer-play {
+    gap: 12px;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .play-disc {
+    width: 60px;
+    height: 60px;
+  }
+  .play-disc > svg {
+    width: 23px;
+    height: 23px;
+  }
+  .trailer-play small {
+    margin-top: 7px;
+  }
+  .media-source {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gameplay-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .gameplay-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gallery-status {
+    padding: 22px;
+  }
+  .art-fallback-note {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .signal-art .art-fallback-note {
+    bottom: 8px;
+  }
+  .trailer-frame .art-fallback-note {
+    font-size: 11px;
+    bottom: 3px;
+  }
+  .trailer-close {
+    right: 5px;
+    top: 5px;
+  }
+  .gameplay-shot > span {
+    padding: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trailer-play:hover .play-disc,
+  .gameplay-shot:hover {
+    transform: none;
+  }
+}
+
+.trailer-play:focus-visible {
+  outline: 3px solid var(--lime, #a6ff00);
+  outline-offset: -8px;
+}

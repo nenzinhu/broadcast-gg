@@ -1,5 +1,7 @@
 export type Game = {
   id: string;
+  slug: string;
+  genres: string[];
   title: string;
   genre: string;
   price: number;
@@ -8,6 +10,10 @@ export type Game = {
   score: number;
   description: string;
   image: string;
+  heroImage: string;
+  fallbackImage: string;
+  steamAppId: number;
+  youtubeId: string;
   color: string;
 };
 export type Signal = {
@@ -21,6 +27,8 @@ export type Signal = {
 export const games: Game[] = [
   {
     id: "cyberpunk",
+    slug: "cyberpunk-2077",
+    genres: ["RPG", "Mundo aberto"],
     title: "Cyberpunk 2077",
     genre: "RPG · MUNDO ABERTO",
     price: 79.96,
@@ -29,11 +37,19 @@ export const games: Game[] = [
     score: 86,
     description:
       "Night City ainda tem histórias para contar. Um RPG de mundo aberto sobre poder, identidade e o preço de se tornar uma lenda.",
-    image: "/art/cyberpunk.svg",
-    color: "#b9aa35",
+    image:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg",
+    heroImage:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_hero.jpg",
+    fallbackImage: "/art/cyberpunk.svg",
+    steamAppId: 1091500,
+    youtubeId: "qIcTM8WXFjk",
+    color: "#ffd23f",
   },
   {
     id: "elden-ring",
+    slug: "elden-ring",
+    genres: ["Soulslike", "Aventura"],
     title: "Elden Ring",
     genre: "SOULSLIKE · AVENTURA",
     price: 149.94,
@@ -42,11 +58,19 @@ export const games: Game[] = [
     score: 96,
     description:
       "Um mundo que recompensa sua curiosidade. Explore as Terras Intermédias, encontre seu caminho e enfrente o desconhecido.",
-    image: "/art/elden-ring.svg",
-    color: "#6b8159",
+    image:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg",
+    heroImage:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_hero.jpg",
+    fallbackImage: "/art/elden-ring.svg",
+    steamAppId: 1245620,
+    youtubeId: "E3Huy2cdih0",
+    color: "#e0b96b",
   },
   {
     id: "hades",
+    slug: "hades-ii",
+    genres: ["Roguelike", "Ação"],
     title: "Hades II",
     genre: "ROGUELIKE · AÇÃO",
     price: 73.99,
@@ -55,11 +79,19 @@ export const games: Game[] = [
     score: 94,
     description:
       "Mais uma noite. Mais uma tentativa. Feitiçaria, deuses e combates precisos em uma jornada pelas profundezas do submundo.",
-    image: "/art/hades.svg",
-    color: "#7476a2",
+    image:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/header.jpg",
+    heroImage:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1145350/library_hero.jpg",
+    fallbackImage: "/art/hades.svg",
+    steamAppId: 1145350,
+    youtubeId: "l-iHDj3EwdI",
+    color: "#c69aff",
   },
   {
     id: "hollow-knight",
+    slug: "hollow-knight",
+    genres: ["Metroidvania", "Indie"],
     title: "Hollow Knight",
     genre: "METROIDVANIA · INDIE",
     price: 23.49,
@@ -68,11 +100,19 @@ export const games: Game[] = [
     score: 90,
     description:
       "Desça a um reino esquecido. Um universo desenhado à mão, cheio de segredos, personagens singulares e desafios memoráveis.",
-    image: "/art/hollow-knight.svg",
-    color: "#6798a8",
+    image:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
+    heroImage:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_hero.jpg",
+    fallbackImage: "/art/hollow-knight.svg",
+    steamAppId: 367520,
+    youtubeId: "UAO2urG23S4",
+    color: "#69c5ff",
   },
   {
     id: "starfield",
+    slug: "starfield",
+    genres: ["RPG", "Exploração"],
     title: "Starfield",
     genre: "RPG · EXPLORAÇÃO",
     price: 209.94,
@@ -81,8 +121,14 @@ export const games: Game[] = [
     score: 69,
     description:
       "Uma viagem entre as estrelas. Neste cenário demonstrativo, a combinação de preço e avaliação recomenda priorizar outros jogos.",
-    image: "/art/starfield.svg",
-    color: "#8d7966",
+    image:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg",
+    heroImage:
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/library_hero.jpg",
+    fallbackImage: "/art/starfield.svg",
+    steamAppId: 1716740,
+    youtubeId: "uMOPoAq5vIA",
+    color: "#ffab7c",
   },
 ];
 export const signals: Signal[] = [
@@ -120,3 +166,6 @@ export const formatPrice = (value: number) =>
   );
 export const discount = (game: Game) =>
   Math.round((1 - game.price / game.originalPrice) * 100);
+
+export const getGameBySlug = (slug: string): Game | undefined =>
+  games.find((game) => game.slug === slug);

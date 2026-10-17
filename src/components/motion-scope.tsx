@@ -9,7 +9,7 @@ export function MotionScope({ children }: { children: ReactNode }) {
   useGSAP(
     () => {
       const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
+      media.add("(prefers-reduced-motion: no-preference)", (context) => {
         gsap.from("[data-hero-line]", {
           y: 35,
           opacity: 0,
@@ -53,6 +53,35 @@ export function MotionScope({ children }: { children: ReactNode }) {
           });
         // Filters and saved games change page height without a window resize.
         // Keep downstream reveal positions aligned with the current layout.
+        const container = root.current;
+        const animateCard = (event: Event, active: boolean) => {
+          if (!(event.target instanceof Element)) return;
+          const card = event.target.closest<HTMLElement>(".interactive-card");
+          if (!card || !container?.contains(card)) return;
+          const related = (event as MouseEvent | FocusEvent).relatedTarget;
+          if (related instanceof Node && card.contains(related)) return;
+          if (
+            !active &&
+            (card.matches(":hover") || card.contains(document.activeElement))
+          )
+            return;
+          gsap.to(card, {
+            y: active ? -6 : 0,
+            duration: 0.3,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        };
+        const enter = context.add("cardEnter", (event: Event) =>
+          animateCard(event, true),
+        ) as EventListener;
+        const leave = context.add("cardLeave", (event: Event) =>
+          animateCard(event, false),
+        ) as EventListener;
+        container?.addEventListener("pointerover", enter);
+        container?.addEventListener("pointerout", leave);
+        container?.addEventListener("focusin", enter);
+        container?.addEventListener("focusout", leave);
         let frame = 0;
         const observer = new ResizeObserver(() => {
           cancelAnimationFrame(frame);
@@ -60,6 +89,10 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
         if (root.current) observer.observe(root.current);
         return () => {
+          container?.removeEventListener("pointerover", enter);
+          container?.removeEventListener("pointerout", leave);
+          container?.removeEventListener("focusin", enter);
+          container?.removeEventListener("focusout", leave);
           observer.disconnect();
           cancelAnimationFrame(frame);
         };

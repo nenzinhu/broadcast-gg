@@ -1,28 +1,24 @@
-# BROADCAST.GG — validação da homepage
+# BROADCAST.GG — implementação premium
 
-Implementação da proposta aprovada, no checkout isolado existente.
+Homepage e páginas Signals, Deals, Discover, Radar e cinco páginas de jogos implementadas no checkout isolado existente. Componentes compartilhados, catálogo tipado, filtros combináveis, favoritos persistidos e estados vazios acessíveis.
 
-## Verificações executadas
+## Verificação
 
-- `npm test`: 11 testes aprovados, incluindo limites BUY/WAIT/SKIP, JSON inválido e IDs desconhecidos/duplicados.
-- `npm run lint`: aprovado.
-- `npm run build`: aprovado, rota `/` pré-renderizada.
-- `npm run test:e2e`: 6 cenários aprovados no Chromium sobre o build de produção.
-- Navegador: filtros, três recomendações, favoritos após recarga, armazenamento bloqueado, diálogo/Escape/retorno de foco, mobile de 375 px sem overflow, âncoras válidas, movimento reduzido e alteração de layout com movimento normal.
-- Capturas desktop e mobile inspecionadas.
-- Revisão independente encontrou um problema importante: posições desatualizadas de ScrollTrigger após filtragem no mobile. Teste reproduziu opacity 0; ResizeObserver com cleanup e animação do contêiner estável corrigiram a falha; suite completa aprovada após a correção.
+- 29 testes unitários aprovados: decisão, persistência, consultas e validação da mídia Steam.
+- Lint e build de produção aprovados.
+- Suite de 22 cenários de navegador aprovada: navegação, filtros, armazenamento bloqueado, teclado, diálogos, movimento reduzido, GSAP, responsividade em 375/768/1440 px e mídia com fixtures controladas.
+- Revisão independente encontrou a ordem de Tab do menu mobile e reabertura após voltar; ambos corrigidos com regressões.
+- Revisão da mídia encontrou falta de tratamento de falha do CDN e foco recortado no trailer; ambos corrigidos. Adicionado cenário API 200 com imagem indisponível. Após essas correções, lint/build e os cinco cenários de mídia passaram novamente.
+- Capturas desktop e mobile geradas; homepage desktop inspecionada com as alternativas locais porque os hosts externos estão bloqueados.
 
-## Decisões de execução
+## Decisões
 
-- Mantido o checkout cloud existente conforme a proposta; nenhuma worktree adicional.
-- Registro local substituiu helpers de skills não disponíveis como executáveis nesta máquina, sem efeito no produto.
-- Instalação usou cache em `/tmp/broadcast-npm-cache` porque o cache padrão não era gravável; verificações de TLS e integridade mantidas. Esse cache pode precisar ser preenchido novamente em outra máquina.
-- Artes SVG locais substituíram imagens externas que retornaram HTTP 403. São imagens conceituais, não materiais oficiais; a interface declara essa distinção.
-- Base visual e interações foram validadas em conjunto devido aos providers compartilhados; a cobertura final inclui ambos.
-- O primeiro cenário de navegador excedeu o limite global de 30 segundos, sem falha funcional comprovada. Foi dividido em dois cenários independentes, preservando todas as verificações; ambos passaram.
+Fontes locais, paleta escura com cores por jogo e animações GSAP com cleanup e movimento reduzido. Capas reais da Steam são a primeira opção; artes locais identificadas aparecem somente em falha. O player do YouTube carrega após clique. Capturas reais são consultadas no servidor com timeout, validação de domínio e cache.
 
-## Limites
+A instalação usou cache `/tmp/broadcast-npm-cache`. Validações agrupadas devido aos providers e catálogo compartilhados. Nenhum segredo de implantação faz parte do repositório.
 
-Dados de exemplo, sem preços reais, lojas, APIs, contas ou alertas. Páginas dedicadas permanecem fora desta primeira entrega aprovada.
+## Limites verificáveis
 
-Lacuna menor registrada pela revisão: o estado vazio dos filtros está implementado, mas o catálogo atual possui sinais em todas as categorias, portanto esse ramo não foi exercitado nos testes de navegador. O estado vazio do radar pessoal foi exercitado.
+Preços, avaliações e sinais permanecem demonstrativos. Favoritos são locais, sem conta ou alertas. A rede cloud bloqueou Steam e YouTube; um rascunho de domínios foi salvo para revisão/salvamento/publicação nas configurações do ambiente. Os testes com fixtures comprovam os controles e os estados de falha, não a reprodução externa ou disponibilidade dos vídeos.
+
+A API Vercel retornou HTTP 403 no proxy; os domínios api.vercel.com e vercel.com foram adicionados ao rascunho de rede, ainda pendente de publicação. A CLI Vercel está sem autenticação; a tentativa de login falhou por acesso de rede. O projeto está pronto para importação Next.js, com branch de produção `main`, sem variáveis secretas obrigatórias. A publicação precisa de acesso autenticado ou da integração GitHub existente.

@@ -139,3 +139,53 @@ test("jogo recomendado no retorno permanece salvo no radar pessoal", async ({ pa
     page.getByRole("button", { name: "Remover Cyberpunk 2077 do radar" }),
   ).toHaveAttribute("aria-pressed", "true");
 });
+
+test("Ordem para jogar destaca o melhor começo e links internos", async ({ page }) => {
+  await page.goto("/central#ordem");
+  const guide = page.getByTestId("play-order");
+
+  await expect(
+    guide.getByRole("heading", { level: 3, name: "Resident Evil" }),
+  ).toBeVisible();
+  await expect(guide.getByTestId("order-entry")).toHaveCount(6);
+  const start = guide.getByTestId("order-entry").filter({
+    has: page.getByRole("heading", { name: "Resident Evil", exact: true }),
+  });
+  await expect(start).toContainText("COMECE AQUI");
+
+  const residentFour = guide.getByTestId("order-entry").filter({
+    has: page.getByRole("heading", { name: "Resident Evil 4" }),
+  });
+  await expect(residentFour.getByRole("link", { name: "Resident Evil 4" })).toHaveAttribute(
+    "href",
+    "/games/resident-evil-4",
+  );
+});
+
+test("seletor troca entre as quatro franquias e suas linhas do tempo", async ({ page }) => {
+  await page.goto("/central#ordem");
+  const guide = page.getByTestId("play-order");
+
+  await guide.getByRole("button", { name: "God of War", exact: true }).click();
+  await expect(
+    guide.getByRole("heading", { level: 3, name: "God of War" }),
+  ).toBeVisible();
+  await expect(guide.getByTestId("order-entry")).toHaveCount(5);
+  await expect(
+    guide.getByTestId("order-entry").filter({
+      has: page.getByRole("heading", { name: "God of War (2018)" }),
+    }),
+  ).toContainText("COMECE AQUI");
+
+  await guide.getByRole("button", { name: "Grand Theft Auto", exact: true }).click();
+  await expect(guide.getByTestId("order-entry")).toHaveCount(6);
+  await expect(guide.getByText("Grand Theft Auto V", { exact: true })).toBeVisible();
+
+  await guide.getByRole("button", { name: "The Witcher", exact: true }).click();
+  await expect(guide.getByTestId("order-entry")).toHaveCount(3);
+  await expect(
+    guide.getByTestId("order-entry").filter({
+      has: page.getByRole("heading", { name: "The Witcher 3: Wild Hunt" }),
+    }),
+  ).toContainText("COMECE AQUI");
+});

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CatalogRadar } from "@/components/catalog-radar";
 import { ReturnRadar } from "@/components/return-radar";
+import { PlayOrder } from "@/components/play-order";
 
 const sections = [
   {
@@ -119,6 +120,8 @@ export function IntelligenceHub() {
               <CatalogRadar />
             ) : section.id === "voltar" ? (
               <ReturnRadar />
+            ) : section.id === "ordem" ? (
+              <PlayOrder />
             ) : (
               <div className="intelligence-placeholder" aria-hidden="true">
                 <span />

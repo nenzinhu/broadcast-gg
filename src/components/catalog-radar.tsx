@@ -116,12 +116,15 @@ export function CatalogRadar({
           ))}
         </div>
       ) : (
-        <div className="catalog-empty" role="status">
-          Nenhum movimento detectado neste serviço.
+        <div className="catalog-empty">
+          <span role="status">Nenhum movimento detectado neste serviço.</span>
+          <button type="button" onClick={() => setService("all")}>
+            Limpar filtro
+          </button>
         </div>
       )}
       <p className="editorial-disclaimer">
-        Dados editoriais demonstrativos para apresentar a experiência da Central.
+        CURADORIA DEMONSTRATIVA · disponibilidade, datas e conteúdo podem mudar.
       </p>
     </div>
   );

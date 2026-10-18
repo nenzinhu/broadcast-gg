@@ -54,6 +54,7 @@ export function ReturnRadar() {
                   <RefreshCcw size={15} aria-hidden="true" />
                   <span>VEREDITO</span>
                   <strong>{returnNow ? "VOLTE AGORA" : "ESPERE MAIS"}</strong>
+                  <p>{item.verdictReason}</p>
                 </div>
               </div>
             </article>
@@ -61,7 +62,7 @@ export function ReturnRadar() {
         })}
       </div>
       <p className="editorial-disclaimer">
-        Leituras editoriais demonstrativas. O melhor momento também depende do seu ritmo e interesse.
+        CURADORIA DEMONSTRATIVA · disponibilidade, datas e conteúdo podem mudar.
       </p>
     </div>
   );

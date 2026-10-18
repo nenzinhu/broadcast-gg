@@ -6,24 +6,27 @@ import gsap from "gsap";
 import { CatalogRadar } from "@/components/catalog-radar";
 import { ReturnRadar } from "@/components/return-radar";
 import { PlayOrder } from "@/components/play-order";
+import { catalogMovements } from "@/lib/catalog-services";
+import { franchiseGuides } from "@/lib/franchise-guides";
+import { returningGames } from "@/lib/returning-games";
 
 const sections = [
   {
     id: "catalogo",
     label: "Radar de Catálogo",
-    eyebrow: "12 / CATÁLOGOS",
+    eyebrow: `${String(catalogMovements.length).padStart(2, "0")} / CATÁLOGOS`,
     title: "O que entrou, o que vai sair e o que ainda dá tempo de jogar.",
   },
   {
     id: "voltar",
     label: "Vale a pena voltar?",
-    eyebrow: "04 / RETORNO",
+    eyebrow: `${String(returningGames.length).padStart(2, "0")} / RETORNO`,
     title: "Descubra se aquele jogo merece uma segunda chance.",
   },
   {
     id: "ordem",
     label: "Ordem para jogar",
-    eyebrow: "01 / GUIA",
+    eyebrow: `${String(franchiseGuides.length).padStart(2, "0")} / GUIAS`,
     title: "Entre em grandes franquias sem transformar diversão em dever de casa.",
   },
 ] as const;

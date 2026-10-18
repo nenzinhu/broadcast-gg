@@ -9,7 +9,7 @@ const links = [
   ["/deals", "Ofertas"],
   ["/discover", "Descobrir"],
   ["/releases", "Lançamentos"],
-  ["/central", "Central"],
+  ["/central#catalogo", "Central"],
   ["/radar", "Radar"],
 ];
 export function SiteHeader() {
@@ -65,7 +65,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
           <Link
             key={href}
             href={href}
-            aria-current={pathname === href ? "page" : undefined}
+            aria-current={pathname === href.split("#")[0] ? "page" : undefined}
             onClick={close}
           >
             {label}

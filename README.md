@@ -30,6 +30,7 @@ npm run start
 - `/signals`: busca por jogo e filtros de preço, atualização e tendência.
 - `/deals`: busca e ordenação por preço ou desconto.
 - `/discover`: curadoria com busca e filtro de gênero.
+- `/central`: Radar de Catálogo, análise de retorno e ordem para jogar franquias.
 - `/radar`: favoritos compartilhados entre páginas e persistidos no navegador.
 - `/games/[slug]`: páginas individuais, análise demonstrativa e acompanhamento. Slug desconhecido retorna 404.
 

@@ -39,6 +39,9 @@ describe("central intelligence data", () => {
     expect(new Set(returningGames.map((item) => item.verdict))).toEqual(
       new Set(["volte-agora", "espere-mais"]),
     );
+    expect(
+      returningGames.every((item) => item.verdictReason.trim().length > 0),
+    ).toBe(true);
   });
 
   it("filtra movimentos sem mutar a coleção e aceita resultado vazio", () => {

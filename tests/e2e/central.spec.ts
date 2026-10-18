@@ -122,6 +122,7 @@ test("Vale a pena voltar compara mudanças, público e veredicto", async ({ page
   });
   await expect(starfield).toContainText("ESPERE MAIS");
   await expect(starfield).toContainText("Fãs de ficção científica");
+  await expect(starfield).toContainText("Ainda vale esperar");
 });
 
 test("jogo recomendado no retorno permanece salvo no radar pessoal", async ({ page }) => {
@@ -160,6 +161,14 @@ test("Ordem para jogar destaca o melhor começo e links internos", async ({ page
     "href",
     "/games/resident-evil-4",
   );
+  await expect(
+    residentFour.getByRole("button", {
+      name: "Adicionar Resident Evil 4 ao radar",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("tabpanel", { name: "Ordem para jogar" }),
+  ).toContainText("CURADORIA DEMONSTRATIVA");
 });
 
 test("seletor troca entre as quatro franquias e suas linhas do tempo", async ({ page }) => {
@@ -238,4 +247,58 @@ test("movimento reduzido mantém o scanner estável", async ({ page }) => {
   await page.waitForTimeout(450);
   const after = await scanner.evaluate((node) => getComputedStyle(node).transform);
   expect(after).toBe(initial);
+  await expect(page.getByTestId("catalog-card").first()).toBeVisible();
+
+  await page.getByRole("tab", { name: "Ordem para jogar" }).click();
+  const line = page.locator(".order-timeline-line");
+  const lineTransform = await line.evaluate((node) => getComputedStyle(node).transform);
+  await page.waitForTimeout(450);
+  await expect(line).toBeVisible();
+  expect(await line.evaluate((node) => getComputedStyle(node).transform)).toBe(
+    lineTransform,
+  );
+});
+
+test("linha da ordem é desenhada com GSAP no movimento normal", async ({ page }) => {
+  await page.goto("/central#ordem");
+  const line = page.locator(".order-timeline-line");
+  const initial = await line.evaluate((node) => getComputedStyle(node).transform);
+  await page.waitForTimeout(350);
+  const after = await line.evaluate((node) => getComputedStyle(node).transform);
+  expect(after).not.toBe(initial);
+});
+
+test("textos editoriais dos cards mantêm pelo menos 14px", async ({ page }) => {
+  await page.goto("/central#catalogo");
+  for (const selector of [
+    ".catalog-card-content > p",
+    ".return-insight p",
+    ".order-entry p",
+  ]) {
+    if (selector.includes("return")) {
+      await page.getByRole("tab", { name: "Vale a pena voltar?" }).click();
+    }
+    if (selector.includes("order")) {
+      await page.getByRole("tab", { name: "Ordem para jogar" }).click();
+    }
+    const size = await page.locator(selector).first().evaluate((node) =>
+      Number.parseFloat(getComputedStyle(node).fontSize),
+    );
+    expect(size).toBeGreaterThanOrEqual(14);
+  }
+});
+
+test("abas móveis permanecem horizontais e contidas", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/central#catalogo");
+  const layout = await page.locator(".intelligence-tabs").evaluate((node) => {
+    const tabs = Array.from(node.children) as HTMLElement[];
+    return {
+      topPositions: tabs.map((tab) => tab.offsetTop),
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: document.documentElement.clientWidth,
+    };
+  });
+  expect(new Set(layout.topPositions).size).toBe(1);
+  expect(layout.pageWidth).toBeLessThanOrEqual(layout.viewportWidth);
 });

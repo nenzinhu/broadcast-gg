@@ -451,3 +451,6 @@ export const discount = (game: Game) =>
 
 export const getGameBySlug = (slug: string): Game | undefined =>
   games.find((game) => game.slug === slug);
+
+export const getGameById = (id: string): Game | undefined =>
+  games.find((game) => game.id === id);

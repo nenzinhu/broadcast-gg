@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CatalogRadar } from "@/components/catalog-radar";
+import { ReturnRadar } from "@/components/return-radar";
 
 const sections = [
   {
@@ -116,6 +117,8 @@ export function IntelligenceHub() {
             <h2>{section.title}</h2>
             {section.id === "catalogo" ? (
               <CatalogRadar />
+            ) : section.id === "voltar" ? (
+              <ReturnRadar />
             ) : (
               <div className="intelligence-placeholder" aria-hidden="true">
                 <span />

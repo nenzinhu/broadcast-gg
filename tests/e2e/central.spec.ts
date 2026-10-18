@@ -104,3 +104,38 @@ test("Radar de Catálogo filtra serviços e apresenta movimentos acionáveis", a
   await expect(gta.getByRole("link")).toHaveCount(0);
   await expect(gta.getByRole("button")).toHaveCount(0);
 });
+
+test("Vale a pena voltar compara mudanças, público e veredicto", async ({ page }) => {
+  await page.goto("/central#voltar");
+  const radar = page.getByTestId("return-radar");
+
+  await expect(radar.getByTestId("return-card")).toHaveCount(6);
+  const cyberpunk = radar.getByTestId("return-card").filter({
+    has: page.getByRole("heading", { name: "Cyberpunk 2077" }),
+  });
+  await expect(cyberpunk).toContainText("O QUE MUDOU");
+  await expect(cyberpunk).toContainText("progressão e combate");
+  await expect(cyberpunk).toContainText("VOLTE AGORA");
+
+  const starfield = radar.getByTestId("return-card").filter({
+    has: page.getByRole("heading", { name: "Starfield" }),
+  });
+  await expect(starfield).toContainText("ESPERE MAIS");
+  await expect(starfield).toContainText("Fãs de ficção científica");
+});
+
+test("jogo recomendado no retorno permanece salvo no radar pessoal", async ({ page }) => {
+  await page.goto("/central#voltar");
+  const button = page.getByRole("button", {
+    name: "Adicionar Cyberpunk 2077 ao radar",
+  });
+  await button.click();
+  await expect(
+    page.getByRole("button", { name: "Remover Cyberpunk 2077 do radar" }),
+  ).toHaveAttribute("aria-pressed", "true");
+
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Remover Cyberpunk 2077 do radar" }),
+  ).toHaveAttribute("aria-pressed", "true");
+});

@@ -1,108 +1,44 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight, Menu, ScanLine, X } from "lucide-react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-
 const links = [
   ["/signals", "Sinais"],
   ["/deals", "Ofertas"],
   ["/discover", "Descobrir"],
+  ["/releases", "Lançamentos"],
   ["/radar", "Radar"],
 ];
-
 export function SiteHeader() {
   const pathname = usePathname();
   return <HeaderContent key={pathname} pathname={pathname} />;
 }
-
 function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-  const logoRef = useRef<HTMLImageElement>(null);
-  const navRefs = useRef<Map<string, HTMLElement>>(new Map());
-  const underlineRef = useRef<HTMLElement | null>(null);
   const close = () => setOpen(false);
-
-  // Logo animação sutil
-  useGSAP(() => {
-    if (!logoRef.current) return;
-    const tween = gsap.to(logoRef.current, {
-      rotation: 6,
-      repeat: -1,
-      yoyo: true,
-      duration: 1.2,
-      ease: "sine.inOut",
-      transformOrigin: "center center",
-    });
-    return () => tween.kill();
-  }, []);
-
-  // Animação de entrada dos links quando o menu abre (mobile) com stagger
-  useGSAP(() => {
-    if (!open) return undefined;
-    const items = Array.from(navRefs.current.values());
-    const tl = gsap.timeline();
-    tl.fromTo(
-      items,
-      { opacity: 0, y: 18, scale: 0.95 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.45,
-        stagger: 0.07,
-        ease: "power3.out",
-      }
-    );
-    return () => tl.kill();
-  }, [open]);
-
-  // Tinta (underline) da aba ativa animada com GSAP
-  useGSAP(() => {
-    const active = navRefs.current.get(pathname);
-    if (!underlineRef.current || !active) return undefined;
-
-    // Mantém o link ativo visível dentro do nav rolável.
-    active.scrollIntoView({ block: "nearest", inline: "center" });
-
-    const tl = gsap.timeline();
-    tl.to(underlineRef.current, {
-      width: active.offsetWidth,
-      x: active.offsetLeft,
-      duration: 0.5,
-      ease: "expo.inOut",
-    });
-    return () => tl.kill();
-  }, [pathname]);
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Escape") {
-      close();
-      toggle.current?.focus();
-    }
-  };
-
   return (
     <header
       id="top"
       className="site-header"
-      onKeyDown={handleKeyDown}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          close();
+          toggle.current?.focus();
+        }
+      }}
     >
       <Link
         className="brand"
         href="/"
-        aria-label="broadcastganes.com.br início"
+        aria-label="BROADCAST.GG início"
         onClick={close}
       >
         <Image
-          ref={logoRef}
           src="/logo.png"
-          alt="broadcastganes.com.br"
+          alt="BROADCAST.GG"
           className="brand-logo"
           width={1254}
           height={1254}
@@ -124,35 +60,16 @@ function HeaderContent({ pathname }: { pathname: string }) {
         aria-label="Navegação principal"
         className={open ? "is-open" : ""}
       >
-        {links.map(([href, label]) => {
-          const active = pathname === href;
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-current={active ? "page" : undefined}
-              onClick={close}
-              className={`nav-link ${active ? "nav-link-active" : ""}`}
-              ref={(el) => {
-                if (el) navRefs.current.set(href, el);
-              }}
-            >
-              <span className="nav-link-label">{label}</span>
-              <span
-                ref={active
-                  ? (el) => {
-                      if (el) underlineRef.current = el;
-                      return () => {
-                        if (underlineRef.current === el) underlineRef.current = null;
-                      };
-                    }
-                  : undefined}
-                className="nav-link-underline"
-                aria-hidden="true"
-              />
-            </Link>
-          );
-        })}
+        {links.map(([href, label]) => (
+          <Link
+            key={href}
+            href={href}
+            aria-current={pathname === href ? "page" : undefined}
+            onClick={close}
+          >
+            {label}
+          </Link>
+        ))}
       </nav>
       <div className="header-actions">
         <Link

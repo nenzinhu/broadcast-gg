@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: "cdn.steamstatic.com",
         pathname: "/steam/apps/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
+      },
     ],
   },
 };

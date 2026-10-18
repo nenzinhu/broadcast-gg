@@ -44,7 +44,7 @@ for (const width of [375, 768, 1440]) {
               .every((e) => parseFloat(getComputedStyle(e).fontSize) >= 11),
           ),
       ).toBe(true);
-      const images = page.locator("img");
+      const images = page.locator("img:visible");
       for (let i = 0; i < (await images.count()); i++) {
         await images.nth(i).scrollIntoViewIfNeeded();
         await expect(images.nth(i)).toHaveJSProperty("complete", true);

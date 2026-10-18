@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { ArrowDown, ArrowUpRight, Crosshair, Radio } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
-import { TextPlugin } from "gsap/TextPlugin";
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);

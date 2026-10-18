@@ -24,8 +24,9 @@ describe("catalog exploration", () => {
   it("sorts prices without mutating input", () => {
     const original = [...games];
     const result = queryGames(games, { ...base, sort: "price-asc" });
-    expect(result[0].id).toBe("hollow-knight");
-    expect(result.at(-1)?.id).toBe("starfield");
+    expect(result.map((game) => game.price)).toEqual(
+      games.map((game) => game.price).sort((a, b) => a - b),
+    );
     expect(games).toEqual(original);
   });
   it("sorts by discount", () =>

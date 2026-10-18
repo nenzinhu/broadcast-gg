@@ -8,7 +8,7 @@ export function SiteFooter() {
         <Link className="brand" href="/">
           <Image
             src="/logo.png"
-            alt="broadcastganes.com.br"
+            alt="BROADCAST.GG"
             className="brand-logo"
             width={1254}
             height={1254}
@@ -21,7 +21,7 @@ export function SiteFooter() {
         </Link>
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} broadcastganes.com.br</span>
+        <span>© {new Date().getFullYear()} BROADCAST.GG</span>
         <span>O que mudou. O que importa. O que jogar.</span>
         <span>
           FEITO PARA QUEM JOGA <span className="lime">↗</span>

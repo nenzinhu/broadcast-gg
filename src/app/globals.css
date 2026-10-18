@@ -2859,12 +2859,6 @@ h1 > span {
   display: inline-block;
 }
 
-/* ===== Cards com reveal animado ===== */
-[data-card-reveal] {
-  opacity: 0;
-  y: 40;
-}
-
 /* ===== Elementos com motion path ===== */
 [data-motion-path] {
   will-change: transform;

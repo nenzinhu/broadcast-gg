@@ -11,8 +11,8 @@ import { RadarProvider } from "@/components/radar-provider";
 import { RouteTransition } from "@/components/route-motion";
 export const metadata: Metadata = {
   title: {
-    default: "broadcastganes.com.br — Seu próximo jogo começa com um sinal.",
-    template: "%s | broadcastganes.com.br",
+    default: "BROADCAST.GG — Seu próximo jogo começa com um sinal.",
+    template: "%s | BROADCAST.GG",
   },
   description:
     "O que mudou. O que importa. O que jogar. Seu radar pessoal de games, preços e descobertas.",

@@ -9,6 +9,7 @@ import { PriceRadar } from "@/components/price-radar";
 import { DecisionEngine } from "@/components/decision-engine";
 import { PersonalRadar } from "@/components/personal-radar";
 import { Discover } from "@/components/discover";
+import { UpcomingReleases } from "@/components/upcoming-releases";
 
 function GameGrid({ games: gridGames }: { games: Game[] }) {
   return (
@@ -36,7 +37,9 @@ const catalogTabs = [
   {
     id: "rpg",
     label: "RPG",
-    children: <GameGrid games={games.filter((game) => game.genres.includes("RPG"))} />,
+    children: (
+      <GameGrid games={games.filter((game) => game.genres.includes("RPG"))} />
+    ),
   },
   {
     id: "acao-indie",
@@ -44,7 +47,8 @@ const catalogTabs = [
     children: (
       <GameGrid
         games={games.filter(
-          (game) => game.genres.includes("Ação") || game.genres.includes("Indie")
+          (game) =>
+            game.genres.includes("Ação") || game.genres.includes("Indie"),
         )}
       />
     ),
@@ -63,6 +67,7 @@ export default function Home() {
         <Tabs tabs={catalogTabs} defaultValue="todos" />
       </SectionHeading>
       <FeaturedGame game={games[1]} />
+      <UpcomingReleases compact />
       <LiveSignals />
       <PriceRadar />
       <DecisionEngine />

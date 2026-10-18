@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { games } from "../../src/lib/catalog";
 test("signals combines filters and recovers from empty results", async ({
   page,
 }) => {
@@ -14,8 +15,9 @@ test("signals combines filters and recovers from empty results", async ({
 test("deals sorts and filters real results", async ({ page }) => {
   await page.goto("/deals");
   await page.getByLabel("Ordenar por").selectOption("price-asc");
+  const cheapest = [...games].sort((a, b) => a.price - b.price)[0];
   await expect(page.locator(".deal-card").first()).toContainText(
-    "Hollow Knight",
+    cheapest.title,
   );
   await page.getByRole("searchbox", { name: "Buscar jogo" }).fill("hades");
   await expect(page.locator(".deal-card")).toHaveCount(1);
@@ -27,10 +29,12 @@ test("deals sorts and filters real results", async ({ page }) => {
 });
 test("discover genre filter and empty state work", async ({ page }) => {
   await page.goto("/discover");
+  const totalGames = games.length;
+  const indieGames = games.filter((game) => game.genres.includes("Indie"));
   await page.getByLabel("Gênero").selectOption("Indie");
-  await expect(page.locator(".deal-card")).toHaveCount(1);
+  await expect(page.locator(".deal-card")).toHaveCount(indieGames.length);
   await page.getByRole("searchbox", { name: "Buscar jogo" }).fill("cyberpunk");
   await expect(page.getByText("Nenhum jogo por aqui.")).toBeVisible();
   await page.getByRole("button", { name: "Limpar filtros" }).click();
-  await expect(page.locator(".deal-card")).toHaveCount(5);
+  await expect(page.locator(".deal-card")).toHaveCount(totalGames);
 });

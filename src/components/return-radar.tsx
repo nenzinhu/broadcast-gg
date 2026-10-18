@@ -18,7 +18,7 @@ export function ReturnRadar() {
           return (
             <article
               key={item.id}
-              className="return-card"
+              className="return-card interactive-card"
               data-testid="return-card"
               style={{ "--return-accent": game.color } as CSSProperties}
             >

@@ -189,3 +189,53 @@ test("seletor troca entre as quatro franquias e suas linhas do tempo", async ({ 
     }),
   ).toContainText("COMECE AQUI");
 });
+
+for (const width of [375, 768, 1440]) {
+  test(`Central permanece legível e sem rolagem lateral em ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/central#catalogo");
+    await expect(page.getByTestId("catalog-radar")).toBeVisible();
+
+    const layout = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }));
+    expect(layout.content).toBeLessThanOrEqual(layout.viewport);
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          Array.from(document.querySelectorAll<HTMLElement>('[data-testid="catalog-card"]'))
+            .every((card) => Number.parseFloat(getComputedStyle(card).opacity) > 0),
+        ),
+      )
+      .toBe(true);
+  });
+}
+
+test("scanner anima e troca repetida de abas não gera erros", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/central#catalogo");
+  const scanner = page.locator(".intelligence-scanner span");
+  const initial = await scanner.evaluate((node) => getComputedStyle(node).transform);
+  await page.waitForTimeout(450);
+  const moved = await scanner.evaluate((node) => getComputedStyle(node).transform);
+  expect(moved).not.toBe(initial);
+
+  for (let index = 0; index < 4; index += 1) {
+    await page.getByRole("tab", { name: "Vale a pena voltar?" }).click();
+    await page.getByRole("tab", { name: "Ordem para jogar" }).click();
+    await page.getByRole("tab", { name: "Radar de Catálogo" }).click();
+  }
+  expect(errors).toEqual([]);
+});
+
+test("movimento reduzido mantém o scanner estável", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/central#catalogo");
+  const scanner = page.locator(".intelligence-scanner span");
+  const initial = await scanner.evaluate((node) => getComputedStyle(node).transform);
+  await page.waitForTimeout(450);
+  const after = await scanner.evaluate((node) => getComputedStyle(node).transform);
+  expect(after).toBe(initial);
+});

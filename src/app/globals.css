@@ -3161,6 +3161,7 @@ h1 > span {
   background: linear-gradient(transparent, #8cf7ff, transparent);
   box-shadow: 0 0 28px 7px #3ddfff24;
   opacity: 0.55;
+  will-change: transform;
 }
 .intelligence-summary-copy {
   position: relative;

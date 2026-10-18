@@ -40,7 +40,7 @@ function CatalogCard({ movement }: { movement: CatalogMovement }) {
 
   return (
     <article
-      className="catalog-card"
+      className="catalog-card interactive-card"
       data-testid="catalog-card"
       style={{ "--catalog-accent": accent } as CSSProperties}
     >

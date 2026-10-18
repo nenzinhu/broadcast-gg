@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { CatalogRadar } from "@/components/catalog-radar";
 import { ReturnRadar } from "@/components/return-radar";
 import { PlayOrder } from "@/components/play-order";
@@ -38,6 +40,7 @@ function sectionFromHash(): IntelligenceSection {
 export function IntelligenceHub() {
   const [active, setActive] = useState<IntelligenceSection>("catalogo");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const root = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const syncHash = () => {
@@ -53,6 +56,37 @@ export function IntelligenceHub() {
     return () => window.removeEventListener("hashchange", syncHash);
   }, []);
 
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const panel = root.current?.querySelector<HTMLElement>(
+          `#central-panel-${active}`,
+        );
+        if (!panel) return;
+        const timeline = gsap.timeline();
+        timeline.fromTo(
+          panel,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" },
+        );
+        const items = panel.querySelectorAll(
+          ".catalog-card, .return-card, .order-entry",
+        );
+        if (items.length) {
+          timeline.from(
+            items,
+            { opacity: 0, y: 16, duration: 0.36, stagger: 0.055, ease: "power2.out" },
+            "<0.08",
+          );
+        }
+        return () => timeline.kill();
+      });
+      return () => media.revert();
+    },
+    { scope: root, dependencies: [active], revertOnUpdate: true },
+  );
+
   const select = (id: IntelligenceSection, replace = false) => {
     setActive(id);
     window.history[replace ? "replaceState" : "pushState"](null, "", `#${id}`);
@@ -66,7 +100,7 @@ export function IntelligenceHub() {
   };
 
   return (
-    <section className="intelligence-hub" aria-label="Ferramentas da Central">
+    <section ref={root} className="intelligence-hub" aria-label="Ferramentas da Central">
       <div className="intelligence-tabs" role="tablist" aria-label="Escolha uma análise">
         {sections.map((section, index) => (
           <button

@@ -1,3 +1,8 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { catalogMovements } from "@/lib/catalog-services";
 import { franchiseGuides } from "@/lib/franchise-guides";
 import { returningGames } from "@/lib/returning-games";
@@ -21,8 +26,32 @@ const metrics = [
 ];
 
 export function IntelligenceSummary() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          ".intelligence-scanner span",
+          { xPercent: -900 },
+          { xPercent: 4400, duration: 4.6, repeat: -1, ease: "none" },
+        );
+        gsap.from(".intelligence-metric", {
+          opacity: 0,
+          y: 16,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: "power2.out",
+        });
+      });
+      return () => media.revert();
+    },
+    { scope: root },
+  );
+
   return (
-    <section className="intelligence-summary" aria-label="Resumo da Central">
+    <section ref={root} className="intelligence-summary" aria-label="Resumo da Central">
       <div className="intelligence-scanner" aria-hidden="true">
         <span />
       </div>

@@ -9,6 +9,7 @@ const links = [
   ["/deals", "Ofertas"],
   ["/discover", "Descobrir"],
   ["/releases", "Lançamentos"],
+  ["/central", "Central"],
   ["/radar", "Radar"],
 ];
 export function SiteHeader() {

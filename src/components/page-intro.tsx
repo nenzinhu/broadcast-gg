@@ -18,7 +18,7 @@ export function PageIntro({
         {eyebrow}
       </div>
       <h1 data-split-title>
-        {title}
+        {title}{" "}
         <br />
         <span className="lime">{accent}</span>
       </h1>

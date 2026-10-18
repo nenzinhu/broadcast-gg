@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CatalogRadar } from "@/components/catalog-radar";
 
 const sections = [
   {
@@ -113,11 +114,15 @@ export function IntelligenceHub() {
           >
             <span className="intelligence-panel-eyebrow">{section.eyebrow}</span>
             <h2>{section.title}</h2>
-            <div className="intelligence-placeholder" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
+            {section.id === "catalogo" ? (
+              <CatalogRadar />
+            ) : (
+              <div className="intelligence-placeholder" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+            )}
           </section>
         ))}
       </div>

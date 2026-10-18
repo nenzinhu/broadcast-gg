@@ -62,3 +62,45 @@ test("abas respondem ao teclado e mantêm somente o painel ativo disponível", a
   await expect(page.locator('[role="tabpanel"]:visible')).toHaveCount(1);
   await expect(page.locator('[role="tabpanel"][hidden]')).toHaveCount(2);
 });
+
+test("Radar de Catálogo filtra serviços e apresenta movimentos acionáveis", async ({
+  page,
+}) => {
+  await page.goto("/central#catalogo");
+  const radar = page.getByTestId("catalog-radar");
+
+  await expect(radar.getByTestId("catalog-card")).toHaveCount(9);
+  await expect(radar.getByText("ENTROU", { exact: true })).toHaveCount(3);
+  await expect(radar.getByText("SAINDO", { exact: true })).toHaveCount(3);
+  await expect(radar.getByText("DISPONÍVEL", { exact: true })).toHaveCount(3);
+
+  await radar.getByRole("button", { name: "Game Pass" }).click();
+  await expect(radar.getByTestId("catalog-card")).toHaveCount(3);
+  await expect(radar.getByRole("heading", { name: "Starfield" })).toBeVisible();
+
+  await radar.getByRole("button", { name: "PlayStation Plus" }).click();
+  await expect(radar.getByTestId("catalog-card")).toHaveCount(3);
+  await expect(radar.getByRole("heading", { name: "Resident Evil 4" })).toBeVisible();
+
+  await radar.getByRole("button", { name: "EA Play" }).click();
+  await expect(radar.getByTestId("catalog-card")).toHaveCount(3);
+  await expect(radar.getByRole("heading", { name: "It Takes Two" })).toBeVisible();
+
+  await radar.getByRole("button", { name: "Todos" }).click();
+  const residentEvil = radar.getByTestId("catalog-card").filter({
+    has: page.getByRole("heading", { name: "Resident Evil 4" }),
+  });
+  await expect(residentEvil.getByRole("link", { name: "Resident Evil 4" })).toHaveAttribute(
+    "href",
+    "/games/resident-evil-4",
+  );
+  await expect(
+    residentEvil.getByRole("button", { name: "Adicionar Resident Evil 4 ao radar" }),
+  ).toBeVisible();
+
+  const gta = radar.getByTestId("catalog-card").filter({
+    has: page.getByRole("heading", { name: "Grand Theft Auto V" }),
+  });
+  await expect(gta.getByRole("link")).toHaveCount(0);
+  await expect(gta.getByRole("button")).toHaveCount(0);
+});

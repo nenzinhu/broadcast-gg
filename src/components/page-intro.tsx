@@ -17,7 +17,7 @@ export function PageIntro({
         <span className="status-dot lime" />
         {eyebrow}
       </div>
-      <h1>
+      <h1 data-split-title>
         {title}
         <br />
         <span className="lime">{accent}</span>

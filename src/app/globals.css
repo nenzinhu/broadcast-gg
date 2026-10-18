@@ -2850,6 +2850,36 @@ h1 > span {
   cursor: pointer;
   z-index: 10;
 }
+
+/* ===== SplitText animação de títulos ===== */
+.split-word {
+  display: inline-block;
+}
+.split-char {
+  display: inline-block;
+}
+
+/* ===== Cards com reveal animado ===== */
+[data-card-reveal] {
+  opacity: 0;
+  y: 40;
+}
+
+/* ===== Elementos com motion path ===== */
+[data-motion-path] {
+  will-change: transform;
+}
+
+/* ===== Hero chars 3D ===== */
+.hero-char {
+  display: inline-block;
+}
+
+/* ===== Entrada suave da página ===== */
+[data-page-entrance] {
+  opacity: 0;
+  y: 20;
+}
 .video-trigger [stroke] {
   transition: stroke 0.3s ease;
 }

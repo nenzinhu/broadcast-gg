@@ -2,8 +2,6 @@
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { Play, Maximize } from "lucide-react";
 import { GameArtwork } from "./game-artwork";
 import { discount, formatPrice, type Game } from "@/lib/catalog";
@@ -19,46 +17,12 @@ export function GameCard({ game, variant = "default" }: GameCardProps) {
   const [videoOpen, setVideoOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  // Animação de entrada do card com ScrollTrigger + hover glow.
-  useGSAP(
-    () => {
-      if (!cardRef.current) return undefined;
-      gsap.set(cardRef.current, { opacity: 0, y: 20, scale: 0.96 });
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 90%",
-          end: "bottom 60%",
-          toggleActions: "play none none reset",
-          once: true,
-        },
-      });
-      tl.to(cardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.7,
-        ease: "power3.out",
-      });
-      // Hover glow pulante leve.
-      gsap.to(cardRef.current, {
-        "--glow": 0.6,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        paused: true,
-      });
-      return () => tl.kill();
-    },
-    []
-  );
-
   const handleVideo = useCallback(() => setVideoOpen((v) => !v), []);
 
   return (
     <article
       ref={cardRef}
+      data-card-reveal
       className={`deal-card interactive-card group relative overflow-hidden ${
         videoOpen ? "z-video" : ""
       }`}

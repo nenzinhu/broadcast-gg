@@ -80,6 +80,7 @@ export function SignalCard({ signal }: { signal: Signal }) {
   return (
     <article
       ref={cardRef}
+      data-card-reveal
       className="signal-card interactive-card relative"
       style={{ "--game-accent": game.color } as CSSProperties}
     >

@@ -3,6 +3,17 @@ import { games, signals } from "../src/lib/catalog";
 import { queryGames, querySignals } from "../src/lib/catalog-query";
 const base = { query: "", genre: "", sort: "featured" as const };
 describe("catalog exploration", () => {
+  it("inclui os cinco novos jogos em todo o catálogo", () => {
+    expect(games.map((game) => game.id)).toEqual(
+      expect.arrayContaining([
+        "clair-obscur",
+        "monster-hunter-wilds",
+        "helldivers-2",
+        "forza-horizon-5",
+        "black-myth-wukong",
+      ]),
+    );
+  });
   it("preserves the complete featured catalog", () =>
     expect(queryGames(games, base)).toEqual(games));
   it("normalizes accents, whitespace and case", () =>

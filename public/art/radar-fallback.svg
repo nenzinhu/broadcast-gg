@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="title description">
+  <title id="title">Arte alternativa BROADCAST.GG</title>
+  <desc id="description">Radar colorido sobre um fundo escuro</desc>
+  <defs>
+    <radialGradient id="bg" cx="70%" cy="30%" r="90%">
+      <stop offset="0" stop-color="#39266f"/>
+      <stop offset="0.48" stop-color="#101d39"/>
+      <stop offset="1" stop-color="#070b13"/>
+    </radialGradient>
+    <linearGradient id="signal" x1="0" x2="1">
+      <stop stop-color="#a6ff00"/>
+      <stop offset="0.5" stop-color="#55e8ff"/>
+      <stop offset="1" stop-color="#ad6cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="560" fill="url(#bg)"/>
+  <g fill="none" stroke="url(#signal)" transform="translate(620 280)" opacity=".72">
+    <circle r="76"/>
+    <circle r="142" opacity=".58"/>
+    <circle r="208" opacity=".32"/>
+    <path d="M-230 0h460M0-230v460" opacity=".24"/>
+    <path d="M0 0L165-108" stroke-width="9" opacity=".4"/>
+  </g>
+  <circle cx="620" cy="280" r="12" fill="#a6ff00"/>
+  <circle cx="708" cy="176" r="8" fill="#55e8ff"/>
+  <circle cx="503" cy="362" r="8" fill="#ad6cff"/>
+  <text x="70" y="240" fill="#a6ff00" font-family="monospace" font-size="24" letter-spacing="5">SIGNAL DETECTED</text>
+  <text x="70" y="310" fill="#f4f7ff" font-family="Arial, sans-serif" font-size="54" font-weight="800">BROADCAST.GG</text>
+  <text x="72" y="352" fill="#a8b6cf" font-family="monospace" font-size="18">SEU PRÓXIMO JOGO ESTÁ NO RADAR</text>
+</svg>

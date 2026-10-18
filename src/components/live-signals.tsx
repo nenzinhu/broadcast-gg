@@ -8,7 +8,10 @@ import { SignalCard } from "./signal-card";
 import { signalFilters } from "./signal-browser";
 export function LiveSignals() {
   const [filter, setFilter] = useState<"all" | Signal["type"]>("all");
-  const visible = signals.filter(
+  const homepageSignals = signals.filter((signal) =>
+    ["s4", "s5", "s7"].includes(signal.id),
+  );
+  const visible = homepageSignals.filter(
     (signal) => filter === "all" || signal.type === filter,
   );
   return (

@@ -1,4 +1,29 @@
 import { test, expect } from "@playwright/test";
+
+test("hero termina a entrada com as três linhas legíveis", async ({ page }) => {
+  await page.setViewportSize({ width: 800, height: 700 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+
+  const lines = page.locator("[data-hero-line]");
+  await expect(lines).toHaveCount(3);
+  await page.waitForTimeout(1200);
+
+  for (const line of await lines.all()) {
+    await expect(line).toHaveCSS("opacity", "1");
+    const box = await line.boundingBox();
+    expect(box?.width).toBeGreaterThan(180);
+  }
+
+  const obscuredCharacters = await page.locator(".hero-char").evaluateAll(
+    (characters) =>
+      characters.filter(
+        (character) => Number.parseFloat(getComputedStyle(character).opacity) < 0.99,
+      ).length,
+  );
+  expect(obscuredCharacters).toBe(0);
+});
+
 test("homepage, filters, decisions, favorites and accessible details", async ({
   page,
 }) => {

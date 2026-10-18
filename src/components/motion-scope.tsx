@@ -14,13 +14,6 @@ export function MotionScope({ children }: { children: ReactNode }) {
     () => {
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", (context) => {
-        gsap.from("[data-hero-line]", {
-          y: 35,
-          opacity: 0,
-          duration: 0.85,
-          stagger: 0.12,
-          ease: "power3.out",
-        });
         gsap.to(".radar-sweep", {
           rotation: 360,
           duration: 16,
@@ -78,7 +71,26 @@ export function MotionScope({ children }: { children: ReactNode }) {
             return;
           gsap.to(card, {
             y: active ? -6 : 0,
+            rotationX: active ? undefined : 0,
+            rotationY: active ? undefined : 0,
             duration: 0.3,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        };
+        const moveCard = (event: Event) => {
+          if (!(event instanceof PointerEvent)) return;
+          if (!(event.target instanceof Element)) return;
+          const card = event.target.closest<HTMLElement>(".interactive-card");
+          if (!card || !container?.contains(card)) return;
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+          gsap.to(card, {
+            rotationY: (x - 0.5) * 3.5,
+            rotationX: (0.5 - y) * 3,
+            transformPerspective: 900,
+            duration: 0.35,
             ease: "power2.out",
             overwrite: "auto",
           });
@@ -89,7 +101,9 @@ export function MotionScope({ children }: { children: ReactNode }) {
         const leave = context.add("cardLeave", (event: Event) =>
           animateCard(event, false),
         ) as EventListener;
+        const move = context.add("cardMove", moveCard) as EventListener;
         container?.addEventListener("pointerover", enter);
+        container?.addEventListener("pointermove", move);
         container?.addEventListener("pointerout", leave);
         container?.addEventListener("focusin", enter);
         container?.addEventListener("focusout", leave);
@@ -103,6 +117,7 @@ export function MotionScope({ children }: { children: ReactNode }) {
 
         return () => {
           container?.removeEventListener("pointerover", enter);
+          container?.removeEventListener("pointermove", move);
           container?.removeEventListener("pointerout", leave);
           container?.removeEventListener("focusin", enter);
           container?.removeEventListener("focusout", leave);

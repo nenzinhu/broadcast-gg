@@ -4,90 +4,103 @@ import { useRef } from "react";
 import { ArrowDown, ArrowUpRight, Crosshair, Radio } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/SplitText";
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
 
-  // 3D text entry animation using SplitText
-  useGSAP(() => {
-    if (!headingRef.current) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
 
-    const split = new SplitText(headingRef.current, {
-      type: "words,chars",
-      wordsClass: "hero-word",
-      charsClass: "hero-char",
-    });
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+        intro
+          .fromTo(
+            ".hero-kicker",
+            { opacity: 0, x: -18 },
+            { opacity: 1, x: 0, duration: 0.45 },
+          )
+          .fromTo(
+            ".hero-line-inner",
+            { opacity: 0, yPercent: 115, rotationX: -28 },
+            {
+              opacity: 1,
+              yPercent: 0,
+              rotationX: 0,
+              duration: 0.72,
+              stagger: 0.11,
+              transformOrigin: "50% 100%",
+            },
+            "-=0.2",
+          )
+          .fromTo(
+            [".hero-description", ".hero-actions", ".hero-note"],
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.48, stagger: 0.08 },
+            "-=0.32",
+          );
 
-    gsap.set(split.chars, {
-      opacity: 0,
-      y: 40,
-      rotationX: -90,
-      transformPerspective: 600,
-      transformOrigin: "50% 50% -30px",
-    });
-
-    const tl = gsap.timeline({ defaults: { ease: "bouncyOut" } });
-    tl.to(split.chars, {
-      opacity: 1,
-      y: 0,
-      rotationX: 0,
-      duration: 0.8,
-      stagger: {
-        each: 0.06,
-        from: "random",
-      },
-    });
-
-    return () => {
-      tl.kill();
-      split.revert();
-    };
-  }, []);
-
-  // Continuous subtle 3D rotation on hero heading
-  useGSAP(() => {
-    if (!containerRef.current) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    const heading = containerRef.current.querySelector(".hero h1");
-    if (!heading) return;
-
-    let x = 0;
-    let y = 0;
-    let ticker = 0;
-
-    const animate = () => {
-      ticker += 0.016;
-      // Subtle floating rotation based on mouse position
-      if (heading) {
-        gsap.set(heading, {
-          rotationY: x * 0.03,
-          rotationX: y * 0.02,
-          z: Math.sin(ticker) * 2,
+        gsap.to(".game-particle", {
+          y: (index) => (index % 2 ? 10 : -12),
+          x: (index) => (index % 2 ? -7 : 8),
+          rotation: (index) => (index % 2 ? -18 : 22),
+          duration: 2.4,
+          stagger: 0.24,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
         });
-      }
-    };
 
-    const handleMouseMove = (e: Event) => {
-      const me = e as MouseEvent;
-      const rect = heading.getBoundingClientRect();
-      x = me.clientX - rect.left - rect.width / 2;
-      y = me.clientY - rect.top - rect.height / 2;
-    };
+        gsap.to(".radar-tag", {
+          y: (index) => (index % 2 ? 7 : -7),
+          duration: 2.8,
+          stagger: 0.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
 
-    heading.addEventListener("mousemove", handleMouseMove);
-    gsap.ticker.add(animate);
+        const visual = containerRef.current?.querySelector<HTMLElement>(
+          ".hero-visual",
+        );
+        if (!visual) return;
 
-    return () => {
-      heading.removeEventListener("mousemove", handleMouseMove);
-      gsap.ticker.remove(animate);
-    };
-  }, []);
+        const rotateX = gsap.quickTo(visual, "rotationX", {
+          duration: 0.55,
+          ease: "power3.out",
+        });
+        const rotateY = gsap.quickTo(visual, "rotationY", {
+          duration: 0.55,
+          ease: "power3.out",
+        });
+
+        const move = (event: PointerEvent) => {
+          const rect = visual.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+          visual.style.setProperty("--glow-x", `${x * 100}%`);
+          visual.style.setProperty("--glow-y", `${y * 100}%`);
+          rotateY((x - 0.5) * 6);
+          rotateX((0.5 - y) * 5);
+        };
+        const reset = () => {
+          rotateX(0);
+          rotateY(0);
+        };
+
+        visual.addEventListener("pointermove", move);
+        visual.addEventListener("pointerleave", reset);
+
+        return () => {
+          visual.removeEventListener("pointermove", move);
+          visual.removeEventListener("pointerleave", reset);
+        };
+      });
+
+      return () => media.revert();
+    },
+    { scope: containerRef },
+  );
 
   return (
     <section className="hero" id="inicio" ref={containerRef}>
@@ -96,11 +109,17 @@ export function Hero() {
           <span className="status-dot" /> SIGNAL LIVE{" "}
           <span className="kicker-divider">/</span> SEU PRÓXIMO JOGO COMEÇA AQUI
         </div>
-        <h1 ref={headingRef}>
-          <span data-hero-line>O QUE MUDOU.</span>
-          <span data-hero-line>O QUE IMPORTA.</span>
-          <span className="lime" data-hero-line>
-            O QUE JOGAR<span className="outlined-dot">.</span>
+        <h1>
+          <span className="hero-title-line" data-hero-line>
+            <span className="hero-line-inner">O QUE MUDOU.</span>
+          </span>
+          <span className="hero-title-line" data-hero-line>
+            <span className="hero-line-inner">O QUE IMPORTA.</span>
+          </span>
+          <span className="hero-title-line lime" data-hero-line>
+            <span className="hero-line-inner">
+              O QUE JOGAR<span className="outlined-dot">.</span>
+            </span>
           </span>
         </h1>
         <p className="hero-description">
@@ -125,6 +144,14 @@ export function Hero() {
         data-speed="0.03"
         aria-label="Ilustração de radar detectando sinais de jogos"
       >
+        <div className="hero-game-chips" aria-hidden="true">
+          <span>RPG</span>
+          <span>CO-OP</span>
+          <span>INDIE</span>
+        </div>
+        <div className="game-particle particle-cross" aria-hidden="true">+</div>
+        <div className="game-particle particle-diamond" aria-hidden="true">◆</div>
+        <div className="game-particle particle-circle" aria-hidden="true" />
         <div className="radar-topline">
           <span>
             <Radio size={13} aria-hidden="true" /> RADAR SYSTEM / 01

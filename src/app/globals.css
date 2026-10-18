@@ -2723,6 +2723,7 @@ h1 > span {
 .tabs-panels {
   position: relative;
   margin-top: 16px;
+  overflow: hidden;
 }
 .tab-panel {
   position: relative;

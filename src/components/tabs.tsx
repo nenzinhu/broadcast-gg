@@ -22,6 +22,9 @@ interface TabsProps {
  * - Painel ativo entra com fade + slide, filhos sobem escalonados (stagger).
  * - Brilho pulsante leve na aba ativa.
  * - Respeita prefers-reduced-motion.
+ *
+ * Toda a animação vive num único contexto GSAP para evitar conflitos
+ * entre hooks que antes disputavam a posição da tinta simultaneamente.
  */
 export function Tabs({ tabs, defaultValue, className }: TabsProps) {
   const [activeId, setActiveId] = useState(
@@ -29,108 +32,118 @@ export function Tabs({ tabs, defaultValue, className }: TabsProps) {
   );
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
   const panelRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const listRef = useRef<HTMLDivElement>(null);
   const inkRef = useRef<HTMLSpanElement>(null);
 
-  // Acompanha o redimensionamento da janela.
-  useGSAP(() => {
+  // Posiciona a tinta sob a aba ativa e garante que ela fique visível.
+  const positionInk = useCallback(() => {
     const tab = tabRefs.current.get(activeId);
-    if (!inkRef.current || !tab) return;
-    gsap.set(inkRef.current, { x: tab.offsetLeft, width: tab.offsetWidth });
-  }, [activeId]);
+    const list = listRef.current;
+    if (!inkRef.current || !tab || !list) return;
 
-  // Anima a troca de aba: tinta + entrada do painel e seus filhos.
-  useGSAP(() => {
-    const prefersReduced = window
-      .matchMedia("(prefers-reduced-motion: reduce)")
-      .matches;
-    if (prefersReduced) return;
-
-    const tab = tabRefs.current.get(activeId);
-    const panel = panelRefs.current.get(activeId);
-    if (!tab || !panel || !inkRef.current) return;
-
-    const tl = gsap.timeline();
-
-    // Anima a tinta (underline) para a posição da aba ativa
-    tl.to(inkRef.current, {
+    // offsetLeft já é relativo ao tabs-list; o transform x do ink
+    // não é afetado pelo scroll da lista.
+    gsap.set(inkRef.current, {
       x: tab.offsetLeft,
       width: tab.offsetWidth,
-      duration: 0.5,
-      ease: "expo.inOut",
-    }, 0);
-
-    // Garante que o painel este visível antes de animar
-    gsap.set(panel, { display: "block", opacity: 0, y: 24 });
-
-    // Anima a entrada do painel ativo
-    tl.fromTo(
-      panel,
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-      "<0.05"
-    );
-
-    // Anima os filhos do painel com stagger
-    const children = Array.from(
-      panel.querySelectorAll<HTMLElement>("[data-tab-child]")
-    );
-    if (children.length) {
-      tl.from(
-        children,
-        {
-          opacity: 0,
-          y: 12,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: "power2.out",
-        },
-        "<0.05"
-      );
-    }
-
-    // Hide other panels immediately
-    panelRefs.current.forEach((p, id) => {
-      if (id !== activeId) {
-        gsap.set(p, { display: "none", opacity: 0 });
-      }
     });
 
-    return () => tl.kill();
+    // Mantém a aba ativa visível quando a lista rola horizontalmente.
+    tab.scrollIntoView({ block: "nearest", inline: "center" });
   }, [activeId]);
 
-  // Brilho suave pulsante na aba ativa.
-  useGSAP(() => {
-    const prefersReduced = window
-      .matchMedia("(prefers-reduced-motion: reduce)")
-      .matches;
-    if (prefersReduced) return;
-    const tab = tabRefs.current.get(activeId);
-    const glow = tab?.querySelector<HTMLElement>("[data-tab-glow]");
-    if (!glow) return;
-    const tween = gsap.to(glow, {
-      opacity: 0.35,
-      duration: 1.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
-    return () => tween.kill();
-  }, [activeId]);
-
-  // Acompanha o redimensionamento da janela.
-  useEffect(() => {
-    const onResize = () => {
+  // Tinta + entrada do painel ativo (um só contexto GSAP, sem conflitos).
+  useGSAP(
+    () => {
+      const prefersReduced = window
+        .matchMedia("(prefers-reduced-motion: reduce)")
+        .matches;
       const tab = tabRefs.current.get(activeId);
-      if (tab && inkRef.current) {
-        gsap.set(inkRef.current, {
+      const panel = panelRefs.current.get(activeId);
+      if (!tab || !panel || !inkRef.current) return;
+
+      if (prefersReduced) {
+        // Sem animação: apenas posiciona a tinta.
+        positionInk();
+        return;
+      }
+
+      const tl = gsap.timeline({
+        onStart: positionInk,
+      });
+
+      // Tinta desliza até a aba ativa.
+      tl.to(
+        inkRef.current,
+        {
           x: tab.offsetLeft,
           width: tab.offsetWidth,
-        });
+          duration: 0.5,
+          ease: "expo.inOut",
+        },
+        0
+      );
+
+      // Painel ativo entra com fade + slide (o display:block é controlado pelo React,
+      // então o GSAP só anima opacity/transform e não briga com o render).
+      tl.fromTo(
+        panel,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        "<0.05"
+      );
+
+      // Filhos do painel sobem escalonados.
+      const children = Array.from(
+        panel.querySelectorAll<HTMLElement>("[data-tab-child]")
+      );
+      if (children.length) {
+        tl.from(
+          children,
+          {
+            opacity: 0,
+            y: 12,
+            duration: 0.4,
+            stagger: 0.08,
+            ease: "power2.out",
+          },
+          "<0.05"
+        );
       }
-    };
+
+      return () => tl.kill();
+    },
+    [activeId]
+  );
+
+  // Brilho suave pulsante na aba ativa.
+  useGSAP(
+    () => {
+      const prefersReduced = window
+        .matchMedia("(prefers-reduced-motion: reduce)")
+        .matches;
+      if (prefersReduced) return;
+      const tab = tabRefs.current.get(activeId);
+      const glow = tab?.querySelector<HTMLElement>("[data-tab-glow]");
+      if (!glow) return;
+      const tween = gsap.to(glow, {
+        opacity: 0.35,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+      return () => tween.kill();
+    },
+    [activeId]
+  );
+
+  // Reposiciona a tinta ao redimensionar a janela.
+  useEffect(() => {
+    const onResize = () => positionInk();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [activeId]);
+  }, [positionInk]);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent, id: string) => {
@@ -147,6 +160,7 @@ export function Tabs({ tabs, defaultValue, className }: TabsProps) {
   return (
     <section className={`tabs ${className || ""}`}>
       <div
+        ref={listRef}
         className="tabs-list"
         role="tablist"
         aria-label="Navegação por abas"

@@ -9,7 +9,7 @@ import { TextPlugin } from "gsap/TextPlugin";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
 import { Observer } from "gsap/Observer";
-gsap.registerPlugin(useGSAP, ScrollTrigger, Flip, Draggable, TextPlugin, SplitText, CustomEase, Observer);
+gsap.registerPlugin(ScrollTrigger, Flip, Draggable, TextPlugin, SplitText, CustomEase, Observer);
 // Register a premium-ish custom ease for bouncy-out transitions used across the app.
 CustomEase.create("bouncyOut", "M0.25,0.1,0.25,1,0.33,1,0.33,1.2,0.67,1,1,1");
 export function MotionScope({ children }: { children: ReactNode }) {

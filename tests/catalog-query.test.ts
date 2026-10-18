@@ -1,8 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { games, signals } from "../src/lib/catalog";
 import { queryGames, querySignals } from "../src/lib/catalog-query";
+import { buyingGuides } from "../src/lib/buying-guides";
 const base = { query: "", genre: "", sort: "featured" as const };
 describe("catalog exploration", () => {
+  it("mantém um guia de compra específico para cada jogo", () => {
+    expect(Object.keys(buyingGuides).sort()).toEqual(
+      games.map((game) => game.id).sort(),
+    );
+  });
   it("inclui os cinco novos jogos em todo o catálogo", () => {
     expect(games.map((game) => game.id)).toEqual(
       expect.arrayContaining([

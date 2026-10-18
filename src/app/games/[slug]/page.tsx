@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { games, getGameBySlug, formatPrice, discount } from "@/lib/catalog";
 import { getDecision } from "@/lib/decision";
 import { TrackButton } from "@/components/track-button";
+import { BuyingGuide } from "@/components/buying-guide";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return games.map((game) => ({ slug: game.slug }));
@@ -93,6 +94,7 @@ export default async function GamePage({
           </p>
         </aside>
       </div>
+      <BuyingGuide game={game} />
       <GameMedia key={game.slug} game={game} />
     </article>
   );

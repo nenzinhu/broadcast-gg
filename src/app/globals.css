@@ -1762,6 +1762,100 @@ h1 > span {
 .game-purchase > .track-button {
   width: 100%;
 }
+.buying-guide {
+  padding-top: 90px;
+}
+.buying-guide-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+  align-items: end;
+  gap: 24px 60px;
+  margin-bottom: 32px;
+}
+.buying-guide-heading .eyebrow {
+  grid-column: 1 / -1;
+}
+.buying-guide-heading h2 {
+  margin: 0;
+  font: 600 clamp(44px, 6vw, 76px) / 0.95 var(--display);
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
+}
+.buying-guide-heading > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.buying-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.buying-guide-card {
+  position: relative;
+  min-width: 0;
+  min-height: 245px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #3e4d68;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #121b2d, #0e1422);
+}
+.buying-guide-card::after {
+  content: "";
+  position: absolute;
+  right: -45px;
+  bottom: -65px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--guide-glow, #a6ff00);
+  filter: blur(70px);
+  opacity: 0.16;
+  pointer-events: none;
+}
+.buying-guide-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 34px;
+  border: 1px solid color-mix(in srgb, var(--guide-glow, #a6ff00) 52%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--guide-glow, #a6ff00) 10%, #0a1020);
+  color: var(--guide-glow, var(--lime));
+}
+.buying-guide-card > span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--guide-glow, var(--lime));
+  font: 700 10px/1.3 var(--mono);
+  letter-spacing: 1px;
+}
+.buying-guide-card > p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #c1ccdd;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.buying-guide-enjoy {
+  --guide-glow: #a6ff00;
+}
+.buying-guide-caution {
+  --guide-glow: #ffb454;
+}
+.buying-guide-technical {
+  --guide-glow: #55e8ff;
+}
+.buying-guide-verdict {
+  --guide-glow: var(--game-accent, #ae78ff);
+}
+.buying-guide > .section-footnote {
+  margin-top: 20px;
+}
 .not-found {
   padding: 100px 0;
   text-align: center;
@@ -2079,6 +2173,9 @@ h1 > span {
   }
   .game-detail-grid {
     gap: 30px;
+  }
+  .buying-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .game-story h2 {
     font-size: 34px;
@@ -2666,6 +2763,25 @@ h1 > span {
   }
   .game-facts {
     grid-template-columns: 1fr 1fr;
+  }
+  .buying-guide {
+    padding-top: 68px;
+  }
+  .buying-guide-heading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .buying-guide-heading .eyebrow {
+    grid-column: auto;
+  }
+  .buying-guide-heading h2 {
+    font-size: 50px;
+  }
+  .buying-guide-grid {
+    grid-template-columns: 1fr;
+  }
+  .buying-guide-card {
+    min-height: 0;
   }
   .not-found {
     padding: 75px 0;

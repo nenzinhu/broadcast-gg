@@ -134,6 +134,13 @@ img {
   gap: 48px;
   font-size: 14px;
   color: #b7c0ae;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
+  max-width: 100%;
+}
+.site-header nav::-webkit-scrollbar {
+  display: none;
 }
 .nav-link {
   display: flex;

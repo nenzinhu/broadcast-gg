@@ -25,7 +25,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const navRefs = useRef<Map<string, HTMLElement>>(new Map());
-  const activeRef = useRef<HTMLElement | null>(null);
+  const underlineRef = useRef<HTMLElement | null>(null);
   const close = () => setOpen(false);
 
   // Logo animação sutil
@@ -65,9 +65,13 @@ function HeaderContent({ pathname }: { pathname: string }) {
   // Tinta (underline) da aba ativa animada com GSAP
   useGSAP(() => {
     const active = navRefs.current.get(pathname);
-    if (!activeRef.current || !active) return undefined;
+    if (!underlineRef.current || !active) return undefined;
+
+    // Mantém o link ativo visível dentro do nav rolável.
+    active.scrollIntoView({ block: "nearest", inline: "center" });
+
     const tl = gsap.timeline();
-    tl.to(activeRef.current, {
+    tl.to(underlineRef.current, {
       width: active.offsetWidth,
       x: active.offsetLeft,
       duration: 0.5,
@@ -131,21 +135,18 @@ function HeaderContent({ pathname }: { pathname: string }) {
               className={`nav-link ${active ? "nav-link-active" : ""}`}
               ref={(el) => {
                 if (el) navRefs.current.set(href, el);
-                if (active) activeRef.current = el;
               }}
             >
               <span className="nav-link-label">{label}</span>
               <span
-                ref={
-                  active
-                    ? (el) => {
-                        if (el) activeRef.current = el;
-                        return () => {
-                          activeRef.current = null;
-                        };
-                      }
-                    : undefined
-                }
+                ref={active
+                  ? (el) => {
+                      if (el) underlineRef.current = el;
+                      return () => {
+                        if (underlineRef.current === el) underlineRef.current = null;
+                      };
+                    }
+                  : undefined}
                 className="nav-link-underline"
                 aria-hidden="true"
               />

@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import {
   filterPreviewGames,
   type PreviewFilters,
@@ -30,12 +32,30 @@ export function PreviewBrowser({
 }: PreviewBrowserProps) {
   const [filters, setFilters] = useState<PreviewFilters>(emptyFilters);
   const [selectedSlug, setSelectedSlug] = useState(initialSlug);
+  const motionPanel = useRef<HTMLDivElement>(null);
   const filteredGames = useMemo(
     () => filterPreviewGames(games, filters),
     [filters, games],
   );
   const selected =
     games.find((game) => game.slug === selectedSlug) ?? games[0];
+
+  useGSAP(
+    () => {
+      if (!motionPanel.current) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set(motionPanel.current, { opacity: 1, x: 0 });
+        return;
+      }
+      const tween = gsap.fromTo(
+        motionPanel.current,
+        { opacity: 0.2, x: 28 },
+        { opacity: 1, x: 0, duration: 0.48, ease: "power3.out" },
+      );
+      return () => tween.kill();
+    },
+    { dependencies: [selectedSlug] },
+  );
 
   function replaceGameQuery(slug: string) {
     const url = new URL(window.location.href);
@@ -61,7 +81,11 @@ export function PreviewBrowser({
   }
 
   return (
-    <section className="preview-browser" data-testid="preview-browser">
+    <section
+      className="preview-browser"
+      data-testid="preview-browser"
+      style={{ "--preview-accent": selected.accent } as CSSProperties}
+    >
       <PreviewFiltersBar
         filters={filters}
         games={games}
@@ -84,7 +108,9 @@ export function PreviewBrowser({
             selectedSlug={selectedSlug}
             onSelect={selectGame}
           />
-          <PreviewPanel game={selected} />
+          <div ref={motionPanel} className="preview-panel-motion" data-preview-motion>
+            <PreviewPanel game={selected} />
+          </div>
         </>
       )}
     </section>

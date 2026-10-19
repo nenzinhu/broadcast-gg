@@ -221,3 +221,83 @@ test("jogo sem vídeo não cria player quebrado", async ({ page }) => {
     page.getByRole("button", { name: /Assistir trailer de Próximo Mass Effect/ }),
   ).toHaveCount(0);
 });
+
+for (const width of [375, 768, 1440]) {
+  test(`Preview permanece contido em ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/preview?jogo=grand-theft-auto-vi");
+    const browser = page.getByTestId("preview-browser");
+    await expect(browser).toBeVisible();
+
+    const layout = await page.evaluate(() => ({
+      content: document.documentElement.scrollWidth,
+      viewport: document.documentElement.clientWidth,
+    }));
+    expect(layout.content).toBeLessThanOrEqual(layout.viewport);
+
+    const paragraphSizes = await browser.locator("p:visible").evaluateAll((nodes) =>
+      nodes.map((node) => Number.parseFloat(getComputedStyle(node).fontSize)),
+    );
+    expect(paragraphSizes.every((size) => size >= 14)).toBe(true);
+
+    if (width === 375) {
+      const listLayout = await browser.locator(".preview-game-list").evaluate((node) => ({
+        display: getComputedStyle(node).display,
+        overflowX: getComputedStyle(node).overflowX,
+        tops: Array.from(node.children).map((child) => (child as HTMLElement).offsetTop),
+      }));
+      expect(listLayout.display).toBe("flex");
+      expect(["auto", "scroll"]).toContain(listLayout.overflowX);
+      expect(new Set(listLayout.tops).size).toBe(1);
+    }
+  });
+}
+
+test("troca de jogo anima no movimento normal", async ({ page }) => {
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  const panel = page.locator("[data-preview-motion]");
+  await page.getByRole("option", { name: /The Witcher IV/ }).click();
+
+  const during = await panel.evaluate((node) => ({
+    opacity: getComputedStyle(node).opacity,
+    transform: getComputedStyle(node).transform,
+  }));
+  expect(during.opacity === "1" && during.transform === "none").toBe(false);
+  await expect(panel).toHaveCSS("opacity", "1");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "The Witcher IV" }),
+  ).toBeVisible();
+});
+
+test("movimento reduzido mantém conteúdo estável", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  await page.getByRole("option", { name: /The Witcher IV/ }).click();
+  const panel = page.locator("[data-preview-motion]");
+  const initial = await panel.evaluate((node) => getComputedStyle(node).transform);
+  await page.waitForTimeout(450);
+
+  expect(await panel.evaluate((node) => getComputedStyle(node).transform)).toBe(initial);
+  await expect(panel).toHaveCSS("opacity", "1");
+});
+
+test("lista funciona por teclado e trocas repetidas não geram erros", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/preview");
+  const options = page.getByTestId("preview-game-option");
+
+  await options.first().focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(options.nth(1)).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(options.nth(1)).toHaveAttribute("aria-selected", "true");
+  await expect(page).toHaveURL(/jogo=phantom-blade-zero/);
+
+  for (const title of ["The Witcher IV", "Fable", "Grand Theft Auto VI"]) {
+    await page.getByRole("option", { name: new RegExp(title) }).click();
+  }
+  expect(errors).toEqual([]);
+});

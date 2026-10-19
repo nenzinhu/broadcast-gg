@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageIntro } from "@/components/page-intro";
 import { PreviewBrowser } from "@/components/preview-browser";
 import { previewGames } from "@/lib/previews";
+import "./preview.css";
 
 export const metadata: Metadata = {
   title: "Preview",

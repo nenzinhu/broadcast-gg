@@ -123,9 +123,68 @@ img {
 }
 .brand-logo {
   display: block;
-  max-height: 110px;
+  max-height: 85px;
   width: auto;
-  filter: drop-shadow(0 0 12px rgba(0,255,154,0.35));
+  filter: drop-shadow(0 0 20px rgba(0,255,135,0.45));
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* Nome ao lado do logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  margin-top: 8px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+
+.brand-topline {
+  font-family: var(--display);
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #f1f4fb;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 8px rgba(0,255,135,0.5));
+  white-space: nowrap;
+}
+
+.brand-bottomline {
+  font-family: var(--display);
+  font-size: clamp(16px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #00ff87;
+  text-transform: uppercase;
+  margin-top: -2px;
+  filter: drop-shadow(0 0 8px rgba(0,255,135,0.6));
+  white-space: nowrap;
+}
+
+/* ===== Ondas de rádio expandidas ao clicar no logo ===== */
+.radio-onda {
+  position: absolute;
+  border: 2.5px solid rgba(0, 255, 135, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0, 255, 135, 0.45);
+  pointer-events: none;
+}
+
+.radio-flash {
+  position: absolute;
+  border: 3px solid rgba(0, 255, 135, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(0, 255, 135, 0.7);
+  pointer-events: none;
+  background: rgba(0, 255, 135, 0.12);
 }
 /* ===== Navegação principal: fonte bonita + GSAP ===== */
 .site-header nav {
@@ -181,6 +240,88 @@ img {
 }
 .nav-link.nav-link-active {
   color: var(--lime);
+}
+.nav-link.nav-link-active .nav-link-underline {
+  width: 100%;
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* ===== Texto 3D nas abas do header (GSAP) ===== */
+.nav-link,
+.nav-link-label {
+  transform-style: preserve-3d;
+}
+
+.nav-text-3d {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+.nav-text-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: var(--neon-depth, #0e1524);
+  opacity: 0.55;
+  font: inherit;
+  transform: translateZ(var(--z, 0));
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.nav-text-layer-front {
+  position: relative;
+  z-index: 4;
+  color: var(--neon-front, inherit);
+  opacity: 1;
+  transform: translateZ(var(--z, 0));
+  filter: drop-shadow(0 4px 16px var(--neon-glow, #0004));
+  text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* Cores neon por variante */
+.nav-text-3d--signals .nav-text-layer-front { color: #00ff87; text-shadow: 0 0 12px #00ff87; filter: drop-shadow(0 4px 16px #00ff87); }
+.nav-text-3d--deals .nav-text-layer-front { color: #fff700; text-shadow: 0 0 12px #fff700; filter: drop-shadow(0 4px 16px #fff700); }
+.nav-text-3d--discover .nav-text-layer-front { color: #00f2ff; text-shadow: 0 0 12px #00f2ff; filter: drop-shadow(0 4px 16px #00f2ff); }
+.nav-text-3d--launches .nav-text-layer-front { color: #ff00de; text-shadow: 0 0 12px #ff00de; filter: drop-shadow(0 4px 16px #ff00de); }
+.nav-text-3d--central .nav-text-layer-front { color: #a6ff00; text-shadow: 0 0 12px #a6ff00; filter: drop-shadow(0 4px 16px #7df0c7); }
+.nav-text-3d--radar .nav-text-layer-front { color: #b389ff; text-shadow: 0 0 12px #b389ff; filter: drop-shadow(0 4px 16px #b389ff); }
+
+/* Underline com cor neon por variante */
+.nav-link-underline {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 1;
+  transition: width 0.4s ease, transform 0.4s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.nav-link-underline--signals { background: #00ff87; box-shadow: 0 0 18px #00ff87cc; }
+.nav-link-underline--deals { background: #fff700; box-shadow: 0 0 18px #fff700cc; }
+.nav-link-underline--discover { background: #00f2ff; box-shadow: 0 0 18px #00f2ffcc; }
+.nav-link-underline--launches { background: #ff00de; box-shadow: 0 0 18px #ff00decc; }
+.nav-link-underline--central { background: #a6ff00; box-shadow: 0 0 18px #7df0c7cc; }
+.nav-link-underline--radar { background: #b389ff; box-shadow: 0 0 18px #b389ffcc; }
+
+.nav-link:hover {
+  color: var(--neon-front, var(--lime));
+}
+.nav-link:hover .nav-link-underline {
+  width: 100%;
+}
+.nav-link.nav-link-active {
+  color: var(--neon-front, var(--lime));
 }
 .nav-link.nav-link-active .nav-link-underline {
   width: 100%;
@@ -3791,4 +3932,70 @@ h1 > span {
   .order-node { width: 38px; height: 38px; }
   .order-timeline-line { left: 18px; }
   .order-entry article { padding: 15px; }
+}
+
+/* ===== Barra de carregamento no topo ===== */
+.top-progress-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  z-index: 9999;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.top-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: #00ff87;
+  box-shadow: 0 0 16px rgba(0, 255, 135, 0.7);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ===== Toast de notificação ===== */
+.toast-container {
+  position: fixed;
+  top: 120px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  background: #0b1120;
+  border: 1px solid #00ff87;
+  border-radius: 6px;
+  color: #f1f4fb;
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 135, 0.25);
+  pointer-events: auto;
+  min-width: 260px;
+  text-align: center;
+  animation: none;
+}
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(140px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* ===== Wrap de transição de rota ===== */
+.route-transition-wrap {
+  min-height: 400px;
 }

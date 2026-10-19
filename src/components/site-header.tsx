@@ -8,12 +8,14 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { NavText3D } from "@/components/nav-text-3d";
 
-const links = [
-  ["/signals", "Sinais"],
-  ["/deals", "Ofertas"],
-  ["/discover", "Descobrir"],
-  ["/launches", "Lançamentos"],
-  ["/radar", "Radar"],
+type LinkVariant = "signals" | "deals" | "discover" | "launches" | "radar";
+
+const links: { href: string; label: string; variant: LinkVariant }[] = [
+  { href: "/signals", label: "Sinais", variant: "signals" },
+  { href: "/deals", label: "Ofertas", variant: "deals" },
+  { href: "/discover", label: "Descobrir", variant: "discover" },
+  { href: "/launches", label: "Lançamentos", variant: "launches" },
+  { href: "/radar", label: "Radar", variant: "radar" },
 ];
 
 export function SiteHeader() {
@@ -140,7 +142,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
         aria-label="Navegação principal"
         className={open ? "is-open" : ""}
       >
-        {links.map(([href, label]) => {
+        {links.map(({ href, label, variant }) => {
           const active = pathname === href;
           return (
             <Link
@@ -154,7 +156,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
               }}
             >
               <span className="nav-link-label">
-                <NavText3D>{label}</NavText3D>
+                <NavText3D variant={variant}>{label}</NavText3D>
               </span>
               <span
                 ref={active
@@ -165,7 +167,7 @@ function HeaderContent({ pathname }: { pathname: string }) {
                       };
                     }
                   : undefined}
-                className="nav-link-underline"
+                className={`nav-link-underline nav-link-underline--${variant}`}
                 aria-hidden="true"
               />
             </Link>

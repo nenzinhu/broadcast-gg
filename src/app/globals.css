@@ -209,8 +209,8 @@ img {
   left: 0;
   top: 0;
   width: 100%;
-  color: #0e1524;
-  opacity: 0.5;
+  color: var(--neon-depth, #0e1524);
+  opacity: 0.55;
   font: inherit;
   transform: translateZ(var(--z, 0));
   pointer-events: none;
@@ -221,10 +221,54 @@ img {
 .nav-text-layer-front {
   position: relative;
   z-index: 4;
-  color: inherit;
+  color: var(--neon-front, inherit);
   opacity: 1;
   transform: translateZ(var(--z, 0));
-  filter: drop-shadow(0 4px 10px #0004);
+  filter: drop-shadow(0 4px 16px var(--neon-glow, #0004));
+  text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* Cores neon por variante */
+.nav-text-3d--signals .nav-text-layer-front { color: #00ff87; text-shadow: 0 0 12px #00ff87; filter: drop-shadow(0 4px 16px #00ff87); }
+.nav-text-3d--deals .nav-text-layer-front { color: #fff700; text-shadow: 0 0 12px #fff700; filter: drop-shadow(0 4px 16px #fff700); }
+.nav-text-3d--discover .nav-text-layer-front { color: #00f2ff; text-shadow: 0 0 12px #00f2ff; filter: drop-shadow(0 4px 16px #00f2ff); }
+.nav-text-3d--launches .nav-text-layer-front { color: #ff00de; text-shadow: 0 0 12px #ff00de; filter: drop-shadow(0 4px 16px #ff00de); }
+.nav-text-3d--radar .nav-text-layer-front { color: #b389ff; text-shadow: 0 0 12px #b389ff; filter: drop-shadow(0 4px 16px #b389ff); }
+
+/* Underline com cor neon por variante */
+.nav-link-underline {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 1;
+  transition: width 0.4s ease, transform 0.4s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.nav-link-underline--signals { background: #00ff87; box-shadow: 0 0 18px #00ff87cc; }
+.nav-link-underline--deals { background: #fff700; box-shadow: 0 0 18px #fff700cc; }
+.nav-link-underline--discover { background: #00f2ff; box-shadow: 0 0 18px #00f2ffcc; }
+.nav-link-underline--launches { background: #ff00de; box-shadow: 0 0 18px #ff00decc; }
+.nav-link-underline--radar { background: #b389ff; box-shadow: 0 0 18px #b389ffcc; }
+
+.nav-link:hover {
+  color: var(--neon-front, var(--lime));
+}
+.nav-link:hover .nav-link-underline {
+  width: 100%;
+}
+.nav-link.nav-link-active {
+  color: var(--neon-front, var(--lime));
+}
+.nav-link.nav-link-active .nav-link-underline {
+  width: 100%;
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 6px;
+  border-radius: 4px;
 }
 
 /* Animação de entrada dos links no mobile */

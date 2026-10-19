@@ -28,6 +28,8 @@ function HeaderContent({ pathname }: { pathname: string }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const brandToplineRef = useRef<HTMLSpanElement>(null);
+  const brandBottomlineRef = useRef<HTMLSpanElement>(null);
   const navRefs = useRef<Map<string, HTMLElement>>(new Map());
   const underlineRef = useRef<HTMLElement | null>(null);
   const close = () => setOpen(false);
@@ -47,12 +49,45 @@ function HeaderContent({ pathname }: { pathname: string }) {
     return () => tween.kill();
   }, []);
 
+  // Animação de entrada do nome do site (BROADCAST GAMES)
+  useGSAP(() => {
+    if (!brandToplineRef.current || !brandBottomlineRef.current) return;
+    const tl = gsap.timeline();
+    tl.fromTo(
+      brandToplineRef.current,
+      { opacity: 0, y: 20, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.7)" }
+    )
+      .fromTo(
+        brandBottomlineRef.current,
+        { opacity: 0, y: 20, scale: 0.8 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.7)" },
+        "-=0.3"
+      );
+  }, []);
+
+  // Brilho pulsante contínuo no nome do site
+  useGSAP(() => {
+    if (!brandToplineRef.current || !brandBottomlineRef.current) return;
+    const tl = gsap.timeline({ repeat: -1, yoyo: true });
+    tl.to(
+      [brandToplineRef.current, brandBottomlineRef.current],
+      {
+        filter: "drop-shadow(0 0 20px rgba(0,255,135,0.9))",
+        textShadow: "0 0 12px rgba(0,255,135,0.7)",
+        duration: 1.2,
+        ease: "sine.inOut",
+      },
+      0
+    );
+  }, []);
+
   // Animação de ondas de rádio se expandindo ao clicar no logo
   const handleLogoClick = useCallback(() => {
     if (!containerRef.current || !logoRef.current) return;
 
-    // Efeito de ativação no logo
-    gsap.to(logoRef.current, {
+    // Efeito de ativação no logo + nome
+    gsap.to([logoRef.current, brandToplineRef.current, brandBottomlineRef.current], {
       scale: 1.08,
       rotation: 4,
       duration: 0.15,
@@ -213,8 +248,18 @@ function HeaderContent({ pathname }: { pathname: string }) {
             style={{ display: "block", borderRadius: "12px" }}
           />
           <div className="brand-text">
-            <span className="brand-topline">BROADCAST</span>
-            <span className="brand-bottomline">GAMES</span>
+            <span
+              ref={brandToplineRef}
+              className="brand-topline"
+            >
+              BROADCAST
+            </span>
+            <span
+              ref={brandBottomlineRef}
+              className="brand-bottomline"
+            >
+              GAMES
+            </span>
           </div>
         </div>
       </Link>

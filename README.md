@@ -2,7 +2,7 @@
 
 O que mudou. O que importa. O que jogar.
 
-Plataforma frontend gamer em Next.js App Router, TypeScript e GSAP. Inclui Live Signals com filtros, Price Radar, Decision Engine BUY/WAIT/SKIP, radar pessoal persistido no navegador e Discover com detalhes acessíveis.
+Plataforma frontend gamer em Next.js App Router, TypeScript e GSAP. Inclui Live Signals com filtros, Price Radar, Decision Engine BUY/WAIT/SKIP, radar pessoal persistido no navegador, Discover e uma central editorial de jogos futuros.
 
 ## Desenvolvimento
 
@@ -30,6 +30,7 @@ npm run start
 - `/signals`: busca por jogo e filtros de preço, atualização e tendência.
 - `/deals`: busca e ordenação por preço ou desconto.
 - `/discover`: curadoria com busca e filtro de gênero.
+- `/preview`: central editorial interativa com 18 jogos aguardados, filtros, fatos confirmados, rumores identificados, fotos e trailers.
 - `/central`: Radar de Catálogo, análise de retorno e ordem para jogar franquias.
 - `/radar`: favoritos compartilhados entre páginas e persistidos no navegador.
 - `/games/[slug]`: páginas individuais, análise demonstrativa e acompanhamento. Slug desconhecido retorna 404.
@@ -56,6 +57,8 @@ As animações respeitam `prefers-reduced-motion`; diálogos suportam teclado, E
 ## Mídia real
 
 Cada jogo tem capa/destaque da Steam, trailer incorporado do YouTube após clique e uma galeria ampliável. `/api/games/[slug]/media` consulta as capturas publicadas na Steam, valida seus endereços e mantém cache de uma hora. Falhas mostram uma mensagem e opção de tentar novamente; não são substituídas por gameplay inventado.
+
+Em `/preview`, imagens e vídeos são carregados sob demanda a partir dos canais oficiais no YouTube. A curadoria separa fatos confirmados de rumores e mostra as fontes e a data da última revisão editorial. Quando ainda não existe vídeo oficial confiável, a interface informa a indisponibilidade em vez de criar um player quebrado.
 
 O ambiente de desenvolvimento bloqueou Steam e YouTube durante a validação. Os testes de player e galeria usam fixtures controladas e verificam interação, acessibilidade e recuperação de falhas; não comprovam disponibilidade ou reprodução dos vídeos externos. Foi salvo um rascunho de configuração de rede para revisão, salvamento e publicação nas configurações do ambiente, permitindo:
 

@@ -136,19 +136,23 @@ export function PreviewMedia({ game }: { game: PreviewGame }) {
         >
           <X aria-hidden="true" />
         </button>
-        {selected && !failedImages.has(selected.src) ? (
-          <Image
-            src={selected.src}
-            alt={selected.alt}
-            width={1280}
-            height={720}
-            unoptimized
-            onError={() => {
-              markFailed(selected.src);
-              dialog.current?.close();
-            }}
-          />
-        ) : null}
+        {selected &&
+          (failedImages.has(selected.src) ? (
+            <div className="preview-dialog-fallback" role="img" aria-label={`Foto indisponível de ${game.title}`}>
+              <ImageOff aria-hidden="true" />
+              <strong>{game.title}</strong>
+              <span>FOTO INDISPONÍVEL</span>
+            </div>
+          ) : (
+            <Image
+              src={selected.src}
+              alt={selected.alt}
+              width={1280}
+              height={720}
+              unoptimized
+              onError={() => markFailed(selected.src)}
+            />
+          ))}
       </dialog>
     </section>
   );

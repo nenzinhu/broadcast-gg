@@ -81,7 +81,9 @@ test("busca sem diferenciar acentos e combina filtros", async ({ page }) => {
   ).toBeVisible();
 
   await browser.getByRole("button", { name: "Limpar filtros" }).click();
-  await browser.getByLabel("Plataforma").selectOption("PlayStation 5");
+  await browser
+    .getByRole("combobox", { name: "Plataforma", exact: true })
+    .selectOption("PlayStation 5");
   await browser.getByLabel("Gênero").selectOption("Ação");
   await browser.getByLabel("Situação").selectOption("confirmed");
 
@@ -111,7 +113,9 @@ test("filtro que remove a seleção escolhe o primeiro resultado", async ({
   await browser.getByRole("option", { name: /Fable/ }).click();
   await expect(page).toHaveURL(/jogo=fable/);
 
-  await browser.getByLabel("Plataforma").selectOption("PlayStation 5");
+  await browser
+    .getByRole("combobox", { name: "Plataforma", exact: true })
+    .selectOption("PlayStation 5");
 
   await expect(
     browser.getByRole("option", { name: /Grand Theft Auto VI/ }),

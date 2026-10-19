@@ -118,3 +118,42 @@ test("filtro que remove a seleção escolhe o primeiro resultado", async ({
   ).toHaveAttribute("aria-selected", "true");
   await expect(page).toHaveURL(/jogo=grand-theft-auto-vi/);
 });
+
+test("painel apresenta contexto e fatos ligados às fontes", async ({ page }) => {
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  const panel = page.getByRole("article", {
+    name: "Preview de Grand Theft Auto VI",
+  });
+
+  await expect(panel).toContainText("Lucia e Jason");
+  await expect(panel).toContainText("POR QUE IMPORTA");
+  await expect(panel).toContainText("PlayStation 5");
+  await expect(panel).toContainText("19 de novembro de 2026");
+  await expect(
+    panel.getByRole("heading", { name: "O que está confirmado" }),
+  ).toBeVisible();
+  await expect(
+    panel.getByRole("link", { name: /Canal oficial de Rockstar Games/ }),
+  ).toHaveAttribute("target", "_blank");
+});
+
+test("rumor nunca aparece como confirmado", async ({ page }) => {
+  await page.goto("/preview?jogo=wolf-among-us-remastered");
+  const panel = page.getByRole("article", {
+    name: "Preview de The Wolf Among Us Remastered",
+  });
+
+  await expect(panel.getByText("RUMOR NÃO CONFIRMADO", { exact: true })).toBeVisible();
+  await expect(
+    panel.getByRole("heading", { name: "O que ainda é rumor" }),
+  ).toBeVisible();
+  await expect(panel).toContainText("CONFIANÇA BAIXA");
+  await expect(panel.getByText("CONFIRMADO", { exact: true })).toHaveCount(0);
+});
+
+test("jogo sem rumores informa ausência de sinais", async ({ page }) => {
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  await expect(
+    page.getByText("Nenhum rumor com evidência suficiente no radar."),
+  ).toBeVisible();
+});

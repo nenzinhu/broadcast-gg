@@ -8,6 +8,7 @@ import {
 } from "@/lib/previews";
 import { PreviewFiltersBar } from "@/components/preview-filters";
 import { PreviewGameList } from "@/components/preview-game-list";
+import { PreviewPanel } from "@/components/preview-panel";
 
 const emptyFilters: PreviewFilters = {
   query: "",
@@ -83,11 +84,7 @@ export function PreviewBrowser({
             selectedSlug={selectedSlug}
             onSelect={selectGame}
           />
-          <article className="preview-panel" aria-label={`Preview de ${selected.title}`}>
-            <span>PREVIEW SIGNAL</span>
-            <h2>{selected.title}</h2>
-            <p>{selected.summary}</p>
-          </article>
+          <PreviewPanel game={selected} />
         </>
       )}
     </section>

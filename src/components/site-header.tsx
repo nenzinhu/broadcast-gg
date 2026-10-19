@@ -27,50 +27,123 @@ function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const logoRef = useRef<SVGSVGElement>(null);
-  const naveRef = useRef<SVGRectElement>(null);
-  const tiroRef = useRef<SVGCircleElement>(null);
-  const explosaoRef = useRef<SVGCircleElement>(null);
-  const grupoTiroRef = useRef<SVGGElement>(null);
   const navRefs = useRef<Map<string, HTMLElement>>(new Map());
   const underlineRef = useRef<HTMLElement | null>(null);
   const close = () => setOpen(false);
+
+  // Refs dos elementos do jogo Atari
+  const navesRef = useRef<SVGGElement>(null);
+  const tirosRef = useRef<SVGGElement>(null);
+  const explosoesRef = useRef<SVGGElement>(null);
 
   // Logo animação sutil (joystick flutuando)
   useGSAP(() => {
     if (!logoRef.current) return;
     const tween = gsap.to(logoRef.current, {
-      rotation: 5,
+      y: -6,
+      rotation: 4,
       repeat: -1,
       yoyo: true,
-      duration: 1.4,
+      duration: 1.6,
       ease: "sine.inOut",
       transformOrigin: "center center",
     });
     return () => tween.kill();
   }, []);
 
-  // Animação de tiro do Atari no hover do logo
+  // Animação Atari: ao tocar, naves surgem e o controle dispara tiros com explosões
   const handleLogoEnter = useCallback(() => {
-    if (!grupoTiroRef.current || !naveRef.current || !tiroRef.current || !explosaoRef.current) return;
-    const tl = gsap.timeline();
-    tl.to(grupoTiroRef.current, { opacity: 1, duration: 0.15 })
-      .to(naveRef.current, { y: -4, duration: 0.08, yoyo: true, repeat: 1 }, 0)
-      .to(tiroRef.current, { x: 170, duration: 0.55, ease: "power2.out" }, 0.1)
+    if (!navesRef.current || !tirosRef.current || !explosoesRef.current) return;
+
+    // Limpa estados anteriores
+    gsap.killTweensOf([navesRef.current, tirosRef.current, explosoesRef.current]);
+    gsap.set(navesRef.current, { opacity: 1 });
+    gsap.set(tirosRef.current, { opacity: 0 });
+    gsap.set(explosoesRef.current, { opacity: 0 });
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    // Nave esquerda aparece e se move
+    tl.to(
+      navesRef.current,
+      {
+        attr: { transform: "translate(20, 40)" },
+        opacity: 1,
+        duration: 0.5,
+        ease: "power2.out",
+      },
+      0
+    )
+      // Tiro da esquerda
       .to(
-        explosaoRef.current,
-        { r: 14, opacity: 0, duration: 0.25, ease: "power2.out" },
-        0.55
+        tirosRef.current,
+        {
+          attr: { transform: "translate(60, 48)" },
+          opacity: 1,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        0.6
       )
-      .to(grupoTiroRef.current, { opacity: 0, duration: 0.2 }, 0.85);
-    // guarda a timeline para matar no leave se necessário
-    (grupoTiroRef.current as any)._tl = tl;
+      // Explosão nave esquerda
+      .to(
+        explosoesRef.current,
+        {
+          attr: { cx: 70, cy: 48, r: 0 },
+          opacity: 1,
+          duration: 0.05,
+        },
+        0.95
+      )
+      .to(
+        explosoesRef.current,
+        { attr: { r: 10 }, opacity: 0, duration: 0.25, ease: "power2.out" },
+        1
+      )
+      // Nave direita aparece e se move
+      .to(
+        navesRef.current,
+        {
+          attr: { transform: "translate(160, 40)" },
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        1.5
+      )
+      // Tiro da direita
+      .to(
+        tirosRef.current,
+        {
+          attr: { transform: "translate(130, 48)" },
+          opacity: 1,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        2.1
+      )
+      // Explosão nave direita
+      .to(
+        explosoesRef.current,
+        {
+          attr: { cx: 120, cy: 48, r: 0 },
+          opacity: 1,
+          duration: 0.05,
+        },
+        2.45
+      )
+      .to(
+        explosoesRef.current,
+        { attr: { r: 10 }, opacity: 0, duration: 0.25, ease: "power2.out" },
+        2.5
+      );
   }, []);
 
   const handleLogoLeave = useCallback(() => {
-    gsap.killTweensOf([naveRef.current, tiroRef.current, explosaoRef.current, grupoTiroRef.current]);
-    gsap.set(grupoTiroRef.current, { opacity: 0 });
-    gsap.set(tiroRef.current, { x: 110 });
-    gsap.set(explosaoRef.current, { r: 0, opacity: 0 });
+    gsap.killTweensOf([navesRef.current, tirosRef.current, explosoesRef.current]);
+    gsap.set(navesRef.current, { opacity: 0, attr: { transform: "translate(0,0)" } });
+    gsap.set(tirosRef.current, { opacity: 0, attr: { transform: "translate(0,0)" } });
+    gsap.set(explosoesRef.current, { opacity: 0, attr: { r: 0 } });
   }, []);
 
   // Animação de entrada dos links quando o menu abre (mobile) com stagger
@@ -148,66 +221,60 @@ function HeaderContent({ pathname }: { pathname: string }) {
         <svg
           ref={logoRef}
           className="brand-logo"
-          viewBox="0 0 200 180"
+          viewBox="0 0 220 200"
           aria-label="broadcastganes.com.br"
           role="img"
           onMouseEnter={handleLogoEnter}
           onMouseLeave={handleLogoLeave}
           style={{ cursor: "pointer", display: "block" }}
         >
-          {/* Base do joystick Atari */}
-          <rect x="38" y="105" width="124" height="52" rx="14" fill="#0b1120" stroke="#00ff87" strokeWidth="2.5" />
-          <rect x="52" y="114" width="96" height="10" rx="5" fill="#151e30" />
+          {/* Ondas de Wi-Fi - lado esquerdo */}
+          <path d="M30 80 Q45 65 60 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
+          <path d="M25 80 Q50 45 75 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+          <path d="M20 80 Q55 25 90 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
+
+          {/* Ondas de Wi-Fi - lado direito */}
+          <path d="M190 80 Q175 65 160 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
+          <path d="M195 80 Q170 45 145 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+          <path d="M200 80 Q165 25 130 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
+
+          {/* Base do joystick Atari (maior) */}
+          <rect x="34" y="112" width="152" height="60" rx="18" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
+          <rect x="50" y="122" width="120" height="14" rx="7" fill="#151e30" />
           {/* Detalhe frontal da base */}
-          <rect x="70" y="126" width="60" height="14" rx="4" fill="#151e30" stroke="#00ff87" strokeWidth="1" />
+          <rect x="74" y="138" width="72" height="18" rx="5" fill="#151e30" stroke="#00ff87" strokeWidth="1.5" />
 
-          {/* Haste do joystick */}
-          <rect x="86" y="62" width="28" height="44" rx="8" fill="#0b1120" stroke="#00ff87" strokeWidth="2.5" />
-          {/* Bola do joystick */}
-          <circle cx="100" cy="56" r="16" fill="#00ff87" stroke="#ffffff" strokeWidth="1.5" />
-          <circle cx="96" cy="52" r="4" fill="#ffffff" opacity="0.9" />
+          {/* Haste do joystick (maior) */}
+          <rect x="94" y="60" width="32" height="54" rx="10" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
+          {/* Bola do joystick (maior) */}
+          <circle cx="110" cy="52" r="20" fill="#00ff87" stroke="#ffffff" strokeWidth="2" />
+          <circle cx="104" cy="46" r="5" fill="#ffffff" opacity="0.9" />
 
-          {/* Antena Wi-Fi saindo da bola */}
-          <line x1="100" y1="56" x2="100" y2="32" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M86 32 Q100 22 114 32" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
-          <path d="M74 32 Q100 14 126 32" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-          <path d="M62 32 Q100 6 138 32" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.45" />
+          {/* Antena Wi-Fi central */}
+          <line x1="110" y1="52" x2="110" y2="30" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" />
+          <path d="M94 30 Q110 18 126 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.9" />
+          <path d="M80 30 Q110 10 140 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
+          <path d="M66 30 Q110 0 154 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.45" />
 
-          {/* Grupo tiro Atari - nave atirando */}
-          <g
-            ref={grupoTiroRef}
-            opacity="0"
-          >
-            {/* Nave */}
-            <rect
-              ref={naveRef}
-              x="92"
-              y="22"
-              width="16"
-              height="10"
-              rx="2"
-              fill="#fff700"
-            />
-            <rect x="96" y="24" width="8" height="6" rx="1" fill="#0b1120" />
-            {/* Tiro */}
-            <circle
-              ref={tiroRef}
-              cx="110"
-              cy="27"
-              r="3"
-              fill="#ff00de"
-            />
-            {/* Explosão ao final do trajeto */}
-            <circle
-              ref={explosaoRef}
-              cx="170"
-              cy="27"
-              r="0"
-              fill="none"
-              stroke="#fff700"
-              strokeWidth="2.5"
-              opacity="0"
-            />
+          {/* Naves Atari (alvos) */}
+          <g ref={navesRef} opacity="0">
+            {/* Nave esquerda */}
+            <rect x="18" y="36" width="18" height="10" rx="2" fill="#fff700" />
+            <rect x="22" y="38" width="10" height="6" rx="1" fill="#0b1120" />
+            {/* Nave direita */}
+            <rect x="184" y="36" width="18" height="10" rx="2" fill="#ff00de" />
+            <rect x="188" y="38" width="10" height="6" rx="1" fill="#0b1120" />
+          </g>
+
+          {/* Tiros */}
+          <g ref={tirosRef} opacity="0">
+            <circle cx="56" y="44" r="3" fill="#00ff87" />
+            <circle cx="154" y="44" r="3" fill="#ff00de" />
+          </g>
+
+          {/* Explosões */}
+          <g ref={explosoesRef} opacity="0">
+            <circle cx="70" cy="44" r="0" fill="none" stroke="#fff700" strokeWidth="3" />
           </g>
         </svg>
       </Link>

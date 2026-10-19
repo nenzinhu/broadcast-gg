@@ -130,8 +130,8 @@ img {
   transition: transform 0.2s ease;
 }
 
-/* ===== Ondas Wi-Fi expandidas ao clicar no logo Atari ===== */
-.wifi-onda {
+/* ===== Ondas de rádio expandidas ao clicar no logo ===== */
+.radio-onda {
   position: absolute;
   border: 2.5px solid rgba(0, 255, 135, 0.7);
   border-radius: 50%;
@@ -139,7 +139,7 @@ img {
   pointer-events: none;
 }
 
-.wifi-flash {
+.radio-flash {
   position: absolute;
   border: 3px solid rgba(0, 255, 135, 0.9);
   border-radius: 50%;

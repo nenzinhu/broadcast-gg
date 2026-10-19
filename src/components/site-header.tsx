@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ArrowUpRight, Menu, ScanLine, X } from "lucide-react";
@@ -25,7 +26,7 @@ export function SiteHeader() {
 function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-  const logoRef = useRef<SVGSVGElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navRefs = useRef<Map<string, HTMLElement>>(new Map());
   const underlineRef = useRef<HTMLElement | null>(null);
@@ -46,13 +47,14 @@ function HeaderContent({ pathname }: { pathname: string }) {
     return () => tween.kill();
   }, []);
 
-  // Animação criativa de expansão Wi-Fi ao clicar no logo Atari
+  // Animação de ondas de rádio se expandindo ao clicar no logo
   const handleLogoClick = useCallback(() => {
     if (!containerRef.current || !logoRef.current) return;
 
+    // Efeito de ativação no logo
     gsap.to(logoRef.current, {
-      scale: 1.06,
-      rotation: 3,
+      scale: 1.08,
+      rotation: 4,
       duration: 0.15,
       yoyo: true,
       repeat: 1,
@@ -60,18 +62,19 @@ function HeaderContent({ pathname }: { pathname: string }) {
       transformOrigin: "center center",
     });
 
-    const ondaIds = [++ondaCounter.current, ++ondaCounter.current, ++ondaCounter.current];
-    const delays = [0, 0.12, 0.24];
+    // Gera 4 ondas de rádio concêntricas a partir do centro do logo
+    const ondaIds = [++ondaCounter.current, ++ondaCounter.current, ++ondaCounter.current, ++ondaCounter.current];
+    const delays = [0, 0.1, 0.2, 0.3];
 
     ondaIds.forEach((_id, i) => {
       const onda = document.createElement("div");
-      onda.className = "wifi-onda";
+      onda.className = "radio-onda";
       containerRef.current!.appendChild(onda);
 
       const rect = containerRef.current!.getBoundingClientRect();
       const imgRect = logoRef.current!.getBoundingClientRect();
       const cx = imgRect.left - rect.left + imgRect.width / 2;
-      const cy = imgRect.top - rect.top + imgRect.height / 2 - 10;
+      const cy = imgRect.top - rect.top + imgRect.height / 2;
       onda.style.left = `${cx}px`;
       onda.style.top = `${cy}px`;
       onda.style.width = "0";
@@ -79,9 +82,9 @@ function HeaderContent({ pathname }: { pathname: string }) {
 
       const tl = gsap.timeline();
       tl.to(onda, {
-        "--s": 2.6,
+        "--s": 3.2,
         "--o": 0,
-        duration: 1.1,
+        duration: 1.4,
         ease: "power2.out",
         onUpdate: () => {
           const s = parseFloat(getComputedStyle(onda).getPropertyValue("--s").trim()) || 1;
@@ -93,22 +96,23 @@ function HeaderContent({ pathname }: { pathname: string }) {
       }, delays[i]);
     });
 
+    // Flash central ao clicar
     const flash = document.createElement("div");
-    flash.className = "wifi-flash";
+    flash.className = "radio-flash";
     containerRef.current!.appendChild(flash);
     const cx2 = logoRef.current!.getBoundingClientRect().left -
       containerRef.current!.getBoundingClientRect().left +
       logoRef.current!.getBoundingClientRect().width / 2;
     const cy2 = logoRef.current!.getBoundingClientRect().top -
       containerRef.current!.getBoundingClientRect().top +
-      logoRef.current!.getBoundingClientRect().height / 2 - 10;
+      logoRef.current!.getBoundingClientRect().height / 2;
     flash.style.left = `${cx2}px`;
     flash.style.top = `${cy2}px`;
 
     gsap.to(flash, {
-      "--r": 60,
+      "--r": 70,
       "--o": 0,
-      duration: 0.5,
+      duration: 0.6,
       ease: "power2.out",
       onUpdate: () => {
         const r = parseFloat(getComputedStyle(flash).getPropertyValue("--r").trim()) || 0;
@@ -198,41 +202,16 @@ function HeaderContent({ pathname }: { pathname: string }) {
           onClick={handleLogoClick}
           style={{ cursor: "pointer", position: "relative", display: "inline-block" }}
         >
-          <svg
+          <Image
             ref={logoRef}
+            src="/logo-radio.png"
+            alt="broadcastganes.com.br"
             className="brand-logo"
-            viewBox="0 0 220 200"
-            aria-label="broadcastganes.com.br"
-            role="img"
-            style={{ display: "block" }}
-          >
-            {/* Ondas de Wi-Fi - lado esquerdo */}
-            <path d="M30 80 Q45 65 60 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-            <path d="M25 80 Q50 45 75 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
-            <path d="M20 80 Q55 25 90 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-
-            {/* Ondas de Wi-Fi - lado direito */}
-            <path d="M190 80 Q175 65 160 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-            <path d="M195 80 Q170 45 145 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
-            <path d="M200 80 Q165 25 130 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-
-            {/* Base do joystick Atari */}
-            <rect x="34" y="112" width="152" height="60" rx="18" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
-            <rect x="50" y="122" width="120" height="14" rx="7" fill="#151e30" />
-            <rect x="74" y="138" width="72" height="18" rx="5" fill="#151e30" stroke="#00ff87" strokeWidth="1.5" />
-
-            {/* Haste do joystick */}
-            <rect x="94" y="60" width="32" height="54" rx="10" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
-            {/* Bola do joystick */}
-            <circle cx="110" cy="52" r="20" fill="#00ff87" stroke="#ffffff" strokeWidth="2" />
-            <circle cx="104" cy="46" r="5" fill="#ffffff" opacity="0.9" />
-
-            {/* Antena Wi-Fi central */}
-            <line x1="110" y1="52" x2="110" y2="30" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" />
-            <path d="M94 30 Q110 18 126 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.9" />
-            <path d="M80 30 Q110 10 140 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-            <path d="M66 30 Q110 0 154 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.45" />
-          </svg>
+            width={400}
+            height={400}
+            priority
+            style={{ display: "block", borderRadius: "12px" }}
+          />
         </div>
       </Link>
       <button

@@ -26,124 +26,106 @@ export function SiteHeader() {
 function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-  const logoRef = useRef<SVGSVGElement>(null);
   const navRefs = useRef<Map<string, HTMLElement>>(new Map());
   const underlineRef = useRef<HTMLElement | null>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const close = () => setOpen(false);
 
-  // Refs dos elementos do jogo Atari
-  const navesRef = useRef<SVGGElement>(null);
-  const tirosRef = useRef<SVGGElement>(null);
-  const explosoesRef = useRef<SVGGElement>(null);
+  // Contador de ondas Wi-Fi ativas (para gerar IDs únicos)
+  const ondaCounter = useRef(0);
 
-  // Logo animação sutil (joystick flutuando)
+  // Animação sutil de flutuação do logo (sempre ativa)
   useGSAP(() => {
     if (!logoRef.current) return;
     const tween = gsap.to(logoRef.current, {
-      y: -6,
-      rotation: 4,
+      y: -5,
       repeat: -1,
       yoyo: true,
-      duration: 1.6,
+      duration: 1.8,
       ease: "sine.inOut",
       transformOrigin: "center center",
     });
     return () => tween.kill();
   }, []);
 
-  // Animação Atari: ao tocar, naves surgem e o controle dispara tiros com explosões
-  const handleLogoEnter = useCallback(() => {
-    if (!navesRef.current || !tirosRef.current || !explosoesRef.current) return;
+  // Animação criativa de expansão Wi-Fi ao clicar no logo
+  const handleLogoClick = useCallback(() => {
+    if (!containerRef.current || !logoRef.current) return;
 
-    // Limpa estados anteriores
-    gsap.killTweensOf([navesRef.current, tirosRef.current, explosoesRef.current]);
-    gsap.set(navesRef.current, { opacity: 1 });
-    gsap.set(tirosRef.current, { opacity: 0 });
-    gsap.set(explosoesRef.current, { opacity: 0 });
+    // Efeito de "ativação": escala rápida + rotação leve
+    gsap.to(logoRef.current, {
+      scale: 1.06,
+      rotation: 3,
+      duration: 0.15,
+      yoyo: true,
+      repeat: 1,
+      ease: "power2.out",
+      transformOrigin: "center center",
+    });
 
-    const tl = gsap.timeline({ repeat: -1 });
+    // Cria 3 ondas Wi-Fi concêntricas que se expandem a partir do centro do controle
+    const ondaIds = [++ondaCounter.current, ++ondaCounter.current, ++ondaCounter.current];
+    const delays = [0, 0.12, 0.24];
 
-    // Nave esquerda aparece e se move
-    tl.to(
-      navesRef.current,
-      {
-        attr: { transform: "translate(20, 40)" },
-        opacity: 1,
-        duration: 0.5,
+    ondaIds.forEach((id, i) => {
+      const onda = document.createElement("div");
+      onda.className = "wifi-onda";
+      onda.style.setProperty("--onda-id", String(id));
+      containerRef.current!.appendChild(onda);
+
+      const rect = containerRef.current!.getBoundingClientRect();
+      const imgRect = logoRef.current!.getBoundingClientRect();
+      // Centraliza a onda no meio do controle da imagem
+      const cx = imgRect.left - rect.left + imgRect.width / 2;
+      const cy = imgRect.top - rect.top + imgRect.height / 2 - 10;
+      onda.style.left = `${cx}px`;
+      onda.style.top = `${cy}px`;
+      onda.style.width = "0";
+      onda.style.height = "0";
+
+      const tl = gsap.timeline();
+      tl.to(onda, {
+        "--s": 2.6,
+        "--o": 0,
+        duration: 1.1,
         ease: "power2.out",
-      },
-      0
-    )
-      // Tiro da esquerda
-      .to(
-        tirosRef.current,
-        {
-          attr: { transform: "translate(60, 48)" },
-          opacity: 1,
-          duration: 0.35,
-          ease: "power2.out",
+        onUpdate: () => {
+          const s = parseFloat(getComputedStyle(onda).getPropertyValue("--s").trim()) || 1;
+          const o = parseFloat(getComputedStyle(onda).getPropertyValue("--o").trim()) || 1;
+          onda.style.transform = `translate(-50%, -50%) scale(${s})`;
+          onda.style.opacity = String(o);
         },
-        0.6
-      )
-      // Explosão nave esquerda
-      .to(
-        explosoesRef.current,
-        {
-          attr: { cx: 70, cy: 48, r: 0 },
-          opacity: 1,
-          duration: 0.05,
+        onComplete: () => {
+          onda.remove();
         },
-        0.95
-      )
-      .to(
-        explosoesRef.current,
-        { attr: { r: 10 }, opacity: 0, duration: 0.25, ease: "power2.out" },
-        1
-      )
-      // Nave direita aparece e se move
-      .to(
-        navesRef.current,
-        {
-          attr: { transform: "translate(160, 40)" },
-          opacity: 1,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        1.5
-      )
-      // Tiro da direita
-      .to(
-        tirosRef.current,
-        {
-          attr: { transform: "translate(130, 48)" },
-          opacity: 1,
-          duration: 0.35,
-          ease: "power2.out",
-        },
-        2.1
-      )
-      // Explosão nave direita
-      .to(
-        explosoesRef.current,
-        {
-          attr: { cx: 120, cy: 48, r: 0 },
-          opacity: 1,
-          duration: 0.05,
-        },
-        2.45
-      )
-      .to(
-        explosoesRef.current,
-        { attr: { r: 10 }, opacity: 0, duration: 0.25, ease: "power2.out" },
-        2.5
-      );
-  }, []);
+      }, delays[i]);
+    });
 
-  const handleLogoLeave = useCallback(() => {
-    gsap.killTweensOf([navesRef.current, tirosRef.current, explosoesRef.current]);
-    gsap.set(navesRef.current, { opacity: 0, attr: { transform: "translate(0,0)" } });
-    gsap.set(tirosRef.current, { opacity: 0, attr: { transform: "translate(0,0)" } });
-    gsap.set(explosoesRef.current, { opacity: 0, attr: { r: 0 } });
+    // Flash de luz central no clique
+    const flash = document.createElement("div");
+    flash.className = "wifi-flash";
+    containerRef.current!.appendChild(flash);
+    const rect = containerRef.current!.getBoundingClientRect();
+    const imgRect = logoRef.current!.getBoundingClientRect();
+    const cx = imgRect.left - rect.left + imgRect.width / 2;
+    const cy = imgRect.top - rect.top + imgRect.height / 2 - 10;
+    flash.style.left = `${cx}px`;
+    flash.style.top = `${cy}px`;
+
+    gsap.to(flash, {
+      "--r": 60,
+      "--o": 0,
+      duration: 0.5,
+      ease: "power2.out",
+      onUpdate: () => {
+        const r = parseFloat(getComputedStyle(flash).getPropertyValue("--r").trim()) || 0;
+        const o = parseFloat(getComputedStyle(flash).getPropertyValue("--o").trim()) || 1;
+        flash.style.transform = `translate(-50%, -50%) scale(${r / 20})`;
+        flash.style.opacity = String(o);
+      },
+      onComplete: () => flash.remove(),
+    });
   }, []);
 
   // Animação de entrada dos links quando o menu abre (mobile) com stagger
@@ -218,65 +200,23 @@ function HeaderContent({ pathname }: { pathname: string }) {
         aria-label="broadcastganes.com.br início"
         onClick={close}
       >
-        <svg
-          ref={logoRef}
-          className="brand-logo"
-          viewBox="0 0 220 200"
-          aria-label="broadcastganes.com.br"
-          role="img"
-          onMouseEnter={handleLogoEnter}
-          onMouseLeave={handleLogoLeave}
-          style={{ cursor: "pointer", display: "block" }}
+        <div
+          ref={containerRef}
+          className="logo-container"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer", position: "relative", display: "inline-block" }}
         >
-          {/* Ondas de Wi-Fi - lado esquerdo */}
-          <path d="M30 80 Q45 65 60 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-          <path d="M25 80 Q50 45 75 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
-          <path d="M20 80 Q55 25 90 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-
-          {/* Ondas de Wi-Fi - lado direito */}
-          <path d="M190 80 Q175 65 160 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-          <path d="M195 80 Q170 45 145 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
-          <path d="M200 80 Q165 25 130 80" fill="none" stroke="#00ff87" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-
-          {/* Base do joystick Atari (maior) */}
-          <rect x="34" y="112" width="152" height="60" rx="18" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
-          <rect x="50" y="122" width="120" height="14" rx="7" fill="#151e30" />
-          {/* Detalhe frontal da base */}
-          <rect x="74" y="138" width="72" height="18" rx="5" fill="#151e30" stroke="#00ff87" strokeWidth="1.5" />
-
-          {/* Haste do joystick (maior) */}
-          <rect x="94" y="60" width="32" height="54" rx="10" fill="#0b1120" stroke="#00ff87" strokeWidth="3" />
-          {/* Bola do joystick (maior) */}
-          <circle cx="110" cy="52" r="20" fill="#00ff87" stroke="#ffffff" strokeWidth="2" />
-          <circle cx="104" cy="46" r="5" fill="#ffffff" opacity="0.9" />
-
-          {/* Antena Wi-Fi central */}
-          <line x1="110" y1="52" x2="110" y2="30" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" />
-          <path d="M94 30 Q110 18 126 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.9" />
-          <path d="M80 30 Q110 10 140 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-          <path d="M66 30 Q110 0 154 30" fill="none" stroke="#00ff87" strokeWidth="3" strokeLinecap="round" opacity="0.45" />
-
-          {/* Naves Atari (alvos) */}
-          <g ref={navesRef} opacity="0">
-            {/* Nave esquerda */}
-            <rect x="18" y="36" width="18" height="10" rx="2" fill="#fff700" />
-            <rect x="22" y="38" width="10" height="6" rx="1" fill="#0b1120" />
-            {/* Nave direita */}
-            <rect x="184" y="36" width="18" height="10" rx="2" fill="#ff00de" />
-            <rect x="188" y="38" width="10" height="6" rx="1" fill="#0b1120" />
-          </g>
-
-          {/* Tiros */}
-          <g ref={tirosRef} opacity="0">
-            <circle cx="56" y="44" r="3" fill="#00ff87" />
-            <circle cx="154" y="44" r="3" fill="#ff00de" />
-          </g>
-
-          {/* Explosões */}
-          <g ref={explosoesRef} opacity="0">
-            <circle cx="70" cy="44" r="0" fill="none" stroke="#fff700" strokeWidth="3" />
-          </g>
-        </svg>
+          <Image
+            ref={logoRef}
+            src="/logo-atari.jpg"
+            alt="broadcastganes.com.br"
+            className="brand-logo"
+            width={400}
+            height={400}
+            priority
+            style={{ display: "block", borderRadius: "12px" }}
+          />
+        </div>
       </Link>
       <button
         ref={toggle}

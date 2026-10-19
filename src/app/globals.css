@@ -126,6 +126,26 @@ img {
   max-height: 150px;
   width: auto;
   filter: drop-shadow(0 0 20px rgba(0,255,135,0.45));
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* ===== Ondas Wi-Fi expandidas ao clicar no logo Atari ===== */
+.wifi-onda {
+  position: absolute;
+  border: 2.5px solid rgba(0, 255, 135, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0, 255, 135, 0.45);
+  pointer-events: none;
+}
+
+.wifi-flash {
+  position: absolute;
+  border: 3px solid rgba(0, 255, 135, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(0, 255, 135, 0.7);
+  pointer-events: none;
+  background: rgba(0, 255, 135, 0.12);
 }
 /* ===== Navegação principal: fonte bonita + GSAP ===== */
 .site-header nav {

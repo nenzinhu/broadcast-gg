@@ -2,43 +2,123 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowUpRight, Menu, ScanLine, X } from "lucide-react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { NavText3D } from "@/components/nav-text-3d";
+
 const links = [
   ["/signals", "Sinais"],
   ["/deals", "Ofertas"],
   ["/discover", "Descobrir"],
-  ["/releases", "Lançamentos"],
+  ["/launches", "Lançamentos"],
   ["/radar", "Radar"],
 ];
+
 export function SiteHeader() {
   const pathname = usePathname();
   return <HeaderContent key={pathname} pathname={pathname} />;
 }
+
 function HeaderContent({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const navRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const underlineRef = useRef<HTMLElement | null>(null);
   const close = () => setOpen(false);
+
+  // Logo animação sutil
+  useGSAP(() => {
+    if (!logoRef.current) return;
+    const tween = gsap.to(logoRef.current, {
+      rotation: 6,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.2,
+      ease: "sine.inOut",
+      transformOrigin: "center center",
+    });
+    return () => tween.kill();
+  }, []);
+
+  // Animação de entrada dos links quando o menu abre (mobile) com stagger
+  useGSAP(() => {
+    if (!open) return undefined;
+    const items = Array.from(navRefs.current.values());
+    const tl = gsap.timeline();
+    tl.fromTo(
+      items,
+      { opacity: 0, y: 18, scale: 0.95 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.45,
+        stagger: 0.07,
+        ease: "power3.out",
+      }
+    );
+    return () => tl.kill();
+  }, [open]);
+
+  // Tinta (underline) da aba ativa animada com GSAP
+  useGSAP(() => {
+    const active = navRefs.current.get(pathname);
+    if (!underlineRef.current || !active) return undefined;
+
+    active.scrollIntoView({ block: "nearest", inline: "center" });
+
+    const tl = gsap.timeline();
+    tl.to(underlineRef.current, {
+      width: active.offsetWidth,
+      x: active.offsetLeft,
+      duration: 0.5,
+      ease: "expo.inOut",
+    });
+    return () => tl.kill();
+  }, [pathname]);
+
+  // Reposiciona a tinta ao redimensionar a janela.
+  useEffect(() => {
+    const onResize = () => {
+      const active = navRefs.current.get(pathname);
+      if (!underlineRef.current || !active) return;
+      gsap.to(underlineRef.current, {
+        width: active.offsetWidth,
+        x: active.offsetLeft,
+        duration: 0.5,
+        ease: "expo.inOut",
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [pathname]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Escape") {
+      close();
+      toggle.current?.focus();
+    }
+  };
+
   return (
     <header
       id="top"
       className="site-header"
-      onKeyDown={(event) => {
-        if (event.key === "Escape") {
-          close();
-          toggle.current?.focus();
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
       <Link
         className="brand"
         href="/"
-        aria-label="BROADCAST.GG início"
+        aria-label="broadcastganes.com.br início"
         onClick={close}
       >
         <Image
+          ref={logoRef}
           src="/logo.png"
-          alt="BROADCAST.GG"
+          alt="broadcastganes.com.br"
           className="brand-logo"
           width={1254}
           height={1254}
@@ -60,16 +140,37 @@ function HeaderContent({ pathname }: { pathname: string }) {
         aria-label="Navegação principal"
         className={open ? "is-open" : ""}
       >
-        {links.map(([href, label]) => (
-          <Link
-            key={href}
-            href={href}
-            aria-current={pathname === href ? "page" : undefined}
-            onClick={close}
-          >
-            {label}
-          </Link>
-        ))}
+        {links.map(([href, label]) => {
+          const active = pathname === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-current={active ? "page" : undefined}
+              onClick={close}
+              className={`nav-link ${active ? "nav-link-active" : ""}`}
+              ref={(el) => {
+                if (el) navRefs.current.set(href, el);
+              }}
+            >
+              <span className="nav-link-label">
+                <NavText3D>{label}</NavText3D>
+              </span>
+              <span
+                ref={active
+                  ? (el) => {
+                      if (el) underlineRef.current = el;
+                      return () => {
+                        if (underlineRef.current === el) underlineRef.current = null;
+                      };
+                    }
+                  : undefined}
+                className="nav-link-underline"
+                aria-hidden="true"
+              />
+            </Link>
+          );
+        })}
       </nav>
       <div className="header-actions">
         <Link

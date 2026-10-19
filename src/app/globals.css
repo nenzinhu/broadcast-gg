@@ -191,6 +191,42 @@ img {
   border-radius: 4px;
 }
 
+/* ===== Texto 3D nas abas do header (GSAP) ===== */
+.nav-link,
+.nav-link-label {
+  transform-style: preserve-3d;
+}
+
+.nav-text-3d {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+.nav-text-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: #0e1524;
+  opacity: 0.5;
+  font: inherit;
+  transform: translateZ(var(--z, 0));
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.nav-text-layer-front {
+  position: relative;
+  z-index: 4;
+  color: inherit;
+  opacity: 1;
+  transform: translateZ(var(--z, 0));
+  filter: drop-shadow(0 4px 10px #0004);
+}
+
 /* Animação de entrada dos links no mobile */
 .nav-link {
   opacity: 1;

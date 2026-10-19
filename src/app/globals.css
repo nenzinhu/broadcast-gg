@@ -130,6 +130,44 @@ img {
   transition: transform 0.2s ease;
 }
 
+/* Nome ao lado do logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+
+.brand-topline {
+  font-family: var(--display);
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #f1f4fb;
+  text-transform: uppercase;
+  filter: drop-shadow(0 0 8px rgba(0,255,135,0.5));
+  white-space: nowrap;
+}
+
+.brand-bottomline {
+  font-family: var(--display);
+  font-size: clamp(18px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #00ff87;
+  text-transform: uppercase;
+  margin-top: -2px;
+  filter: drop-shadow(0 0 8px rgba(0,255,135,0.6));
+  white-space: nowrap;
+}
+
 /* ===== Ondas de rádio expandidas ao clicar no logo ===== */
 .radio-onda {
   position: absolute;

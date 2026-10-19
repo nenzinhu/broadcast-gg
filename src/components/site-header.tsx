@@ -212,6 +212,10 @@ function HeaderContent({ pathname }: { pathname: string }) {
             priority
             style={{ display: "block", borderRadius: "12px" }}
           />
+          <div className="brand-text">
+            <span className="brand-topline">BROADCAST</span>
+            <span className="brand-bottomline">GAMES</span>
+          </div>
         </div>
       </Link>
       <button

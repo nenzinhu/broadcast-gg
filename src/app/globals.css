@@ -98,7 +98,7 @@ img {
   top: 15px;
 }
 .site-header {
-  height: 100px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -123,9 +123,9 @@ img {
 }
 .brand-logo {
   display: block;
-  max-height: 110px;
+  max-height: 150px;
   width: auto;
-  filter: drop-shadow(0 0 12px rgba(0,255,154,0.35));
+  filter: drop-shadow(0 0 20px rgba(0,255,135,0.45));
 }
 /* ===== Navegação principal: fonte bonita + GSAP ===== */
 .site-header nav {

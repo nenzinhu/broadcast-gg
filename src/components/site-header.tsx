@@ -280,12 +280,18 @@ function HeaderContent({ pathname }: { pathname: string }) {
       >
         {links.map(({ href, label, variant }) => {
           const active = pathname === href;
+          const showDealsToast = () => {
+            if (typeof window !== "undefined" && (window as any).__broadcastToast) {
+              (window as any).__broadcastToast("🔥 12 jogos em promoção agora");
+            }
+          };
           return (
             <Link
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
               onClick={close}
+              onMouseEnter={variant === "deals" ? showDealsToast : undefined}
               className={`nav-link ${active ? "nav-link-active" : ""}`}
               ref={(el) => {
                 if (el) navRefs.current.set(href, el);

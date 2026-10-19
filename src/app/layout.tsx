@@ -9,6 +9,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { RadarProvider } from "@/components/radar-provider";
 import { RouteTransition } from "@/components/route-motion";
+import { TopProgress } from "@/components/top-progress";
+import { ToastContainer } from "@/components/toast";
 export const metadata: Metadata = {
   title: {
     default: "BROADCAST.GG — Seu próximo jogo começa com um sinal.",
@@ -28,11 +30,13 @@ export default function RootLayout({
             <a className="skip-link" href="#main">
               Pular para o conteúdo
             </a>
+            <TopProgress />
             <SiteHeader />
             <main id="main">
               <RouteTransition>{children}</RouteTransition>
             </main>
             <SiteFooter />
+            <ToastContainer />
           </div>
         </RadarProvider>
       </body>

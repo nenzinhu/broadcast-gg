@@ -157,3 +157,67 @@ test("jogo sem rumores informa ausência de sinais", async ({ page }) => {
     page.getByText("Nenhum rumor com evidência suficiente no radar."),
   ).toBeVisible();
 });
+
+test("trailer carrega somente após o clique e devolve o foco", async ({ page }) => {
+  await page.route("https://www.youtube-nocookie.com/**", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: "<html><body>Player controlado</body></html>",
+    }),
+  );
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  await expect(page.locator("iframe")).toHaveCount(0);
+
+  const play = page.getByRole("button", {
+    name: "Assistir trailer de Grand Theft Auto VI",
+  });
+  await play.click();
+  await expect(page.locator("iframe")).toHaveAttribute(
+    "src",
+    /youtube-nocookie\.com\/embed\/QdBZY2fkU-0/,
+  );
+  await page.getByRole("button", { name: "Fechar trailer" }).click();
+
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await expect(play).toBeFocused();
+});
+
+test("galeria abre imagem e devolve o foco", async ({ page }) => {
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  const opener = page.getByRole("button", {
+    name: "Ampliar foto 1 de Grand Theft Auto VI",
+  });
+  await opener.click();
+
+  const dialog = page.getByRole("dialog", {
+    name: "Galeria de Grand Theft Auto VI",
+  });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "Fechar galeria" }).click();
+  await expect(dialog).not.toBeVisible();
+  await expect(opener).toBeFocused();
+});
+
+test("falha de imagem preserva conteúdo e mostra fallback", async ({ page }) => {
+  await page.route("https://i.ytimg.com/**", (route) => route.abort());
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+
+  await expect(page.getByText("ARTE INDISPONÍVEL").first()).toBeVisible();
+  const panel = page.getByRole("article", {
+    name: "Preview de Grand Theft Auto VI",
+  });
+  await expect(panel).toContainText("Lucia e Jason");
+  await expect(
+    panel.getByRole("heading", { name: "O que está confirmado" }),
+  ).toBeVisible();
+});
+
+test("jogo sem vídeo não cria player quebrado", async ({ page }) => {
+  await page.goto("/preview?jogo=next-mass-effect");
+
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await expect(page.getByText("Vídeo oficial indisponível")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Assistir trailer de Próximo Mass Effect/ }),
+  ).toHaveCount(0);
+});

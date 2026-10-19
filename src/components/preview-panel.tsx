@@ -1,5 +1,6 @@
 import { ArrowUpRight, BadgeCheck, CalendarDays, Gamepad2, Radio } from "lucide-react";
 import type { PreviewGame } from "@/lib/previews";
+import { PreviewMedia } from "@/components/preview-media";
 
 const statusLabels = {
   confirmed: "CONFIRMADO",
@@ -19,6 +20,7 @@ export function PreviewPanel({ game }: { game: PreviewGame }) {
 
   return (
     <article className="preview-panel" aria-label={`Preview de ${game.title}`}>
+      <PreviewMedia key={game.slug} game={game} />
       <header className="preview-panel-header">
         <span
           className={`preview-information-status is-${game.informationStatus}`}

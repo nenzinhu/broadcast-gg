@@ -8,13 +8,21 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { NavText3D } from "@/components/nav-text-3d";
 
-type LinkVariant = "signals" | "deals" | "discover" | "launches" | "central" | "radar";
+type LinkVariant =
+  | "signals"
+  | "deals"
+  | "discover"
+  | "launches"
+  | "preview"
+  | "central"
+  | "radar";
 
 const links: { href: string; label: string; variant: LinkVariant }[] = [
   { href: "/signals", label: "Sinais", variant: "signals" },
   { href: "/deals", label: "Ofertas", variant: "deals" },
   { href: "/discover", label: "Descobrir", variant: "discover" },
   { href: "/releases", label: "Lançamentos", variant: "launches" },
+  { href: "/preview", label: "Preview", variant: "preview" },
   { href: "/central#catalogo", label: "Central", variant: "central" },
   { href: "/radar", label: "Radar", variant: "radar" },
 ];

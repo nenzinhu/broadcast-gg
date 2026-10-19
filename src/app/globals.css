@@ -292,6 +292,7 @@ img {
 .nav-text-3d--deals .nav-text-layer-front { color: #fff700; text-shadow: 0 0 12px #fff700; filter: drop-shadow(0 4px 16px #fff700); }
 .nav-text-3d--discover .nav-text-layer-front { color: #00f2ff; text-shadow: 0 0 12px #00f2ff; filter: drop-shadow(0 4px 16px #00f2ff); }
 .nav-text-3d--launches .nav-text-layer-front { color: #ff00de; text-shadow: 0 0 12px #ff00de; filter: drop-shadow(0 4px 16px #ff00de); }
+.nav-text-3d--preview .nav-text-layer-front { color: #ff8a4c; text-shadow: 0 0 12px #ff8a4c; filter: drop-shadow(0 4px 16px #ff5f38); }
 .nav-text-3d--central .nav-text-layer-front { color: #a6ff00; text-shadow: 0 0 12px #a6ff00; filter: drop-shadow(0 4px 16px #7df0c7); }
 .nav-text-3d--radar .nav-text-layer-front { color: #b389ff; text-shadow: 0 0 12px #b389ff; filter: drop-shadow(0 4px 16px #b389ff); }
 
@@ -311,6 +312,7 @@ img {
 .nav-link-underline--deals { background: #fff700; box-shadow: 0 0 18px #fff700cc; }
 .nav-link-underline--discover { background: #00f2ff; box-shadow: 0 0 18px #00f2ffcc; }
 .nav-link-underline--launches { background: #ff00de; box-shadow: 0 0 18px #ff00decc; }
+.nav-link-underline--preview { background: #ff8a4c; box-shadow: 0 0 18px #ff5f38cc; }
 .nav-link-underline--central { background: #a6ff00; box-shadow: 0 0 18px #7df0c7cc; }
 .nav-link-underline--radar { background: #b389ff; box-shadow: 0 0 18px #b389ffcc; }
 

@@ -11,6 +11,7 @@ import { gsap } from "gsap";
  * - deals    → amarelo néon, salto para cima (oferta chamando atenção)
  * - discover → ciano néon, flutuação + rotação 3D lenta (exploração)
  * - launches → magenta néon, decola para cima com escala explosiva
+ * - preview  → laranja néon, aproximação cinematográfica
  * - central  → verde-lima, leitura de dados com inclinação sutil
  * - radar    → roxo néon, varredura/pulso circular lento
  */
@@ -20,7 +21,14 @@ export function NavText3D({
   className,
 }: {
   children: string;
-  variant?: "signals" | "deals" | "discover" | "launches" | "central" | "radar";
+  variant?:
+    | "signals"
+    | "deals"
+    | "discover"
+    | "launches"
+    | "preview"
+    | "central"
+    | "radar";
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -33,6 +41,7 @@ export function NavText3D({
     deals: { front: "#fff700", depth: "#fff70044", glow: "#fff700" },
     discover: { front: "#00f2ff", depth: "#00f2ff44", glow: "#00f2ff" },
     launches: { front: "#ff00de", depth: "#ff00de44", glow: "#ff00de" },
+    preview: { front: "#ff8a4c", depth: "#ff8a4c44", glow: "#ff5f38" },
     central: { front: "#a6ff00", depth: "#a6ff0044", glow: "#7df0c7" },
     radar: { front: "#b389ff", depth: "#b389ff44", glow: "#b389ff" },
   };
@@ -84,6 +93,16 @@ export function NavText3D({
           duration: 0.6,
           ease: "power4.out",
           transformStyle: "preserve-3d",
+          paused: true,
+        });
+        break;
+      case "preview":
+        tween = gsap.to(el, {
+          filter: prefersReduced
+            ? "none"
+            : "brightness(1.35) drop-shadow(0 0 10px #ff5f38)",
+          duration: 0.35,
+          ease: "power3.out",
           paused: true,
         });
         break;

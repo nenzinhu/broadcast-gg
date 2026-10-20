@@ -68,18 +68,28 @@ type PreviewSeed = Omit<
 function createPreview(seed: PreviewSeed): PreviewGame {
   const imageVideoId = seed.imageVideoId ?? seed.youtubeId ?? "QdBZY2fkU-0";
   const sourceId = `${seed.slug}-official`;
-  const sourceUrl = seed.youtubeId
-    ? `https://www.youtube.com/watch?v=${seed.youtubeId}`
-    : seed.sourceUrl;
+  const mediaSourceUrl = `https://www.youtube.com/watch?v=${imageVideoId}`;
   const sources: PreviewSource[] = [
     {
       id: sourceId,
-      label: `Canal oficial de ${seed.publisher}`,
+      label: `Página oficial de ${seed.publisher}`,
       publisher: seed.publisher,
-      url: sourceUrl,
+      url: seed.sourceUrl,
       checkedAt,
       kind: "official",
     },
+    ...(seed.youtubeId
+      ? [
+          {
+            id: `${seed.slug}-video`,
+            label: `Trailer oficial no YouTube — ${seed.publisher}`,
+            publisher: seed.publisher,
+            url: `https://www.youtube.com/watch?v=${seed.youtubeId}`,
+            checkedAt,
+            kind: "official" as const,
+          },
+        ]
+      : []),
     ...(seed.extraSources ?? []),
   ];
 
@@ -96,14 +106,14 @@ function createPreview(seed: PreviewSeed): PreviewGame {
     heroImage: `https://i.ytimg.com/vi/${imageVideoId}/maxresdefault.jpg`,
     gallery: [
       {
-        src: `https://i.ytimg.com/vi/${imageVideoId}/hq720.jpg`,
-        alt: `Cena oficial de ${seed.title}`,
-        sourceUrl,
+        src: `https://i.ytimg.com/vi/${imageVideoId}/hq1.jpg`,
+        alt: `Primeiro quadro do trailer oficial de ${seed.title}`,
+        sourceUrl: mediaSourceUrl,
       },
       {
-        src: `https://i.ytimg.com/vi/${imageVideoId}/sddefault.jpg`,
-        alt: `Outra cena oficial de ${seed.title}`,
-        sourceUrl,
+        src: `https://i.ytimg.com/vi/${imageVideoId}/hq2.jpg`,
+        alt: `Segundo quadro do trailer oficial de ${seed.title}`,
+        sourceUrl: mediaSourceUrl,
       },
     ],
     youtubeId: seed.youtubeId,
@@ -127,7 +137,7 @@ export const previewGames: PreviewGame[] = [
     releaseWindow: "19 de novembro de 2026",
     informationStatus: "confirmed",
     accent: "#ff6fae",
-    youtubeId: "QdBZY2fkU-0",
+    youtubeId: "VQRLujxTm3c",
     videoLabel: "Trailer oficial 2",
     publisher: "Rockstar Games",
     sourceUrl: "https://www.rockstargames.com/VI",
@@ -426,9 +436,9 @@ export const previewGames: PreviewGame[] = [
     slug: "wolf-among-us-remastered",
     title: "The Wolf Among Us Remastered",
     summary:
-      "Uma possível remasterização da primeira temporada circula sem anúncio oficial verificável.",
+      "Não existe anúncio oficial verificável de uma edição remasterizada; o título permanece apenas como hipótese no radar.",
     whyItMatters:
-      "A volta de Bigby Wolf despertaria interesse renovado na série, mas o sinal ainda exige cautela.",
+      "Uma eventual volta de Bigby Wolf despertaria interesse renovado, mas ainda não há evidência suficiente para tratá-la como projeto.",
     genre: ["Aventura", "Narrativo"],
     platforms: ["Plataformas a confirmar"],
     releaseWindow: "Rumor sem data",
@@ -437,25 +447,9 @@ export const previewGames: PreviewGame[] = [
     youtubeId: "UkXwW5H28m0",
     videoLabel: "Vídeo relacionado à série",
     publisher: "Telltale Games",
-    sourceUrl: "https://www.telltale.com/the-wolf-among-us-2/",
+    sourceUrl: "https://www.telltale.com/",
     fact: "",
-    rumors: [
-      {
-        text: "Não existe anúncio oficial verificável de uma edição remasterizada nesta curadoria.",
-        confidence: "baixo",
-        sourceId: "wolf-among-us-editorial",
-      },
-    ],
-    extraSources: [
-      {
-        id: "wolf-among-us-editorial",
-        label: "Verificação editorial BROADCAST.GG",
-        publisher: "BROADCAST.GG",
-        url: "https://www.telltale.com/the-wolf-among-us-2/",
-        checkedAt,
-        kind: "report",
-      },
-    ],
+    rumors: [],
   }),
 ];
 

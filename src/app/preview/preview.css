@@ -416,7 +416,8 @@
 
 .preview-sources p { margin: 7px 0 0; color: #7186a1; font: 14px/1.5 var(--mono); }
 .preview-sources ul { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 14px; }
-.preview-sources a { display: inline-flex; align-items: center; gap: 5px; color: #a8b8cb; font: 700 11px var(--mono); }
+.preview-sources a { display: inline-flex; max-width: 100%; min-width: 0; align-items: center; gap: 5px; color: #a8b8cb; font: 700 11px/1.45 var(--mono); overflow-wrap: anywhere; }
+.preview-sources a svg { flex: 0 0 auto; }
 .preview-sources a:hover { color: var(--preview-accent); }
 
 .preview-empty {

@@ -137,7 +137,7 @@ test("painel apresenta contexto e fatos ligados às fontes", async ({ page }) =>
     panel.getByRole("heading", { name: "O que está confirmado" }),
   ).toBeVisible();
   await expect(
-    panel.getByRole("link", { name: /Canal oficial de Rockstar Games/ }),
+    panel.getByRole("link", { name: /Página oficial de Rockstar Games/ }),
   ).toHaveAttribute("target", "_blank");
 });
 
@@ -151,7 +151,7 @@ test("rumor nunca aparece como confirmado", async ({ page }) => {
   await expect(
     panel.getByRole("heading", { name: "O que ainda é rumor" }),
   ).toBeVisible();
-  await expect(panel).toContainText("CONFIANÇA BAIXA");
+  await expect(panel).toContainText("Nenhum rumor com evidência suficiente no radar.");
   await expect(panel.getByText("CONFIRMADO", { exact: true })).toHaveCount(0);
 });
 
@@ -178,7 +178,7 @@ test("trailer carrega somente após o clique e devolve o foco", async ({ page })
   await play.click();
   await expect(page.locator("iframe")).toHaveAttribute(
     "src",
-    /youtube-nocookie\.com\/embed\/QdBZY2fkU-0/,
+    /youtube-nocookie\.com\/embed\/VQRLujxTm3c/,
   );
   await page.getByRole("button", { name: "Fechar trailer" }).click();
 

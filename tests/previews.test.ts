@@ -38,6 +38,30 @@ describe("preview editorial catalog", () => {
     }
   });
 
+  it("keeps official editorial sources separate from distinct trailer frames", () => {
+    const gta = getPreviewBySlug("grand-theft-auto-vi");
+
+    expect(gta.sources.find((source) => source.id === "grand-theft-auto-vi-official")?.url).toBe(
+      "https://www.rockstargames.com/VI",
+    );
+    expect(gta.gallery.map((image) => image.src)).toEqual([
+      "https://i.ytimg.com/vi/VQRLujxTm3c/hq1.jpg",
+      "https://i.ytimg.com/vi/VQRLujxTm3c/hq2.jpg",
+    ]);
+    expect(new Set([gta.heroImage, ...gta.gallery.map((image) => image.src)])).toHaveProperty(
+      "size",
+      3,
+    );
+  });
+
+  it("does not present an unsupported remaster rumor as evidence", () => {
+    const wolf = getPreviewBySlug("wolf-among-us-remastered");
+
+    expect(wolf.informationStatus).toBe("unconfirmed-rumor");
+    expect(wolf.rumors).toEqual([]);
+    expect(wolf.summary).toContain("Não existe anúncio oficial verificável");
+  });
+
   it("falls back safely for missing or unknown slugs", () => {
     expect(getPreviewBySlug(null)).toBe(previewGames[0]);
     expect(getPreviewBySlug("nao-existe")).toBe(previewGames[0]);

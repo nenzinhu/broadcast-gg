@@ -8,6 +8,7 @@ export default defineConfig([
     ".next/**",
     "next-env.d.ts",
     ".superpowers/**",
+    ".worktrees/**",
     "test-results/**",
     "playwright-report/**",
   ]),

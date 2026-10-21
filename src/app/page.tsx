@@ -10,6 +10,7 @@ import { DecisionEngine } from "@/components/decision-engine";
 import { PersonalRadar } from "@/components/personal-radar";
 import { Discover } from "@/components/discover";
 import { UpcomingReleases } from "@/components/upcoming-releases";
+import { HeroSignalStrip } from "@/components/hero-signal-strip";
 
 function GameGrid({ games: gridGames }: { games: Game[] }) {
   return (
@@ -59,6 +60,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <HeroSignalStrip />
       <SectionHeading
         number="01"
         eyebrow="NAVEGUE PELO CATÁLOGO."

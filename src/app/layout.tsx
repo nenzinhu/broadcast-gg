@@ -18,6 +18,29 @@ export const metadata: Metadata = {
   },
   description:
     "O que mudou. O que importa. O que jogar. Seu radar pessoal de games, preços e descobertas.",
+  keywords: [
+    "games",
+    "jogos",
+    "lançamentos de jogos",
+    "ofertas de jogos",
+    "radar de preços",
+    "GTA 6",
+    "BROADCAST.GG",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: "BROADCAST.GG",
+    title: "BROADCAST.GG — O que mudou. O que importa. O que jogar.",
+    description:
+      "Seu radar pessoal para descobrir jogos, acompanhar lançamentos e decidir quando comprar.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BROADCAST.GG — Seu radar de games",
+    description:
+      "Sinais de jogos, preços e lançamentos para você decidir melhor.",
+  },
 };
 export default function RootLayout({
   children,

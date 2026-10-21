@@ -11,6 +11,7 @@ import { PersonalRadar } from "@/components/personal-radar";
 import { Discover } from "@/components/discover";
 import { UpcomingReleases } from "@/components/upcoming-releases";
 import { HeroSignalStrip } from "@/components/hero-signal-strip";
+import { EditorialTrustBar } from "@/components/editorial-trust-bar";
 
 function GameGrid({ games: gridGames }: { games: Game[] }) {
   return (
@@ -61,6 +62,7 @@ export default function Home() {
     <>
       <Hero />
       <HeroSignalStrip />
+      <EditorialTrustBar />
       <SectionHeading
         number="01"
         eyebrow="NAVEGUE PELO CATÁLOGO."

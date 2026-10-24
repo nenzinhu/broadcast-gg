@@ -81,6 +81,23 @@ export function PreviewFiltersBar({
           <option value="unconfirmed-rumor">Rumor não confirmado</option>
         </select>
       </label>
+      <label>
+        <span>Ordenar</span>
+        <select
+          value={filters.order ?? "curated"}
+          onChange={(event) =>
+            onChange({
+              ...filters,
+              order: event.currentTarget.value as NonNullable<
+                PreviewFilters["order"]
+              >,
+            })
+          }
+        >
+          <option value="curated">Curadoria</option>
+          <option value="hype">Mais hype</option>
+        </select>
+      </label>
       <div className="preview-filter-summary">
         <span>{resultCount} jogos no radar</span>
         {resultCount > 0 && (

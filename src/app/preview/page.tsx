@@ -7,7 +7,7 @@ import "./preview.css";
 export const metadata: Metadata = {
   title: "Preview",
   description:
-    "Os jogos mais esperados, com fatos, rumores, fotos e trailers no radar do BROADCAST.GG.",
+    "Os jogos mais esperados, com dossiê detalhado, índice de hype, fatos, rumores, fotos, trailers e vídeos da comunidade no radar do BROADCAST.GG.",
 };
 
 export default async function PreviewPage({
@@ -28,7 +28,7 @@ export default async function PreviewPage({
         eyebrow="PREVIEW / PRÓXIMOS SINAIS"
         title="Os jogos que vêm aí."
         accent="Antes do hype."
-        description="Dezoito mundos no radar, com contexto para separar o que já foi confirmado do que ainda é rumor."
+        description="Dezoito mundos no radar, com dossiê detalhado, índice editorial de hype e vídeos de comunidades para separar o que já foi confirmado do que ainda é rumor."
       />
       <PreviewBrowser
         games={previewGames}

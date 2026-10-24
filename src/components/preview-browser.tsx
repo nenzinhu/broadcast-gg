@@ -17,6 +17,7 @@ const emptyFilters: PreviewFilters = {
   platform: "",
   genre: "",
   status: "all",
+  order: "curated",
 };
 
 type PreviewBrowserProps = {

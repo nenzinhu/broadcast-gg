@@ -60,7 +60,9 @@ export function PreviewGameList({
           <span>{String(index + 1).padStart(2, "0")}</span>
           <strong>{game.title}</strong>
           <small>{game.platforms.join(" · ")}</small>
-          <em>{statusLabels[game.informationStatus]}</em>
+          <em>
+            {statusLabels[game.informationStatus]} · HYPE {game.hype.score}
+          </em>
         </button>
       ))}
     </div>

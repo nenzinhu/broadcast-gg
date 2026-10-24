@@ -30,7 +30,7 @@ npm run start
 - `/signals`: busca por jogo e filtros de preço, atualização e tendência.
 - `/deals`: busca e ordenação por preço ou desconto.
 - `/discover`: curadoria com busca e filtro de gênero.
-- `/preview`: central editorial interativa com 18 jogos aguardados, filtros, fatos confirmados, rumores identificados, fotos e trailers.
+- `/preview`: central editorial interativa com 18 jogos aguardados, filtros e ordenação por hype, dossiê detalhado, índice editorial de hype, fatos confirmados, rumores identificados, fotos, trailers e vídeos de comunidades do YouTube.
 - `/central`: Radar de Catálogo, análise de retorno e ordem para jogar franquias.
 - `/radar`: favoritos compartilhados entre páginas e persistidos no navegador.
 - `/games/[slug]`: páginas individuais, análise demonstrativa e acompanhamento. Slug desconhecido retorna 404.
@@ -48,6 +48,8 @@ Fontes Manrope e Barlow Condensed são servidas localmente. Capas e destaques us
 ## Limites desta entrega
 
 Preços, avaliações, horários e sinais são **demonstrativos**; não há integração de preços com lojas nem atualização de sinais em tempo real. BUY/WAIT/SKIP são resultados de regras transparentes sobre dados de exemplo: avaliação abaixo de 70 → SKIP; demais jogos no menor preço histórico do cenário ou abaixo → BUY; demais → WAIT.
+
+O **índice de hype** do Preview é uma leitura editorial do BROADCAST.GG (0–100), com motivação e tendência declaradas; não é medição automática de audiência. Os **vídeos de comunidades** são selecionados manualmente entre criadores independentes, abrem sob clique no player `youtube-nocookie` e representam a opinião dos canais, não do estúdio ou da plataforma. Títulos sem evidência suficiente, como The Wolf Among Us Remastered, não recebem vídeos da comunidade.
 
 Favoritos usam `localStorage` apenas neste navegador; se o armazenamento for bloqueado, continuam funcionando na sessão. Não há autenticação, notificações ou sincronização com servidor. A homepage e as páginas dedicadas estão implementadas.
 

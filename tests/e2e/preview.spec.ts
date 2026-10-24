@@ -141,6 +141,83 @@ test("painel apresenta contexto e fatos ligados às fontes", async ({ page }) =>
   ).toHaveAttribute("target", "_blank");
 });
 
+test("painel mostra índice de hype, dossiê e comunidade", async ({ page }) => {
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  const panel = page.getByRole("article", {
+    name: "Preview de Grand Theft Auto VI",
+  });
+
+  await expect(panel.getByText("ÍNDICE DE HYPE · EDITORIAL")).toBeVisible();
+  await expect(
+    panel.getByRole("heading", { level: 3, name: "HYPE MÁXIMO" }),
+  ).toBeVisible();
+  await expect(
+    panel.getByRole("img", { name: "Índice de hype 98 de 100" }),
+  ).toBeVisible();
+  await expect(
+    panel.getByRole("heading", { level: 3, name: "Descrição detalhada" }),
+  ).toBeVisible();
+  await expect(panel).toContainText("estado fictício de Leonida");
+  await expect(
+    panel.getByRole("heading", { level: 3, name: "Quem está falando do jogo" }),
+  ).toBeVisible();
+  await expect(
+    panel.getByRole("button", { name: /Assistir análise de TGG/ }),
+  ).toBeVisible();
+  await expect(
+    panel.getByRole("link", { name: /Buscar no YouTube/ }),
+  ).toHaveAttribute("href", /search_query=/);
+});
+
+test("vídeo da comunidade abre no player e devolve o foco", async ({ page }) => {
+  await page.route("https://www.youtube-nocookie.com/**", (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: "<html><body>Player da comunidade</body></html>",
+    }),
+  );
+  await page.goto("/preview?jogo=grand-theft-auto-vi");
+  const opener = page.getByRole("button", {
+    name: /Assistir análise de TGG sobre Grand Theft Auto VI/,
+  });
+  await opener.click();
+
+  const dialog = page.getByRole("dialog", {
+    name: "Vídeo da comunidade sobre Grand Theft Auto VI",
+  });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("iframe")).toHaveAttribute(
+    "src",
+    /youtube-nocookie\.com\/embed\/3LnGb6-ly_k/,
+  );
+  await dialog.getByRole("button", { name: "Fechar vídeo" }).click();
+
+  await expect(dialog).not.toBeVisible();
+  await expect(opener).toBeFocused();
+});
+
+test("ordena a curadoria por hype", async ({ page }) => {
+  await page.goto("/preview");
+  const browser = page.getByTestId("preview-browser");
+  await browser.getByLabel("Ordenar").selectOption("hype");
+
+  const options = browser.getByTestId("preview-game-option");
+  await expect(options).toHaveCount(18);
+  await expect(options.first()).toContainText("Grand Theft Auto VI");
+  await expect(options.first()).toContainText("HYPE 98");
+  await expect(options.nth(1)).toContainText("The Witcher IV");
+});
+
+test("remaster sem evidência não publica vídeos da comunidade", async ({
+  page,
+}) => {
+  await page.goto("/preview?jogo=wolf-among-us-remastered");
+
+  await expect(
+    page.getByText("Nenhum vídeo da comunidade verificado para este título."),
+  ).toBeVisible();
+});
+
 test("rumor nunca aparece como confirmado", async ({ page }) => {
   await page.goto("/preview?jogo=wolf-among-us-remastered");
   const panel = page.getByRole("article", {

@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { ArrowDown, ArrowUpRight, Crosshair } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplineScene } from "@/components/ui/spline-scene";
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -59,6 +58,22 @@ export function Hero() {
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
+        });
+
+        gsap.to(".hero-robot", {
+          y: -8,
+          duration: 2.6,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        gsap.to(".robot-hand", {
+          scale: 1.12,
+          duration: 1.1,
+          stagger: 0.28,
+          repeat: -1,
+          yoyo: true,
+          ease: "power2.inOut",
         });
 
         const visual = containerRef.current?.querySelector<HTMLElement>(
@@ -145,10 +160,16 @@ export function Hero() {
         data-speed="0.03"
         aria-label="Ilustração de radar detectando sinais de jogos"
       >
-        <SplineScene
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="hero-spline"
-        />
+        <div className="hero-robot" aria-label="Robô do Broadcast tentando capturar sinais de jogos">
+          <div className="robot-aura" />
+          <div className="robot-antenna" />
+          <div className="robot-head"><span className="robot-eye robot-eye-left" /><span className="robot-eye robot-eye-right" /></div>
+          <div className="robot-neck" />
+          <div className="robot-body"><span className="robot-core">BG</span><span className="robot-light" /></div>
+          <div className="robot-arm robot-arm-left"><span className="robot-joint" /><span className="robot-forearm" /><span className="robot-hand" /></div>
+          <div className="robot-arm robot-arm-right"><span className="robot-joint" /><span className="robot-forearm" /><span className="robot-hand" /></div>
+          <div className="robot-base"><span /><span /></div>
+        </div>
         <div className="hero-game-chips" aria-hidden="true">
           <span>RPG</span>
           <span>CO-OP</span>
@@ -159,14 +180,14 @@ export function Hero() {
         <div className="game-particle particle-circle" aria-hidden="true" />
         <div className="hero-game-samples" aria-label="Amostras de jogos em destaque">
           <div className="radar-tag tag-one">
-            <span className="lime">AMOSTRA 01 · PRICE SIGNAL</span>
+            <span className="lime">PRICE SIGNAL</span>
             <strong>Cyberpunk 2077</strong>
             <span>
-              MENOR PREÇO <b>−60%</b> · PEGAR
+              −60% · PEGAR
             </span>
           </div>
           <div className="radar-tag tag-two">
-            <span>AMOSTRA 02 · TREND SIGNAL</span>
+            <span>TREND SIGNAL</span>
             <strong>Hades II</strong>
             <span>EM ALTA · PEGAR</span>
           </div>

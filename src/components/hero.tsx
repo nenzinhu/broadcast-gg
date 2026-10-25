@@ -75,6 +75,24 @@ export function Hero() {
           yoyo: true,
           ease: "sine.inOut",
         });
+        gsap.to(".radar-target", {
+          y: (index) => (index ? -10 : 9),
+          x: (index) => (index ? 7 : -5),
+          duration: 2.8,
+          stagger: 0.45,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        gsap.to(".radar-trail", {
+          opacity: 0.2,
+          scaleX: 0.72,
+          duration: 1.4,
+          stagger: 0.35,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
 
         const visual = containerRef.current?.querySelector<HTMLElement>(
           ".hero-visual",
@@ -209,6 +227,10 @@ export function Hero() {
           <div className="radar-blip blip-one" />
           <div className="radar-blip blip-two" />
           <div className="radar-blip blip-three" />
+          <Link className="radar-target target-cyberpunk" href="/games/cyberpunk-2077" aria-label="Alvo Cyberpunk 2077"><span className="target-image cover-cyberpunk" /><i /></Link>
+          <Link className="radar-target target-hades" href="/games/hades-ii" aria-label="Alvo Hades II"><span className="target-image cover-hades" /><i /></Link>
+          <span className="radar-trail trail-one" aria-hidden="true" />
+          <span className="radar-trail trail-two" aria-hidden="true" />
           <Link className="radar-tag tag-one" href="/games/cyberpunk-2077" aria-label="Abrir sinal de Cyberpunk 2077">
             <span className="radar-tag-cover cover-cyberpunk" aria-hidden="true" />
             <span className="lime">↘ PRICE SIGNAL</span>

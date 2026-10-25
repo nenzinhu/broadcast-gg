@@ -769,6 +769,29 @@ h1 > span {
     0 0 0 5px #a6ff0010,
     0 0 18px #a6ff0040;
 }
+.radar-target {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #55e8ff;
+  border-radius: 50%;
+  background: #071521;
+  box-shadow: 0 0 0 5px #55e8ff15, 0 0 20px #55e8ff80;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.radar-target:hover, .radar-target:focus-visible { transform: scale(1.2); box-shadow: 0 0 0 7px #a6ff0024, 0 0 28px #a6ff00; outline: none; }
+.target-image { width: 32px; height: 32px; border-radius: 50%; background-position: center; background-size: cover; }
+.radar-target i { position: absolute; inset: -6px; border: 1px solid currentColor; border-radius: 50%; opacity: .35; animation: target-ping 1.8s ease-out infinite; }
+.target-cyberpunk { top: 31%; left: 67%; color: #a6ff00; }
+.target-hades { top: 62%; left: 34%; color: #55e8ff; }
+@keyframes target-ping { 0% { transform: scale(.75); opacity: .8; } 100% { transform: scale(1.55); opacity: 0; } }
+.radar-trail { position: absolute; z-index: 1; height: 1px; width: 90px; background: linear-gradient(90deg, transparent, #55e8ff, transparent); transform-origin: left center; opacity: .65; }
+.trail-one { top: 35%; left: 69%; transform: rotate(24deg); }
+.trail-two { top: 65%; left: 36%; transform: rotate(-28deg); background: linear-gradient(90deg, transparent, #a6ff00, transparent); }
 .blip-one {
   top: 28%;
   left: 70%;
@@ -1065,7 +1088,9 @@ h1 > span {
 .hero-game-samples .radar-tag > strong { font-size: 13px; }
 .hero-game-samples .radar-tag > span { font-size: 9px; }
 @media (max-width: 700px) { .hero-robot { transform: translate(-50%, -50%) scale(.78); } }
-@media (prefers-reduced-motion: reduce) { .robot-aura, .robot-eye, .robot-arm-left, .robot-arm-right { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .robot-aura, .robot-eye, .robot-arm-left, .robot-arm-right, .radar-target i { animation: none; }
+}
 .editorial-trust {
   width: min(1320px, calc(100% - 64px));
   margin: 24px auto 108px;

@@ -174,6 +174,7 @@ export function Hero() {
           </span>
           <span className="lime">● ONLINE</span>
         </div>
+        <div className="radar-hud-line"><span>LIVE SIGNALS</span><span>CLICK TO OPEN</span></div>
         <div className="radar-orbit">
           <div className="radar-grid" />
           <div className="orbit orbit-one" />
@@ -193,6 +194,7 @@ export function Hero() {
           <div className="radar-blip blip-two" />
           <div className="radar-blip blip-three" />
           <Link className="radar-tag tag-one" href="/games/cyberpunk-2077" aria-label="Abrir sinal de Cyberpunk 2077">
+            <span className="radar-tag-cover cover-cyberpunk" aria-hidden="true" />
             <span className="lime">↘ PRICE SIGNAL</span>
             <strong>Cyberpunk 2077</strong>
             <span>
@@ -200,6 +202,7 @@ export function Hero() {
             </span>
           </Link>
           <Link className="radar-tag tag-two" href="/games/hades-ii" aria-label="Abrir sinal de Hades II">
+            <span className="radar-tag-cover cover-hades" aria-hidden="true" />
             <span>↗ TREND SIGNAL</span>
             <strong>Hades II</strong>
             <span>NO NOSSO RADAR</span>

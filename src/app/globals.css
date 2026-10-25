@@ -603,11 +603,51 @@ h1 > span {
   pointer-events: none;
 }
 .radar-hud-line span:last-child { color: #a6ff00; }
+.radar-side-panel {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  gap: 9px;
+  color: #52eaff;
+  font: 9px/1.25 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.radar-side-panel strong { color: #d4f8ff; font: 700 18px/1.05 var(--display); letter-spacing: .03em; }
+.radar-side-left { left: 24px; top: 40%; }
+.radar-side-right { right: 22px; top: 40%; text-align: right; }
+.radar-side-right span { color: #9eb2c0; }
+.radar-side-right strong { color: #d4f8ff; }
+.radar-side-panel small { color: #7b96a6; font-size: 8px; }
+.radar-bars { display: flex; align-items: end; gap: 3px; width: 104px; height: 34px; }
+.radar-bars i { flex: 1; min-height: 5px; background: linear-gradient(#55e8ff, #a6ff00); box-shadow: 0 0 8px #55e8ff66; }
+.radar-progress { width: 104px; height: 7px; border: 1px solid #55e8ff80; padding: 1px; }
+.radar-progress i { display: block; width: 68%; height: 100%; background: linear-gradient(90deg, #55e8ff, #a6ff00); box-shadow: 0 0 8px #55e8ff; }
+.radar-game-card {
+  position: absolute;
+  z-index: 4;
+  width: 128px;
+  overflow: hidden;
+  border: 1px solid #55e8ff99;
+  background: #071521e8;
+  color: #d8fbff;
+  box-shadow: 0 12px 28px #0008, 0 0 18px #00d9ff20;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+.radar-game-card:hover, .radar-game-card:focus-visible { transform: translateY(-5px) scale(1.04); border-color: #a6ff00; outline: none; }
+.radar-card-image { display: block; height: 66px; background-position: center; background-size: cover; }
+.radar-game-card strong { display: block; padding: 8px 9px; color: #a6ff00; font: 9px var(--mono); letter-spacing: .08em; }
+.radar-card-left-top { left: 24px; top: 21%; }
+.radar-card-right-bottom { right: 22px; bottom: 20%; }
 .radar-orbit {
   position: relative;
   width: 100%;
   aspect-ratio: 1.08;
   margin: 18px 0;
+  background: radial-gradient(circle, transparent 0 47%, #55e8ff0b 47.2% 47.5%, transparent 48%), conic-gradient(from 0deg, transparent 0 3deg, #55e8ff55 3.4deg 3.8deg, transparent 4.2deg 8deg);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #55e8ff1a, 0 0 50px #00d9ff12;
 }
 .hero-game-samples {
   position: relative;
@@ -2312,6 +2352,8 @@ h1 > span {
   .hero h1 {
     font-size: 8vw;
   }
+  .radar-side-panel { transform: scale(.85); transform-origin: top; }
+  .radar-game-card { transform: scale(.84); }
   .hero-kicker {
     font-size: 11px;
   }
@@ -2617,6 +2659,8 @@ h1 > span {
   }
 }
 @media (max-width: 700px) {
+  .radar-side-panel, .radar-game-card { display: none; }
+  .radar-hud-line { top: 44px; }
   .shell {
     padding: 0 20px;
   }

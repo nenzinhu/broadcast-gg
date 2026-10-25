@@ -175,6 +175,22 @@ export function Hero() {
           <span className="lime">● ONLINE</span>
         </div>
         <div className="radar-hud-line"><span>LIVE SIGNALS</span><span>CLICK TO OPEN</span></div>
+        <div className="radar-side-panel radar-side-left" aria-hidden="true">
+          <strong>SCANNING<br />ACTIVE</strong>
+          <div className="radar-bars">{Array.from({ length: 12 }, (_, index) => <i key={index} style={{ height: `${28 + (index % 5) * 10}%` }} />)}</div>
+          <span>INTERESSE / 70%</span>
+        </div>
+        <div className="radar-side-panel radar-side-right" aria-hidden="true">
+          <span>GAMES ON</span><strong>THE RADAR</strong>
+          <div className="radar-progress"><i /></div>
+          <small>04 SINAIS QUENTES</small>
+        </div>
+        <Link className="radar-game-card radar-card-left-top" href="/games/cyberpunk-2077" aria-label="Ver Cyberpunk 2077">
+          <span className="radar-card-image cover-cyberpunk" /><strong>HIGH INTEREST</strong>
+        </Link>
+        <Link className="radar-game-card radar-card-right-bottom" href="/games/hades-ii" aria-label="Ver Hades II">
+          <span className="radar-card-image cover-hades" /><strong>EM ALTA</strong>
+        </Link>
         <div className="radar-orbit">
           <div className="radar-grid" />
           <div className="orbit orbit-one" />

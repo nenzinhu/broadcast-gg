@@ -505,6 +505,7 @@ h1 > span {
   transform-style: preserve-3d;
   will-change: transform;
   isolation: isolate;
+  min-height: 560px;
 }
 .hero-visual::before {
   content: "";
@@ -595,6 +596,15 @@ h1 > span {
   aspect-ratio: 1.08;
   margin: 18px 0;
 }
+.hero-game-samples {
+  position: relative;
+  min-height: 455px;
+  margin: 8px 0;
+  z-index: 2;
+}
+.hero-game-samples .radar-tag { z-index: 4; }
+.hero-game-samples .tag-one { top: 18%; left: 42%; }
+.hero-game-samples .tag-two { top: 64%; left: 4%; }
 .radar-grid {
   position: absolute;
   inset: 0;

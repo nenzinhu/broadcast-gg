@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { ArrowDown, ArrowUpRight, Crosshair, Radio } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { SplineScene } from "@/components/ui/spline-scene";
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -144,6 +145,10 @@ export function Hero() {
         data-speed="0.03"
         aria-label="Ilustração de radar detectando sinais de jogos"
       >
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="hero-spline"
+        />
         <div className="hero-game-chips" aria-hidden="true">
           <span>RPG</span>
           <span>CO-OP</span>

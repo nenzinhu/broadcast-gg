@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowDown, ArrowUpRight, Crosshair } from "lucide-react";
+import Link from "next/link";
+import { ArrowDown, ArrowUpRight, Crosshair, Radio } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -59,21 +60,20 @@ export function Hero() {
           yoyo: true,
           ease: "sine.inOut",
         });
-
-        gsap.to(".hero-robot", {
-          y: -8,
-          duration: 2.6,
+        gsap.to(".radar-sweep", {
+          rotation: 360,
+          duration: 4.8,
+          repeat: -1,
+          ease: "none",
+        });
+        gsap.to(".radar-blip", {
+          scale: 1.8,
+          opacity: 0.45,
+          duration: 1.05,
+          stagger: 0.35,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-        });
-        gsap.to(".robot-hand", {
-          scale: 1.12,
-          duration: 1.1,
-          stagger: 0.28,
-          repeat: -1,
-          yoyo: true,
-          ease: "power2.inOut",
         });
 
         const visual = containerRef.current?.querySelector<HTMLElement>(
@@ -160,16 +160,6 @@ export function Hero() {
         data-speed="0.03"
         aria-label="Ilustração de radar detectando sinais de jogos"
       >
-        <div className="hero-robot" aria-label="Robô do Broadcast tentando capturar sinais de jogos">
-          <div className="robot-aura" />
-          <div className="robot-antenna" />
-          <div className="robot-head"><span className="robot-eye robot-eye-left" /><span className="robot-eye robot-eye-right" /></div>
-          <div className="robot-neck" />
-          <div className="robot-body"><span className="robot-core">BG</span><span className="robot-light" /></div>
-          <div className="robot-arm robot-arm-left"><span className="robot-joint" /><span className="robot-forearm" /><span className="robot-hand" /></div>
-          <div className="robot-arm robot-arm-right"><span className="robot-joint" /><span className="robot-forearm" /><span className="robot-hand" /></div>
-          <div className="robot-base"><span /><span /></div>
-        </div>
         <div className="hero-game-chips" aria-hidden="true">
           <span>RPG</span>
           <span>CO-OP</span>
@@ -178,20 +168,48 @@ export function Hero() {
         <div className="game-particle particle-cross" aria-hidden="true">+</div>
         <div className="game-particle particle-diamond" aria-hidden="true">◆</div>
         <div className="game-particle particle-circle" aria-hidden="true" />
-        <div className="hero-game-samples" aria-label="Amostras de jogos em destaque">
-          <div className="radar-tag tag-one">
-            <span className="lime">PRICE SIGNAL</span>
+        <div className="radar-topline">
+          <span>
+            <Radio size={13} aria-hidden="true" /> RADAR SYSTEM / 01
+          </span>
+          <span className="lime">● ONLINE</span>
+        </div>
+        <div className="radar-orbit">
+          <div className="radar-grid" />
+          <div className="orbit orbit-one" />
+          <div className="orbit orbit-two" />
+          <div className="orbit orbit-three" />
+          <div className="radar-axis horizontal" />
+          <div className="radar-axis vertical" />
+          <div className="radar-sweep" />
+          <div className="radar-center">
+            <Crosshair size={27} aria-hidden="true" />
+          </div>
+          <span className="radar-coordinate coord-n">N</span>
+          <span className="radar-coordinate coord-e">E</span>
+          <span className="radar-coordinate coord-s">S</span>
+          <span className="radar-coordinate coord-w">W</span>
+          <div className="radar-blip blip-one" />
+          <div className="radar-blip blip-two" />
+          <div className="radar-blip blip-three" />
+          <Link className="radar-tag tag-one" href="/games/cyberpunk-2077" aria-label="Abrir sinal de Cyberpunk 2077">
+            <span className="lime">↘ PRICE SIGNAL</span>
             <strong>Cyberpunk 2077</strong>
             <span>
-              −60% · PEGAR
+              MENOR PREÇO <b>−60%</b>
             </span>
-          </div>
-          <div className="radar-tag tag-two">
-            <span>TREND SIGNAL</span>
+          </Link>
+          <Link className="radar-tag tag-two" href="/games/hades-ii" aria-label="Abrir sinal de Hades II">
+            <span>↗ TREND SIGNAL</span>
             <strong>Hades II</strong>
-            <span>EM ALTA · PEGAR</span>
-          </div>
+            <span>NO NOSSO RADAR</span>
+          </Link>
         </div>
+        <div className="radar-bottomline">
+          <span>SCANNING THE NEXT PLAY_</span>
+          <span>03 SINAIS DETECTADOS</span>
+        </div>
+        <div className="scanner" />
       </div>
       <div className="hero-bottom">
         <span>INTELIGÊNCIA PARA O SEU PLAY.</span>
